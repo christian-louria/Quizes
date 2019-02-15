@@ -1,0 +1,555 @@
+body{
+	color: teal;
+	background-color: lightgrey;
+	font-family: Zawgyi-One,sans-serif;
+	margin: 0;
+}
+
+#startError{
+	color: red;
+	text-align: center;
+	height: 20px;
+}
+
+#score{
+	text-align: center;
+	font-size: 2em;
+}
+
+#startQuiz{
+	background-color: green;
+	border-radius: 100px;
+	width: 100px;
+	font-size: 1.3em;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 5px;
+	color: white;
+	text-align: center;
+	margin-top: 20px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#startQuiz:hover{
+	background-color: #00A800;
+}
+
+#leaderPlace{
+
+}
+
+#leaderboard{
+	font-size: 1.8em;
+	color: black;
+	font-weight: bolder;
+}
+
+#firstPlace{
+	font-size: 1.5em;
+}
+
+#leaderboardSingle{
+	padding: 5px;
+	display: grid;
+	grid-template-columns: 10% 50% 1fr;
+	color: black;
+	font-weight: bold;
+}
+
+#leaderboardContainer{
+	background-color: white;
+	text-align: center;
+	border-radius: 20px;
+	overflow: hidden;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 3px solid black;
+}
+
+#questionAmmount{
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+	color: grey;
+}
+
+#quizCreator{
+	color: grey;
+	text-align: center;
+}
+
+.editPic:hover{
+	background-color: #BBBBBB;
+	padding: 2px;
+}
+
+.nameEdit{
+	display: grid;
+	grid-template-columns: 1fr 10%;
+}
+
+.header2{
+	color: teal;
+	font-size: 3em;
+	text-align: center;
+	margin-top: 50px;
+	font-weight: bold;
+}
+
+#allQuizContainer{
+	padding-bottom: 15px;
+	background-color: lightgrey;
+	border-radius: 20px;
+	width: 90%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+#recentAndPlayers{
+	display: grid;
+	grid-template-columns: 55% 1fr;
+}
+
+.recentScore{
+	padding: 14px;
+}
+
+#ammountScore{
+	display: grid;
+	grid-template-columns: 50% 1fr;
+}
+
+.nameCreator{
+	border-right: 1px solid grey;
+}
+
+.questionAmmount{
+	color: black;
+	padding: 14px;
+}
+
+.recentQuizboxContainer{
+	display: grid;
+	grid-template-columns: 65% 1fr;
+
+}
+
+
+.updateQuestion{
+	border-radius: 100px;
+	background-color: teal;
+	padding: 10px;
+	color: white;
+	width: 100px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.deleteQuestion{
+	border-radius: 100px;
+	background-color: red;
+	padding: 10px;
+	color: white;
+	width: 100px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.updateDelete{
+	display: grid;
+	grid-template-columns: 50% 50%;
+	margin-bottom: 40px;
+	margin-top: 40px;
+}
+
+
+
+.currentEditQuestionBox{
+	background-color: #4B4B4B;
+}
+
+
+.editQuestionButton{
+	border-radius: 100px;
+	background-color: teal;
+	padding: 5px;
+	color: white;
+	width: 50px;
+	text-align: center;
+	margin: 5px;
+
+}
+
+
+.questionQuestion{
+
+	padding: 10px;
+	overflow: hidden;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.questionNumber{
+	padding: 10px;
+}
+
+
+.questionEditContainer{
+	border: 1px black solid;
+	margin-bottom: -1px;
+	display: grid;
+	grid-template-columns: 10% 70% 20%;
+}
+
+
+#questionNumberDisplay{
+	font-size: 2em;
+	text-align: center;
+}
+
+
+#addQuestion{
+	margin-left: auto;
+	margin-right: auto;
+	background-color: teal;
+	color: white;
+	border-radius: 100px;
+	width: 200px;
+	padding: 20px;
+	text-align: center;
+	margin-top: 20px;
+	z-index: 100;
+	cursor: pointer;
+	margin-bottom: 50px;
+}
+
+.radioBox{
+	margin-bottom: 10px;
+	margin-left: 50%;
+}
+
+.questionAnswer{
+	height: 40px;
+	width: 90%;
+	margin: 15px;
+	margin-bottom: 30px;
+	font-size: 1.5em;
+	border-radius: 5px;
+}
+
+#questionsContainer{
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+#answersContainer{
+	width: 100%;
+	display: grid;
+	grid-template-columns: 30% 30%;
+}
+
+#questionWrap{
+	text-align: center;
+}
+
+
+#endQuiz{
+	margin-right: auto;
+	margin-left: auto;
+	width: 200px;
+	background-color: teal;
+	color: white;
+	padding: 10px;
+	border-radius: 100px;
+	cursor: pointer;
+	text-align: center;
+	margin-top: 20px;
+}
+
+#answers{
+	display: grid;
+	grid-template-columns: 50% 50%
+}
+
+.answerBox:hover{
+	background-color: teal;
+	color: white;
+}
+
+#nextQuestion{
+	margin-right: auto;
+	margin-left: auto;
+	width: 200px;
+	background-color: teal;
+	color: white;
+	padding: 10px;
+	border-radius: 100px;
+	cursor: pointer;
+	text-align: center;
+	margin-top: 20px;
+}
+
+#nextQuestion:hover{
+	background-color: #006665;
+}
+
+.answerBox{
+	text-align: center;
+	width: 200px;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: white;
+	border-radius: 100px;
+	padding: 10px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	cursor: pointer;
+
+}
+
+.correct{
+	background-color: green;
+	color: white;
+}
+
+.wrong{
+	background-color: red;
+	color: white;
+}
+
+
+#question{
+	text-align: center;
+	height: 50px;
+	font-size: 2em;
+	border-radius: 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#quizName{
+
+}
+
+.recentQuizesBox{
+	border-bottom: black 1px solid;
+	border-top: black 1px solid;
+	margin-bottom: -1px;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.recentQuizesBox:hover{
+	background-color: #B2B2B2;
+}
+
+
+.quizNameBox{
+	font-size: 1.5em;
+
+}
+
+.quizCreatorBox{
+	color: black;
+}
+
+#addQuizWords{
+	height: 100%;
+	padding-top: 10px;
+
+}
+
+#addQuiz{
+	background: teal;
+	color: white;
+	width: 200px;
+	height: 40px;
+	border-radius: 100px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 20px;
+	cursor: pointer;
+}
+
+.signinBox{
+	border-radius: 20px;
+	background: #191919;
+	padding: 20px;
+	width: 200px;
+	text-align: center;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+}
+
+#username{
+	width: 200px;
+	height: 25px;
+	font-size: .9em;
+	border-radius: 5px;
+
+}
+
+
+#signin{
+	padding: 5px;
+	background: teal;
+	color: white;
+	border: 1px black solid;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	width: 190px;
+	border-radius: 100px;
+}
+
+#signinWords{
+	font-size: 2em;
+	padding-bottom: 10px;
+
+}
+
+#bodyOrganizer{
+	display: grid;
+	grid-template-columns: 300px 1fr 300px;
+}
+
+#main{
+	background: #262626;
+	min-height: 100vh;
+}
+
+#usernameTitle{
+	font-size: 4em;
+	padding-left: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #191919;
+	font-weight: bold;
+}
+
+#leftBar{
+}
+
+.tabs{
+	border-bottom: 1px solid black;
+	padding: 10px;
+	text-align: center;
+	font-weight: bolder;
+	font-size: 1.3em;
+	cursor: pointer;
+}
+
+#homeTab{
+
+}
+
+
+#makeUsername{
+	width: 200px;
+	height: 25px;
+	font-size:.9em;
+	border-radius: 5px;
+
+}
+
+#signinError{
+	margin-top: 5px;
+	color: red;
+}
+
+#makeNick{
+	width: 200px;
+	height: 25px;
+	font-size: .9em;
+	margin-top: 10px;
+	border-radius: 5px;
+}
+
+#makeAccount{
+	padding: 5px;
+	background: teal;
+	color: white;
+	border: 1px black solid;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	width: 200px;
+	border-radius: 100px;
+
+}
+
+#logoPic{
+	text-align: center;
+	border-bottom: 1px black solid;
+}
+
+
+.tabs:hover{
+	background-color: #B2B2B2;
+}
+
+#recentQuizes{
+	padding: 20px;
+	font-size: 3em;
+	font-weight: bolder;
+	border-bottom: black 1px solid;
+
+}
+
+#recentQuizesContainer{
+	background-color: lightgrey;
+	border-radius: 20px;
+	height: 510px;
+	width: 90%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+
+#topPlayersContainer{
+	background-color: lightgrey;
+	border-radius: 20px;
+	height: 510px;
+	width: 88%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 6%;
+	margin-right: 6%;
+}
+
+#topPlayersWords{
+	margin: 20px;
+	font-size: 3em;
+	font-weight: bolder;
+}
+
+.header{
+	color: white;
+	font-size: 3em;
+	text-align: center;
+	margin-top: 50px;
+	font-weight: bold;
+}
+
+#createQuizBodyContainer{
+	text-align: center;
+}
+
+#createQuizName{
+	margin-top: 50px;
+	height: 30px;
+	width: 400px;
+	font-size: 2em;
+	border-radius: 5px;
+}
