@@ -24,8 +24,9 @@ function check_answer(e){
 	var answer = targ.attr("id")
 		
 	if (!guessed) {
-
-		$(".answerBox").off();
+		$(".answerBox").removeClass("answerHover");
+		$(".answerBox").unbind('mouseenter').unbind('mouseleave')
+		//$(".answerBox").off('hover');
 
 		$("#"+quizStuff.quizQuestions[counter]["answer"]).addClass("correct")
 		if (answer == quizStuff.quizQuestions[counter]["answer"]) {
@@ -46,7 +47,7 @@ function check_answer(e){
 			$(".nextQuestion").attr('onClick', 'next_question();');
 		}
 	}
-	guessed = true;	
+	guessed = true;
 }
 
 
@@ -64,6 +65,7 @@ function check_answer(e){
 
 
 function next_question(){
+	$(".answerBox").addClass("answerHover");
 	$(".nextQuestion").empty()
 	$(".nextQuestion").removeAttr("id", "nextQuestion")
 	$(".nextQuestion").removeAttr('onClick', 'next_question();');
@@ -71,7 +73,7 @@ function next_question(){
 	$(".answerBox").removeClass("wrong")
 	counter++;
 	guessed = false;
-	$("#question").text(quizStuff.quizQuestions[counter]["question"])
+	$("#questionWords").text(quizStuff.quizQuestions[counter]["question"])
 	$("#1").text(quizStuff.quizQuestions[counter]["q1"])
 	$("#2").text(quizStuff.quizQuestions[counter]["q2"])
 	$("#3").text(quizStuff.quizQuestions[counter]["q3"])
@@ -97,25 +99,17 @@ function quiz_page(e){
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
 	targ = $(targ)
-	var quizID = targ.parent().parent().parent().parent().parent().attr("id");
+	var quizID = targ.parent().parent().parent().parent().attr("id");
 	window.history.pushState("object or string", "Title", "?editquiz="+quizID);
 };
 
 function take_quiz(e){
+
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
-	//quizID = $(targ).parent().parent().find(".quizNum").attr("id")
-	quizID = $(targ).parent().parent().attr("id")
-	if (typeof quizID == 'undefined') {
-		quizID = $(targ).parent().attr("id")
+	if (typeof e == 'number') {
+		quizID = e;
 	}
-	
-	if (isNaN(quizID)) {
-		
-		quizID = $(targ).find("quizNum").attr("id")
-		return;
-	}
-	
 	window.history.pushState("object or string", "Title", "?takequiz="+quizID);
 }
 
@@ -250,11 +244,21 @@ else if (url.includes("takequiz")) {
 							leaderHTML = $.parseHTML(leaderboardBox)
 							$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
 							$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
-							$(leaderHTML).find("#leaderPlace").text(i+1 + ".")
+							$(leaderHTML).find("#leaderPlace").text(i+1)
 							if (i == 0) {
 								$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
 								$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlace")
+								$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
+							}
+							if (i == 1) {
+								$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
+								$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
+								$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
+							}
+							if (i == 2) {
+								$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
+								$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
+								$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
 							}
 							$("#leaderboardList").append(leaderHTML)
 						}
@@ -288,9 +292,8 @@ $(document).ready(function(){
 				$(html).find(".questionAmmount").text(quizes[i][0])
 				$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
 				$(html).find(".quizNameBox").text(quizes[i]["quizName"])
-				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
-				//$(html).attr("id", quizes[i]["qKey"])
-				
+				$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
+				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])				
 				$("#quizList").append(html);
 			}
 		})
@@ -316,11 +319,21 @@ $(document).ready(function(){
 							leaderHTML = $.parseHTML(leaderboardBox)
 							$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
 							$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
-							$(leaderHTML).find("#leaderPlace").text(i+1 + ".")
+							$(leaderHTML).find("#leaderPlace").text(i+1)
 							if (i == 0) {
 								$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
 								$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlace")
+								$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
+							}
+							if (i == 1) {
+								$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
+								$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
+								$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
+							}
+							if (i == 2) {
+								$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
+								$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
+								$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
 							}
 							$("#leaderboardList").append(leaderHTML)
 						}
@@ -346,7 +359,7 @@ $(document).ready(function(){
 					$("#questionNumber").text("No Questions :(")
 				}
 				else {
-					$("#question").text(quizStuff.quizQuestions[counter]["question"])
+					$("#questionWords").text(quizStuff.quizQuestions[counter]["question"])
 					$("#1").text(quizStuff.quizQuestions[counter]["q1"])
 					$("#2").text(quizStuff.quizQuestions[counter]["q2"])
 					$("#3").text(quizStuff.quizQuestions[counter]["q3"])
@@ -368,8 +381,8 @@ $(document).ready(function(){
 					$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
 					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
 					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
 
-					
 					$("#quizList").append(html);
 				}
 			})
@@ -395,6 +408,7 @@ $(document).ready(function(){
 					$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
 					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
 					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
 					if (nick == quizes[i]["quizCreator"]) {
 						(function(tempHtml){
 							$.get("../inc/editButton.html", function(button){
@@ -515,10 +529,35 @@ $('#username').bind("enterKey",function(e){
 			username = userInfo[0]["username"];
 			$("#usernameTitle").text(nick);
 			$("#signinError").text(" ");
+			$("#signInOrOut").load("inc/signOutBox.html");
 		}
 	})
 	$("#username").val('');
 });
+
+
+$(document).on("click", "#signin", function(){
+	var $form = $( this ).parent().parent().children();
+	username = $form.find( "input[name='username']" ).val(),
+	$.post("api/checkLogin.php", {
+		username : username
+	}, function(userInfo){
+		userInfo = JSON.parse(userInfo)
+
+		if (!userInfo) {
+			$("#signinError").text("WAit a minUte... Who are you??")
+		}
+		else{
+			nick = userInfo[0]["nick"];
+			username = userInfo[0]["username"];
+			$("#usernameTitle").text(nick);
+			$("#signinError").text(" ");
+			$("#signInOrOut").load("inc/signOutBox.html");
+		}
+		$("#username").val('');
+	})
+})
+
 
 $('#username').keyup(function(e){
 	if(e.keyCode == 13)
@@ -609,32 +648,5 @@ $(document).on("click", "#makeAccount", function(){
 	}
 
 })
-
-
-
-
-$(document).on("click", "#signin", function(){
-	var $form = $( this ).parent().parent().children();
-	username = $form.find( "input[name='username']" ).val(),
-	$.post("api/checkLogin.php", {
-		username : username
-	}, function(userInfo){
-		userInfo = JSON.parse(userInfo)
-
-		if (!userInfo) {
-			$("#signinError").text("WAit a minUte... Who are you??")
-		}
-		else{
-			nick = userInfo[0]["nick"];
-			username = userInfo[0]["username"];
-			$("#usernameTitle").text(nick);
-			$("#signinError").text(" ");
-		}
-		$("#username").val('');
-	})
-})
-
-
-
 
 });
