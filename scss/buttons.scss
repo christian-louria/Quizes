@@ -15,6 +15,17 @@
 	transform: scale(1.1);
 }
 
+#signOutButton{
+	padding: 5px;
+	background: teal;
+	color: white;
+	border: 1px black solid;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	border-radius: 100px;
+}
+
 .answerHover{
 	transition: all .2s ease-in-out;
 }

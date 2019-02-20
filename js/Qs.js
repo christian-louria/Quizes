@@ -22,7 +22,7 @@ function check_answer(e){
 		targ = $(targ)
 	}
 	var answer = targ.attr("id")
-		
+
 	if (!guessed) {
 		$(".answerBox").removeClass("answerHover");
 		$(".answerBox").unbind('mouseenter').unbind('mouseleave')
@@ -51,19 +51,6 @@ function check_answer(e){
 }
 
 
-// function end_quiz(){
-// 	if (!subbmited) {
-// 		$("#questionNumber").text("Score : " + quizStuff.score)
-// 		$.post("api/uploadScore.php", {
-// 			taker : quizStuff.taker, 
-// 			score : quizStuff.score, 
-// 			quizKey : quizStuff.quizInfo[0]["qKey"],
-// 		})
-// 		subbmited = true;
-// 	}
-// }
-
-
 function next_question(){
 	$(".answerBox").addClass("answerHover");
 	$(".nextQuestion").empty()
@@ -86,11 +73,10 @@ function make_quiz(e, quizName){
 	window.history.pushState("object or string", "Title", "?editquiz="+quizID);
 }
 
-
 function quiz_page(e){
-	 if (!e) var e = window.event;
-    e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
+	if (!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
 	if (Number.isInteger(e)) {
 		quizID = e
 		window.history.pushState("object or string", "Title", "?editquiz="+quizID);
@@ -104,7 +90,6 @@ function quiz_page(e){
 };
 
 function take_quiz(e){
-
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
 	if (typeof e == 'number') {
@@ -130,6 +115,55 @@ function edit_question(e){
 	window.history.pushState("object or string", "Title", "?editquestion="+questionID);
 }
 
+function loadIndex(){
+	$("#mainContent").load("home.html");
+	$.getJSON("api/getQuizesRecent.php", function(quizes){
+		$.get("../inc/quizBox.html", function(quizBoxhtml){
+			for (var i = 0; i < quizes.length; i++) {
+				var html = $.parseHTML(quizBoxhtml);
+				$(html).find(".questionAmmount").text(quizes[i][0])
+				$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
+				$(html).find(".quizNameBox").text(quizes[i]["quizName"])
+				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+				$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
+				$("#quizList").append(html);
+			}
+		})
+	})
+}
+
+function loadQuizes(){
+	$("#mainContent").load("quizes.html");
+	$.getJSON("../api/getQuizes.php", function(quizes){
+		$.get("../inc/quizBox.html", function(quizBoxhtml){
+			for (var i = 0; i < quizes.length; i++) {
+				var html = $.parseHTML(quizBoxhtml);
+				$(html).find(".questionAmmount").text(quizes[i][0])
+				$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
+				$(html).find(".quizNameBox").text(quizes[i]["quizName"])
+				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+				$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
+				if (nick == quizes[i]["quizCreator"]) {
+					(function(tempHtml){
+						$.get("../inc/editButton.html", function(button){
+							var button = $.parseHTML(button)
+							$(tempHtml).find(".canEdit").append(button)
+						})						
+					}(html));	
+				}	
+				$("#allQuizList").append(html);
+			}
+		})
+	})
+}
+
+function loadProfile(){
+	$("#mainContent").load("profile.html");
+}
+
+function loadMakeQuiz(){
+	$("#mainContent").load("makeQuiz.html");
+}
 
 (function(history){
 	var pushState = history.pushState;
@@ -148,18 +182,11 @@ if (url.includes("editquiz")) {
 	$("#mainContent").load("quiz.html", function(){
 		var quizid = url.split('=')[1]
 		$(".quizNum").attr("id", quizid)
-    		
-    		$.post("../api/getQuiz.php", {
-    			quizid: quizid
-    		}, function(quizInfo){
-    			quizInfo = JSON.parse(quizInfo)
-    			
-    // 			var createQuizStuff = {
-				// 	currentQuestion : 0,
-				// 	quizQuestions : [], 
-				// 	quizInfo : [],
-				// }
-				// createQuizStuff.quizInfo = quizInfo;
+
+		$.post("../api/getQuiz.php", {
+			quizid: quizid
+		}, function(quizInfo){
+			quizInfo = JSON.parse(quizInfo)
 				$(".quizNum").attr("id", quizid)
 				$("#quizName").text(quizInfo[0]["quizName"])
 				$.post("api/getQuestions.php", {
@@ -180,8 +207,8 @@ if (url.includes("editquiz")) {
 					})
 				})
 			})
-    		
-    	})
+
+	})
 }
 /////////////////////////////////////////
 else if (url.includes("editquestion")) {
@@ -271,7 +298,7 @@ else if (url.includes("takequiz")) {
 	})
 }
 }, delayInMilliseconds);
-	};
+};
 })(window.history);
 
 ///////////////////////////////////////
@@ -283,9 +310,8 @@ else if (url.includes("takequiz")) {
 ///////////////////////////////////////
 
 $(document).ready(function(){
-	window.history.pushState({}, document.title, "/" + "");
+	window.history.pushState('forward', null, './home');
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
-		
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
 			for (var i = 0; i < quizes.length; i++) {
 				var html = $.parseHTML(quizBoxhtml);
@@ -298,6 +324,25 @@ $(document).ready(function(){
 			}
 		})
 	})
+	
+
+	if (window.history && window.history.pushState) {
+		$(window).on('popstate', function() {
+			url = window.location.href
+			if (url.includes("home")){
+				loadIndex();
+			}
+			else if (url.includes("quizList")) {
+				loadQuizes();
+			}
+			else if (url.includes("profile")) {
+				loadProfile();
+			}
+			else if (url.includes("makeQuiz")) {
+				loadMakeQuiz();
+			}
+		});
+	}
 
 
 	$(document).on("click", "#endQuiz", function(){
@@ -309,40 +354,38 @@ $(document).ready(function(){
 			quizKey : quizStuff.quizInfo[0]["qKey"],
 		})
 		$.post("../api/getLeaderboard.php", {
-					quizid : quizStuff.quizInfo[0]["qKey"]
-				}, 
-				function(leaderboard){
-					leaderboard = JSON.parse(leaderboard)
-					$.get("../inc/leaderboardBox.html", function(leaderboardBox){
-						
-						for (var i = 0; i < leaderboard.length; i++) {
-							leaderHTML = $.parseHTML(leaderboardBox)
-							$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
-							$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
-							$(leaderHTML).find("#leaderPlace").text(i+1)
-							if (i == 0) {
-								$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
-								$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
-							}
-							if (i == 1) {
-								$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
-								$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
-							}
-							if (i == 2) {
-								$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
-								$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
-							}
-							$("#leaderboardList").append(leaderHTML)
-						}
-					})
-					
-				})
+			quizid : quizStuff.quizInfo[0]["qKey"]
+		}, 
+		function(leaderboard){
+			leaderboard = JSON.parse(leaderboard)
+			$.get("../inc/leaderboardBox.html", function(leaderboardBox){
+
+				for (var i = 0; i < leaderboard.length; i++) {
+					leaderHTML = $.parseHTML(leaderboardBox)
+					$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
+					$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
+					$(leaderHTML).find("#leaderPlace").text(i+1)
+					if (i == 0) {
+						$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
+						$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
+						$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
+					}
+					if (i == 1) {
+						$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
+						$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
+						$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
+					}
+					if (i == 2) {
+						$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
+						$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
+						$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
+					}
+					$("#leaderboardList").append(leaderHTML)
+				}
+			})
+
+		})
 	})
-
-
 
 	$(document).on("click", "#startQuiz", function(){
 		if (nick == null) {
@@ -369,63 +412,20 @@ $(document).ready(function(){
 		}
 	})
 
-
 	$(document).on("click", "#homeTab", function(){
-		window.history.pushState({}, document.title, "/" + "");
-		$("#mainContent").load("home.html");
-		$.getJSON("api/getQuizesRecent.php", function(quizes){
-			$.get("../inc/quizBox.html", function(quizBoxhtml){
-				for (var i = 0; i < quizes.length; i++) {
-					var html = $.parseHTML(quizBoxhtml);
-					$(html).find(".questionAmmount").text(quizes[i][0])
-					$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
-					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
-					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
-					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
-
-					$("#quizList").append(html);
-				}
-			})
-		})
+		window.history.pushState('forward', null, './home');
+		loadIndex();
 	})
-
 
 	$(document).on("click", "#profileTab", function(){
-		$("#mainContent").load("profile.html");
-		
-		
+		window.history.pushState('forward', null, './profile');
+		loadProfile();
 	})
-
-
 
 	$(document).on("click", "#takeQuizTab", function(){
-		$("#mainContent").load("quizes.html");
-		$.getJSON("../api/getQuizes.php", function(quizes){
-			$.get("../inc/quizBox.html", function(quizBoxhtml){
-				for (var i = 0; i < quizes.length; i++) {
-					var html = $.parseHTML(quizBoxhtml);
-					$(html).find(".questionAmmount").text(quizes[i][0])
-					$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
-					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
-					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
-					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
-					if (nick == quizes[i]["quizCreator"]) {
-						(function(tempHtml){
-							$.get("../inc/editButton.html", function(button){
-								var button = $.parseHTML(button)
-								$(tempHtml).find(".canEdit").append(button)
-							})						
-						}(html));	
-					}	
-					$("#allQuizList").append(html);
-				}
-			})
-		})
-		
-		
+		window.history.pushState('forward', null, './quizList');
+		loadQuizes();
 	})
-
-
 
 //Add quizpage
 //////////////////////////////////////////////////////////////////
@@ -568,9 +568,8 @@ $('#username').keyup(function(e){
 
 
 $(document).on("click", "#makeQuizTab", function(){
-	window.history.pushState({}, document.title, "/" + "");
-	$("#mainContent").load("makeQuiz.html")
-
+	window.history.pushState('forward', null, './makeQuiz');
+	loadMakeQuiz();
 })
 
 
