@@ -11,7 +11,6 @@ var quizStuff = {
 }
 var createQuestionNumber = 1;
 
-
 function check_answer(e){
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
@@ -309,7 +308,18 @@ else if (url.includes("takequiz")) {
 ///////////////////////////////////////
 ///////////////////////////////////////
 
+
+
+
 $(document).ready(function(){
+
+	$(window).on("beforeunload", function(e) {
+//            ^^^
+  window.location.assign("tianquiz.herokuapp.com")
+  return;
+});
+
+
 	window.history.pushState('forward', null, './home');
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
@@ -325,7 +335,8 @@ $(document).ready(function(){
 			}
 		})
 	})
-	
+
+
 
 	if (window.history && window.history.pushState) {
 		$(window).on('popstate', function() {
