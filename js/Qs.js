@@ -11,7 +11,6 @@ var quizStuff = {
 }
 var createQuestionNumber = 1;
 
-
 function check_answer(e){
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
@@ -159,6 +158,27 @@ function loadQuizes(){
 
 function loadProfile(){
 	$("#mainContent").load("profile.html");
+	$.getJSON("../api/getQuizes.php", function(quizes){
+		$.get("../inc/quizBox.html", function(quizBoxhtml){
+			for (var i = 0; i < quizes.length; i++) {
+				var html = $.parseHTML(quizBoxhtml);
+				$(html).find(".questionAmmount").text(quizes[i][0])
+				$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
+				$(html).find(".quizNameBox").text(quizes[i]["quizName"])
+				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+				$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
+
+				(function(tempHtml){
+					$.get("../inc/editButton.html", function(button){
+						var button = $.parseHTML(button)
+						$(tempHtml).find(".canEdit").append(button)
+					})						
+				})(html);	
+
+				$("#myQuizList").append(html);
+			}
+		})
+	})
 }
 
 function loadMakeQuiz(){
@@ -189,6 +209,14 @@ if (url.includes("editquiz")) {
 			quizInfo = JSON.parse(quizInfo)
 				$(".quizNum").attr("id", quizid)
 				$("#quizName").text(quizInfo[0]["quizName"])
+				released = quizInfo[0]["released"];
+				if (released == 0) {
+					$("#uploadContainer").load("inc/uploadButton.html");
+				}
+				else if (released == 1){
+					$("#uploadContainer").load("inc/unuploadButton.html");
+				}
+				
 				$.post("api/getQuestions.php", {
 					quizid : quizid,
 				},
@@ -309,11 +337,12 @@ else if (url.includes("takequiz")) {
 ///////////////////////////////////////
 ///////////////////////////////////////
 
+
+
 $(document).ready(function(){
 	window.history.pushState('forward', null, './home');
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
-			console.log("HI")
 			for (var i = 0; i < quizes.length; i++) {
 				var html = $.parseHTML(quizBoxhtml);
 				$(html).find(".questionAmmount").text(quizes[i][0])
@@ -325,7 +354,8 @@ $(document).ready(function(){
 			}
 		})
 	})
-	
+
+
 
 	if (window.history && window.history.pushState) {
 		$(window).on('popstate', function() {
@@ -512,6 +542,28 @@ else{
 	var quizid = url.split('=')[1]
 	window.history.pushState("object or string", "Title", "?editquiz="+quizid);
 }
+})
+
+
+
+$(document).on("click", "#uploadButton", function(){
+	quizNum = url.split('=')[1]
+	$.post('api/releaseQuiz.php', {
+		quizNum : quizNum
+	})
+	url = window.location.href
+	var quizid = url.split('=')[1]
+	window.history.pushState("object or string", "Title", "?editquiz="+quizid);
+})
+
+$(document).on("click", "#unuploadButton", function(){
+	quizNum = url.split('=')[1]
+	$.post('api/unreleaseQuiz.php', {
+		quizNum : quizNum
+	})
+	url = window.location.href
+	var quizid = url.split('=')[1]
+	window.history.pushState("object or string", "Title", "?editquiz="+quizid);
 })
 
 

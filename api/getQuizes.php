@@ -1,6 +1,6 @@
 <?php 
 	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
-	$getQuizes = $conn->prepare('SELECT * FROM quizes');
+	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE released = 1');
 	$getQuizes->execute();
 	$quizes = $getQuizes->get_result();
 

@@ -1,13 +1,12 @@
 <?php 
 	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
-	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE released = 1 ORDER BY qKey DESC LIMIT 7');
+	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE quizCreator');
 	$getQuizes->execute();
 	$quizes = $getQuizes->get_result();
 
 	$quizList = [];
 
 	while ($row = $quizes->fetch_assoc()) {
-		
 		$qKey = $row["qKey"];
 
 		$getQuiz = $conn->prepare('SELECT COUNT(*) FROM questions WHERE quizNum = ?');
