@@ -1,5 +1,5 @@
 <?php 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$getQuizes = $conn->prepare('SELECT * FROM quizes');
 	$getQuizes->execute();
 	$quizes = $getQuizes->get_result();
@@ -9,7 +9,7 @@
 	while ($row = $quizes->fetch_assoc()) {
 		$qKey = $row["qKey"];
 
-		$getQuiz = $conn->prepare('SELECT COUNT(*) FROM quiz.questions WHERE quizNum = ?');
+		$getQuiz = $conn->prepare('SELECT COUNT(*) FROM questions WHERE quizNum = ?');
 		$getQuiz->bind_param("i", $qKey);
 		$getQuiz->execute();
 		$getQuiz = $getQuiz->get_result();

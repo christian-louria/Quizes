@@ -3,7 +3,7 @@
 	$username = $_POST["makeUser"];
 	$nick = $_POST["makeNick"];
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$insertUser = $conn->prepare("INSERT INTO users(nick, username) VALUES (?,?)");
 	$insertUser->bind_param("ss", $nick, $username);
 	$insertUser->execute();

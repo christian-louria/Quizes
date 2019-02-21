@@ -1,5 +1,5 @@
 <?php 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$getQuizes = $conn->prepare('SELECT * FROM quizes ORDER BY qKey DESC LIMIT 7');
 	$getQuizes->execute();
 	$quizes = $getQuizes->get_result();
@@ -10,7 +10,7 @@
 		
 		$qKey = $row["qKey"];
 
-		$getQuiz = $conn->prepare('SELECT COUNT(*) FROM quiz.questions WHERE quizNum = ?');
+		$getQuiz = $conn->prepare('SELECT COUNT(*) FROM questions WHERE quizNum = ?');
 		$getQuiz->bind_param("i", $qKey);
 		$getQuiz->execute();
 		$getQuiz = $getQuiz->get_result();

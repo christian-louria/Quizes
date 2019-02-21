@@ -2,7 +2,7 @@
 
 	$username = $_POST["username"];
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$getUser = $conn->prepare('SELECT * FROM users WHERE username = ?');
 	$getUser->bind_param("s", $username);
 	$getUser->execute();

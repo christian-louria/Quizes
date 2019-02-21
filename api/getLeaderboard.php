@@ -2,8 +2,8 @@
 
 	$qKey = $_POST["quizid"];
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
-	$getBoard = $conn->prepare('SELECT * FROM quiz.leaderboard WHERE quizKey = ? ORDER BY score DESC');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
+	$getBoard = $conn->prepare('SELECT * FROM leaderboard WHERE quizKey = ? ORDER BY score DESC');
 	$getBoard->bind_param("i", $qKey);
 	$getBoard->execute();
 	$board = $getBoard->get_result();

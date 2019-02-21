@@ -313,6 +313,7 @@ $(document).ready(function(){
 	window.history.pushState('forward', null, './home');
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
+			console.log("HI")
 			for (var i = 0; i < quizes.length; i++) {
 				var html = $.parseHTML(quizBoxhtml);
 				$(html).find(".questionAmmount").text(quizes[i][0])

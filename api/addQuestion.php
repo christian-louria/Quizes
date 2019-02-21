@@ -8,7 +8,7 @@
 	$q4 = $_POST['q4'];
 	$answer = (int)$_POST['answer'];
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$addQuiz = $conn->prepare('INSERT INTO questions(question, q1, q2, q3, q4, answer, quizNum) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
 	$addQuiz->bind_param("sssssii", $question, $q1, $q2, $q3, $q4, $answer, $quizNum);

@@ -2,7 +2,7 @@
 	
 	$quizNum = (int)$_POST["quizid"];
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$getQuestions = $conn->prepare('SELECT * FROM questions WHERE quizNum = ?');
 	$getQuestions->bind_param("i", $quizNum);
 	$getQuestions->execute();

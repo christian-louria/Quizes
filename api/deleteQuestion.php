@@ -2,7 +2,7 @@
 
 	$questKey = (int)$_POST["questkey"];
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$getQuestion = $conn->prepare('DELETE FROM questions WHERE questKey = ?');
 	$getQuestion->bind_param("i", $questKey);
 	$getQuestion->execute();

@@ -2,14 +2,14 @@
 
 	$quizName = $_POST['quizName'];
 	$quizCreator = $_POST['quizCreator'];
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$addQuiz = $conn->prepare('INSERT INTO quizes(quizName, quizCreator) VALUES (?, ?)' );
 
 	$addQuiz->bind_param("ss", $quizName, $quizCreator);
 	$addQuiz->execute();
 
 
-	$getQuiz = $conn->prepare('SELECT * FROM quiz.quizes WHERE quizName = ? LIMIT 1');
+	$getQuiz = $conn->prepare('SELECT * FROM quizes WHERE quizName = ? LIMIT 1');
 	$getQuiz->bind_param('s', $quizName);
 	$getQuiz->execute();
 	$quizInfo = $getQuiz->get_result();

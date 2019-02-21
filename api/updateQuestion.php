@@ -19,7 +19,7 @@
 
 
 
-	$conn = mysqli_connect('localhost', 'root', '***REMOVED***', 'quiz');
+	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$updateQuestion = $conn->prepare('UPDATE questions SET question = ?, q1 = ?, q2 = ?, q3 = ?, q4 = ?, answer = ? WHERE questKey = ?');
 	$updateQuestion->bind_param("sssssii", $question, $q1, $q2, $q3, $q4, $answer, $questKey);
 	$updateQuestion->execute();
