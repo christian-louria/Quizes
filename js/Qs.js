@@ -382,6 +382,7 @@ $(document).ready(function(){
 						$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
 					}
 					$("#leaderboardList").append(leaderHTML)
+					quizStuff.score = 0;
 				}
 			})
 
@@ -394,7 +395,7 @@ $(document).ready(function(){
 		}
 		else{
 			quizStuff.taker = nick;
-			
+			quizStuff.score = 0;
 			subbmited = false;
 			$("#mainContent").load("takeQuiz.html", function(){
 				counter = 0;
