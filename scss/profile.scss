@@ -1,0 +1,82 @@
+#profileBackground{
+	background-color: #191919;
+	height: 100%;
+	width: 100%;
+}
+
+#fileToUpload{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#uploadPicButton{
+	background-color: teal;
+	color: white;
+	border: 2px solid black;
+	border-radius: 20px;
+	padding: 5px;
+	cursor: pointer;
+	margin: 10px;
+}
+
+#submitPic{
+	margin-top: 10px;
+	margin-right: 2px;
+}
+
+
+#uploadPicButton:hover{
+}
+
+#changeProfilePicForm{
+	position: absolute;
+	top: 140px;
+	left: 41px;
+	visibility: hidden;
+}
+
+#profilePic{
+	width: 200px;
+	position: relative;
+
+}
+
+#profileStatsContainer{
+	padding-left: 50px;
+	padding-top: 20px;
+}
+
+#picContainer{
+	height: 200px;
+	border: 2px solid black;
+	overflow: hidden;
+	text-align: center;
+	width: 200px;
+	border-radius: 100px;
+}
+
+#nameAndPicContainer{
+	display: grid;
+	grid-template-columns: 1fr 300px;
+	border-bottom: 3px solid black;
+}
+
+#profilePicBorder{
+	padding-bottom: 30px;
+	padding-top: 30px;
+	padding-right: 30px;
+}
+
+
+.profileName{
+	font-size: 6em;
+	vertical-align: bottom;
+	background-color: #191919;
+	font-weight: bold;
+	-webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: white;
+}

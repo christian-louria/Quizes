@@ -3,6 +3,8 @@
 @import 'leaderboards';
 @import 'quiz';
 @import 'signinAndOut';
+@import 'profile';
+@import 'xpBar';
 
 body{
 	color: teal;
@@ -15,6 +17,10 @@ body{
 	color: red;
 	text-align: center;
 	height: 20px;
+}
+
+#profileTab{
+	background-color: grey;
 }
 
 
@@ -400,6 +406,12 @@ body{
 	font-weight: bolder;
 	font-size: 1.3em;
 	cursor: pointer;
+	transition: padding .1s;
+}
+
+.tabs:hover{
+	background-color: #B2B2B2;
+	padding: 15px;
 }
 
 #homeTab{
@@ -436,9 +448,7 @@ body{
 }
 
 
-.tabs:hover{
-	background-color: #B2B2B2;
-}
+
 
 #recentQuizes{
 	padding: 20px;

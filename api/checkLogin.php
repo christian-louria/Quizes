@@ -1,5 +1,4 @@
 <?php 
-
 	$username = $_POST["username"];
 
 	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
@@ -21,7 +20,4 @@
 	else {
 		echo json_encode(false);
 	}
-
-
-
  ?>

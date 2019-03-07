@@ -11,6 +11,7 @@ var quizStuff = {
 }
 var createQuestionNumber = 1;
 
+
 function check_answer(e){
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
@@ -68,11 +69,13 @@ function next_question(){
 
 
 function make_quiz(e, quizName){
+	$("#usernameTitle").show();
 	var quizID = e;
 	window.history.pushState("object or string", "Title", "?editquiz="+quizID);
 }
 
 function quiz_page(e){
+	$("#usernameTitle").show();
 	if (!e) var e = window.event;
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
@@ -89,6 +92,7 @@ function quiz_page(e){
 };
 
 function take_quiz(e){
+	$("#usernameTitle").show();
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
 	if (typeof e == 'number') {
@@ -116,6 +120,7 @@ function edit_question(e){
 
 function loadIndex(){
 	$("#mainContent").load("home.html");
+	$("#usernameTitle").show();
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
 			for (var i = 0; i < quizes.length; i++) {
@@ -132,6 +137,7 @@ function loadIndex(){
 }
 
 function loadQuizes(){
+	$("#usernameTitle").show();
 	$("#mainContent").load("quizes.html");
 	$.getJSON("../api/getQuizes.php", function(quizes){
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
@@ -156,9 +162,37 @@ function loadQuizes(){
 	})
 }
 
+function flicker(){
+  $("#xp-increase-fx-flicker").css("opacity", "1");
+  $("#xp-increase-fx-flicker").animate({"opacity":Math.random()}, 100, flicker);
+}
+
+function doit(){
+  $("#xp-increase-fx").css("display","inline-block");
+  $("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+  setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
+  $("#xp-bar-fill").css("width","75%");},100);
+  setTimeout(function(){$("#xp-increase-fx").fadeOut(500);$("#xp-bar-fill").css(
+  	{"-webkit-transition":"all 0.5s ease","box-shadow":""});},2000);
+  setTimeout(function(){$("#xp-bar-fill").css({"width":"0.1%"});},3000);
+}
+
 function loadProfile(){
-	$("#mainContent").load("profile.html");
-	$.getJSON("../api/getQuizes.php", function(quizes){
+	$("#mainContent").load("profile.html");	
+	$("#usernameTitle").hide();
+
+	$.post("../api/getProfile.php", {
+		nick : nick
+	}, function(profileInfo){
+		profileInfo = JSON.parse(profileInfo);
+		$("#profileName").text(nick);
+		$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />")
+	})
+	flicker();
+	$.post("../api/getMyQuizes.php", {
+		nick : nick,
+	}, function(quizes){
+		quizes = JSON.parse(quizes);
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
 			for (var i = 0; i < quizes.length; i++) {
 				var html = $.parseHTML(quizBoxhtml);
@@ -181,7 +215,10 @@ function loadProfile(){
 	})
 }
 
+
+
 function loadMakeQuiz(){
+	$("#usernameTitle").show();
 	$("#mainContent").load("makeQuiz.html");
 }
 
@@ -340,6 +377,26 @@ else if (url.includes("takequiz")) {
 
 
 $(document).ready(function(){
+	$(document).on("submit", "#changeProfilePicForm", function(e) {
+		e.preventDefault();
+
+		$("#hiddenNick").val(nick);
+		$.ajax({
+	        url: '/api/updateProfilePic.php',
+	        type: 'POST',
+	        data: new FormData($('#changeProfilePicForm')[0]),
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	    });
+	    
+	    setTimeout(
+		  function() 
+		  {
+		    loadProfile()
+		  }, 1000);
+	});
+
 	window.history.pushState('forward', null, './home');
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
@@ -443,6 +500,26 @@ $(document).ready(function(){
 			})
 		}
 	})
+	///////////////////////////
+	///////////////////////////
+	///////////////////////////
+	///////////////////////////
+	///////////////////////////
+	///////////////////////////
+	///////////////////////////
+
+	$(document).on("mouseenter", "#picContainer", function(){
+		$("#changeProfilePicForm").css('visibility', 'visible');
+	})
+
+	$(document).on("mouseleave", "#picContainer", function(){
+		$("#changeProfilePicForm").css('visibility', 'hidden');
+	})
+
+
+	$("#profilePic").hover(function(){
+		console.log("hi")
+	});
 
 	$(document).on("click", "#homeTab", function(){
 		window.history.pushState('forward', null, './home');
@@ -450,6 +527,9 @@ $(document).ready(function(){
 	})
 
 	$(document).on("click", "#profileTab", function(){
+		if (nick == null) {
+			return;
+		}
 		window.history.pushState('forward', null, './profile');
 		loadProfile();
 	})
@@ -542,7 +622,9 @@ else{
 	var quizid = url.split('=')[1]
 	window.history.pushState("object or string", "Title", "?editquiz="+quizid);
 }
-})
+});
+
+
 
 
 
@@ -586,6 +668,13 @@ $('#username').bind("enterKey",function(e){
 			$("#signInOrOut").load("inc/signOutBox.html");
 		}
 	})
+	$("#profileTab").css("background-color", "transparent");
+	$(document).on("mouseenter", "#profileTab", function(){
+		$("#profileTab").css("background-color", "#B2B2B2")
+	})
+	$(document).on("mouseleave", "#profileTab", function(){
+		$("#profileTab").css("background-color", "transparent")
+	})
 	$("#username").val('');
 });
 
@@ -608,6 +697,13 @@ $(document).on("click", "#signin", function(){
 			$("#signinError").text(" ");
 			$("#signInOrOut").load("inc/signOutBox.html");
 		}
+		$("#profileTab").css("background-color", "transparent");
+		$(document).on("mouseenter", "#profileTab", function(){
+			$("#profileTab").css("background-color", "#B2B2B2")
+		})
+		$(document).on("mouseleave", "#profileTab", function(){
+			$("#profileTab").css("background-color", "transparent")
+		})
 		$("#username").val('');
 	})
 })
@@ -694,8 +790,9 @@ $(document).on("click", "#makeAccount", function(){
 				
 			}
 			else{
-				nick = userInfo[0]["nick"];
-				username = userInfo[0]["username"];
+				$("#createSuccess").text("Account created successfully, now login")
+				$form.find( "input[name='makeUsername']" ).val("");
+				$form.find( "input[name='makeNick']" ).val("");
 			}
 		})
 	}

@@ -1,6 +1,10 @@
 <?php 
+
+	$quizCreator = $_POST['nick'];
+
 	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
-	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE quizCreator');
+	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE quizCreator = ?');
+	$getQuizes->bind_param("s", $quizCreator);
 	$getQuizes->execute();
 	$quizes = $getQuizes->get_result();
 
