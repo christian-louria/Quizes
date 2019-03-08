@@ -206,7 +206,13 @@ function loadProfile(){
 		$("#myPrecentage").text(Math.trunc((profileInfo[0]["correctAnswers"]) /
 		 (profileInfo[0]["wrongAnswers"] + profileInfo[0]["correctAnswers"]) * 100) + "%");
 		$("#profileName").text(nick);
-		$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
+		if (profileInfo[0]["profilePic"] == null) {
+			$("#profilePic").prepend("<img id='profilePic' src=uploads/profilePics/pic.png />");
+		} else {
+			$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
+
+		}
+
 	})
 
 	flicker();
