@@ -235,6 +235,12 @@
   text-align: center;
   margin-top: 5px; }
 
+.split {
+  display: flex; }
+
+.robbinText {
+  color: #00C3C2; }
+
 #profileBackground {
   background-color: #191919;
   height: 100%;

@@ -7,7 +7,10 @@ var quizStuff = {
 	currentQuestion : 0,
 	quizQuestions : [], 
 	quizInfo : [],
-	taker : null
+	taker : null,
+	taken : 0,
+	right : 0,
+	wrong : 0,
 }
 var createQuestionNumber = 1;
 
@@ -31,11 +34,19 @@ function check_answer(e){
 		$("#"+quizStuff.quizQuestions[counter]["answer"]).addClass("correct")
 		if (answer == quizStuff.quizQuestions[counter]["answer"]) {
 			quizStuff.score += 100;
+			quizStuff.right++;
 			$("#score").text("Score: " + quizStuff.score)
+			$.post("../api/guessCorrect.php", {
+				nick, nick
+			})
 
 		}
 		else {
 			$("#"+answer).addClass("wrong")
+			quizStuff.wrong++;
+			$.post("../api/guessWrong.php", {
+				nick, nick
+			})
 		}
 		if (counter + 1 == quizStuff.quizQuestions.length) {
 			$(".nextQuestion").attr("id", "endQuiz")
@@ -66,7 +77,6 @@ function next_question(){
 	$("#3").text(quizStuff.quizQuestions[counter]["q3"])
 	$("#4").text(quizStuff.quizQuestions[counter]["q4"])
 }
-
 
 function make_quiz(e, quizName){
 	$("#usernameTitle").show();
@@ -185,15 +195,27 @@ function loadProfile(){
 		nick : nick
 	}, function(profileInfo){
 		profileInfo = JSON.parse(profileInfo);
+		console.log(profileInfo)
+		if (profileInfo[0]["bio"] != null) {
+			$("#myBio").text(profileInfo[0]["bio"]);
+		}
+		$("#myXP").text(profileInfo[0]["xp"])
+		$("#myCorrectAnswers").text(profileInfo[0]["correctAnswers"]);
+		$("#myWrongAnswers").text(profileInfo[0]["wrongAnswers"]);
+		$("#myLongestStreak").text(profileInfo[0]["highestStreak"]);
+		$("#myPrecentage").text(Math.trunc((profileInfo[0]["correctAnswers"]) /
+		 (profileInfo[0]["wrongAnswers"] + profileInfo[0]["correctAnswers"]) * 100) + "%");
 		$("#profileName").text(nick);
-		$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />")
+		$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
 	})
+
 	flicker();
 	$.post("../api/getMyQuizes.php", {
 		nick : nick,
 	}, function(quizes){
 		quizes = JSON.parse(quizes);
 		$.get("../inc/quizBox.html", function(quizBoxhtml){
+			$("#myTotalQuizes").text(quizes.length)
 			for (var i = 0; i < quizes.length; i++) {
 				var html = $.parseHTML(quizBoxhtml);
 				$(html).find(".questionAmmount").text(quizes[i][0])
@@ -305,6 +327,13 @@ else if (url.includes("editquestion")) {
 else if (url.includes("takequiz")) {
 	$("#mainContent").load("quizStart.html", function(){
 		var quizid = url.split('=')[1]
+		$.post("api/isLegit.php", {
+			nick : nick,
+			quizid : quizid,
+		},function(haveTaken){
+			haveTaken = JSON.parse(haveTaken);
+			quizStuff.taken = haveTaken["count(*)"]
+		});
 		$.post("api/getQuestions.php", {
 			quizid : quizid,
 		},
@@ -415,7 +444,11 @@ $(document).ready(function(){
 				loadQuizes();
 			}
 			else if (url.includes("profile")) {
-				loadProfile();
+				setTimeout(
+				  function() 
+				  {
+				    loadProfile()
+				  }, 1000);
 			}
 			else if (url.includes("makeQuiz")) {
 				loadMakeQuiz();
@@ -425,12 +458,25 @@ $(document).ready(function(){
 
 
 	$(document).on("click", "#endQuiz", function(){
+		var XP = 0;
 		guessed = false;	
 		$("#mainContent").load("results.html")
-		$.post("api/uploadScore.php", {
-			taker : quizStuff.taker, 
-			score : quizStuff.score, 
-			quizKey : quizStuff.quizInfo[0]["qKey"],
+		console.log(quizStuff)
+		if (quizStuff.taken > 0) {
+			XP += ((quizStuff.right * 20) + (quizStuff.wrong * 4))
+		}
+		else {
+			XP += ((quizStuff.right * 100) + (quizStuff.wrong * 20))
+			$.post("api/uploadScore.php", {
+				taker : quizStuff.taker, 
+				score : quizStuff.score, 
+				quizKey : quizStuff.quizInfo[0]["qKey"],
+			})
+		}
+
+		$.post("api/updateXp.php", {
+			nick : nick,
+			XP : XP,
 		})
 		$.post("../api/getLeaderboard.php", {
 			quizid : quizStuff.quizInfo[0]["qKey"]
@@ -522,7 +568,11 @@ $(document).ready(function(){
 			return;
 		}
 		window.history.pushState('forward', null, './profile');
-		loadProfile();
+		setTimeout(
+		  function() 
+		  {
+		    loadProfile()
+		  }, 1000);
 	})
 
 	$(document).on("click", "#takeQuizTab", function(){
