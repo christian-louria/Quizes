@@ -2,6 +2,10 @@
 	display: flex;
 }
 
+#profileHeaderInfo{
+	border-bottom: 3px solid black;
+}
+
 
 .robbinText{
 	color: #00C3C2;
@@ -71,7 +75,6 @@
 #nameAndPicContainer{
 	display: grid;
 	grid-template-columns: 1fr 300px;
-	border-bottom: 3px solid black;
 }
 
 #profilePicBorder{

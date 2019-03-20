@@ -177,15 +177,72 @@ function flicker(){
   $("#xp-increase-fx-flicker").animate({"opacity":Math.random()}, 100, flicker);
 }
 
-function doit(){
-  $("#xp-increase-fx").css("display","inline-block");
-  $("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
-  setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
-  $("#xp-bar-fill").css("width","75%");},100);
-  setTimeout(function(){$("#xp-increase-fx").fadeOut(500);$("#xp-bar-fill").css(
-  	{"-webkit-transition":"all 0.5s ease","box-shadow":""});},2000);
-  setTimeout(function(){$("#xp-bar-fill").css({"width":"0.1%"});},3000);
+function showXP(xpperc){
+	$("#xp-increase-fx").css("display","inline-block");
+	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
+	$("#xp-bar-fill").css("width",""+xpperc+"%");},100);
+	setTimeout(function(){$(".xp-increase-glow1").fadeOut(500);
+  	$(".xp-increase-glow2").fadeOut(500);
+  	$(".xp-increase-glow3").fadeOut(500);
+  	},2000);
 }
+
+// function increaseXP(xpAmmount, xpIncrease){
+
+// 	if ((xpAmmount % 100) + xpIncrease > 100) {
+// 		var xpPerc = xpAmmount % 100;
+// 		var spill = Math.trunc((xpAmmount % 100 + xpIncrease) / 100);
+// 		$("#xp-bar-fill").css("width",""+xpPerc+"%")
+// 	  	$("#xp-increase-fx").css("display","inline-block");
+// 	  	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+// 	  	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
+// 		$("#xp-bar-fill").css("width","100%");},100);
+// 	}
+// 	while (spill > 0){
+// 		(function(incBar){
+
+// 			$.get("../inc/editButton.html", function(button){
+// 				var button = $.parseHTML(button)
+// 				$(tempHtml).find(".canEdit").append(button)
+// 			})						
+// 		}(html));	
+
+
+
+// 		var totalSpill = spill;
+// 		var fillTo = 100;
+// 	 	setTimeout(function(){
+// 	 	$("#xp-bar-fill").css("width","0%");	
+// 	 	},(((totalSpill - spill) + 1) * 2100))
+
+// 	  	setTimeout(function(){
+// 	 	console.log(spill);
+// 	 	},(((totalSpill - spill) + 1) * 2100))
+
+// 	  	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+// 	  	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
+// 		$("#xp-bar-fill").css("width",""+fillTo+"%");},(((totalSpill - spill + 1)) * 2200));
+// 		spill--;
+// 	 }
+
+
+// 	// lastFill = 75
+// 	// setTimeout(function(){
+// 	//  	$("#xp-bar-fill").css("width","0%");	
+// 	//  	},((totalSpill - spill + 1) * 2500)+ 4500)
+// 	//  	$("#xp-bar-fill").css("width","0%")
+// 	//   	$("#xp-increase-fx").css("display","inline-block");
+// 	//   	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+// 	//   	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
+// 	// 	$("#xp-bar-fill").css("width",""+lastFill+"%");},((totalSpill - spill + 1) * 2500) + 200);
+// 	// 	spill--;
+
+//   	// setTimeout(function(){$(".xp-increase-glow1").fadeOut(500);
+//   	// $(".xp-increase-glow2").fadeOut(500);
+//   	// $(".xp-increase-glow3").fadeOut(500);
+//   	// },2000);
+// }
 
 function loadProfile(){
 	$("#mainContent").load("profile.html");	
@@ -194,11 +251,24 @@ function loadProfile(){
 	$.post("../api/getProfile.php", {
 		nick : nick
 	}, function(profileInfo){
+		
+		
+		
+		// setTimeout(function(){
+		// 	increaseXP(1050, 500);
+		// },2000)
+
+
 		profileInfo = JSON.parse(profileInfo);
-		console.log(profileInfo)
 		if (profileInfo[0]["bio"] != null) {
 			$("#myBio").text(profileInfo[0]["bio"]);
 		}
+		var playerXP = profileInfo[0]["xp"]
+		var xpperc = playerXP % 100;
+		var level = Math.trunc(playerXP / 100);
+		$("#account-bar-level").text("Level: " + level);
+		$("#account-bar-next-level").text(level + 1)
+
 		$("#myXP").text(profileInfo[0]["xp"])
 		$("#myCorrectAnswers").text(profileInfo[0]["correctAnswers"]);
 		$("#myWrongAnswers").text(profileInfo[0]["wrongAnswers"]);
@@ -212,6 +282,8 @@ function loadProfile(){
 			$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
 
 		}
+
+		showXP(xpperc);
 
 	})
 
