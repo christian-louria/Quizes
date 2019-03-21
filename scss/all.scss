@@ -468,6 +468,7 @@ body{
 	margin-bottom: 20px;
 	margin-left: 5%;
 	margin-right: 5%;
+	overflow: hidden;
 }
 
 
@@ -475,17 +476,18 @@ body{
 	background-color: lightgrey;
 	border-radius: 20px;
 	height: 510px;
-	width: 88%;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	margin-left: 6%;
 	margin-right: 6%;
+	overflow: hidden;
 }
 
 #topPlayersWords{
 	margin: 20px;
 	font-size: 3em;
 	font-weight: bolder;
+	overflow: hidden;
 }
 
 .header{

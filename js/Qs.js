@@ -418,7 +418,7 @@ else if (url.includes("takequiz")) {
 		function(quizQuestionsjsn){
 			quizQuestionsjsn = JSON.parse(quizQuestionsjsn)
 			quizStuff.quizQuestions = quizQuestionsjsn
-			quizStuff.taker = nick
+			quizStuff.taker = nick;
 			$.post("api/getQuiz.php", {
 				quizid : quizid,
 			},
@@ -538,57 +538,62 @@ $(document).ready(function(){
 	$(document).on("click", "#endQuiz", function(){
 		var XP = 0;
 		guessed = false;	
-		$("#mainContent").load("results.html")
-		console.log(quizStuff)
-		if (quizStuff.taken > 0) {
-			XP += ((quizStuff.right * 20) + (quizStuff.wrong * 4))
-		}
-		else {
-			XP += ((quizStuff.right * 100) + (quizStuff.wrong * 20))
-			$.post("api/uploadScore.php", {
-				taker : quizStuff.taker, 
-				score : quizStuff.score, 
-				quizKey : quizStuff.quizInfo[0]["qKey"],
-			})
-		}
+		$("#mainContent").load("quizXPandRe.html");
 
-		$.post("api/updateXp.php", {
-			nick : nick,
-			XP : XP,
-		})
-		$.post("../api/getLeaderboard.php", {
-			quizid : quizStuff.quizInfo[0]["qKey"]
-		}, 
-		function(leaderboard){
-			leaderboard = JSON.parse(leaderboard)
-			$.get("../inc/leaderboardBox.html", function(leaderboardBox){
 
-				for (var i = 0; i < leaderboard.length; i++) {
-					leaderHTML = $.parseHTML(leaderboardBox)
-					$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
-					$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
-					$(leaderHTML).find("#leaderPlace").text(i+1)
-					if (i == 0) {
-						$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
-						$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-						$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
-					}
-					if (i == 1) {
-						$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
-						$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
-						$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
-					}
-					if (i == 2) {
-						$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
-						$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
-						$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
-					}
-					$("#leaderboardList").append(leaderHTML)
-					quizStuff.score = 0;
-				}
-			})
+		// $("#mainContent").load("results.html")
+		// console.log(quizStuff)
+		// if (quizStuff.taken > 0) {
+		// 	XP += ((quizStuff.right * 20) + (quizStuff.wrong * 4))
+		// }
+		// else {
+		// 	XP += ((quizStuff.right * 100) + (quizStuff.wrong * 20))
+		// 	$.post("api/uploadScore.php", {
+		// 		taker : quizStuff.taker, 
+		// 		score : quizStuff.score, 
+		// 		quizKey : quizStuff.quizInfo[0]["qKey"],
+		// 	})
+		// }
 
-		})
+		// $.post("api/updateXp.php", {
+		// 	nick : nick,
+		// 	XP : XP,
+		// })
+		// $.post("../api/getLeaderboard.php", {
+		// 	quizid : quizStuff.quizInfo[0]["qKey"]
+		// }, 
+		// function(leaderboard){
+		// 	leaderboard = JSON.parse(leaderboard)
+		// 	$.get("../inc/leaderboardBox.html", function(leaderboardBox){
+
+		// 		for (var i = 0; i < leaderboard.length; i++) {
+		// 			leaderHTML = $.parseHTML(leaderboardBox)
+		// 			$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
+		// 			$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
+		// 			$(leaderHTML).find("#leaderPlace").text(i+1)
+		// 			if (i == 0) {
+		// 				$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
+		// 				$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
+		// 				$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
+		// 			}
+		// 			if (i == 1) {
+		// 				$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
+		// 				$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
+		// 				$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
+		// 			}
+		// 			if (i == 2) {
+		// 				$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
+		// 				$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
+		// 				$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
+		// 			}
+		// 			$("#leaderboardList").append(leaderHTML)
+		// 			quizStuff.score = 0;
+		// 			quizStuff.right = 0;
+		// 			quizStuff.wrong = 0;
+		// 		}
+		// 	})
+
+		// })
 	})
 
 	$(document).on("click", "#startQuiz", function(){
@@ -778,13 +783,18 @@ $('#username').bind("enterKey",function(e){
 
 		if (!userInfo) {
 			$("#signinError").text("WAit a minUte... Who are you??")
+			return;
 		}
 		else{
 			nick = userInfo[0]["nick"];
 			username = userInfo[0]["username"];
 			$("#usernameTitle").text(nick);
 			$("#signinError").text(" ");
-			$("#signInOrOut").load("inc/signOutBox.html");
+			$.get("../inc/signOutBox.html", function(signOutBox){
+				var signOutBox = $.parseHTML(signOutBox);
+				$(signOutBox).find("#usernameOut").text(username)
+				$(".signinBoxWrapper").html(signOutBox);
+			})
 		}
 	})
 	$("#profileTab").css("background-color", "transparent");
@@ -814,7 +824,11 @@ $(document).on("click", "#signin", function(){
 			username = userInfo[0]["username"];
 			$("#usernameTitle").text(nick);
 			$("#signinError").text(" ");
-			$("#signInOrOut").load("inc/signOutBox.html");
+			$.get("../inc/signOutBox.html", function(signOutBox){
+				var signOutBox = $.parseHTML(signOutBox);
+				$(signOutBox).find("#usernameOut").text(username)
+				$(".signinBoxWrapper").html(signOutBox);
+			})
 		}
 		$("#profileTab").css("background-color", "transparent");
 		$(document).on("mouseenter", "#profileTab", function(){
@@ -824,6 +838,20 @@ $(document).on("click", "#signin", function(){
 			$("#profileTab").css("background-color", "transparent")
 		})
 		$("#username").val('');
+	})
+})
+
+$(document).on("click", "#signOutButton", function(){
+	nick = null;
+	username = null;
+	$(".signinBoxWrapper").load("../inc/signInBox.html")
+	$("#usernameTitle").text("Guest");
+	$("#profileTab").css("background-color", "gray");
+	$(document).on("mouseenter", "#profileTab", function(){
+		$("#profileTab").css("background-color", "gray")
+	})
+	$(document).on("mouseleave", "#profileTab", function(){
+		$("#profileTab").css("background-color", "gray")
 	})
 })
 

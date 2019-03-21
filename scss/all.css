@@ -235,6 +235,12 @@
   text-align: center;
   margin-top: 5px; }
 
+#usernameOut {
+  font-size: 2em;
+  color: white;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+
 .split {
   display: flex; }
 
@@ -755,22 +761,24 @@ body {
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 5%;
-  margin-right: 5%; }
+  margin-right: 5%;
+  overflow: hidden; }
 
 #topPlayersContainer {
   background-color: lightgrey;
   border-radius: 20px;
   height: 510px;
-  width: 88%;
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 6%;
-  margin-right: 6%; }
+  margin-right: 6%;
+  overflow: hidden; }
 
 #topPlayersWords {
   margin: 20px;
   font-size: 3em;
-  font-weight: bolder; }
+  font-weight: bolder;
+  overflow: hidden; }
 
 .header {
   color: white;
