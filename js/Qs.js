@@ -12,6 +12,7 @@ var quizStuff = {
 	right : 0,
 	wrong : 0,
 }
+var usersXP = 0;
 var createQuestionNumber = 1;
 
 
@@ -172,77 +173,58 @@ function loadQuizes(){
 	})
 }
 
-function flicker(){
-  $("#xp-increase-fx-flicker").css("opacity", "1");
-  $("#xp-increase-fx-flicker").animate({"opacity":Math.random()}, 100, flicker);
-}
+
 
 function showXP(xpperc){
 	$("#xp-increase-fx").css("display","inline-block");
 	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
-	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
-	$("#xp-bar-fill").css("width",""+xpperc+"%");},100);
+	setTimeout(function(){
+		$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
+		$("#xp-bar-fill").css("width",""+xpperc+"%");
+	},100);
 	setTimeout(function(){$(".xp-increase-glow1").fadeOut(500);
   	$(".xp-increase-glow2").fadeOut(500);
   	$(".xp-increase-glow3").fadeOut(500);
   	},2000);
 }
 
-// function increaseXP(xpAmmount, xpIncrease){
 
-// 	if ((xpAmmount % 100) + xpIncrease > 100) {
-// 		var xpPerc = xpAmmount % 100;
-// 		var spill = Math.trunc((xpAmmount % 100 + xpIncrease) / 100);
-// 		$("#xp-bar-fill").css("width",""+xpPerc+"%")
-// 	  	$("#xp-increase-fx").css("display","inline-block");
-// 	  	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
-// 	  	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
-// 		$("#xp-bar-fill").css("width","100%");},100);
-// 	}
-// 	while (spill > 0){
-// 		(function(incBar){
+function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, completed){
+	if (spill == -1) {
+		// setTimeout(function(){
+		// 	$(".xp-increase-glow1").fadeOut(500);
+		//   	$(".xp-increase-glow2").fadeOut(500);
+		//   	$(".xp-increase-glow3").fadeOut(500);
+	 //  	},1000);
+	 completed();
+	 return;
+	}
+	if (xpIncrease + xpPerc > 99) {
+		xpStop = 100;
+	}
 
-// 			$.get("../inc/editButton.html", function(button){
-// 				var button = $.parseHTML(button)
-// 				$(tempHtml).find(".canEdit").append(button)
-// 			})						
-// 		}(html));	
+	else {
+		xpStop =  (xpAmmount % 100) + (xpIncrease);
+	}
+	$("#xp-bar-fill").animate({width: ""+xpPerc+"%",boxShadow: "-5px 0px 10px #fff inset"}, {duration : 0, complete : function(){
+		xpChange = xpIncrease - 100;
+		xpPerc = 0;
+		spill--;
+		$("#xp-bar-fill").animate({width : ""+xpStop+"%"}, {duration : 2000, complete : function(){
+			recusiveXP(spill, xpPerc, xpChange, xpAmmount, completed)
+		}
+	})
+	}
+})
+}
 
-
-
-// 		var totalSpill = spill;
-// 		var fillTo = 100;
-// 	 	setTimeout(function(){
-// 	 	$("#xp-bar-fill").css("width","0%");	
-// 	 	},(((totalSpill - spill) + 1) * 2100))
-
-// 	  	setTimeout(function(){
-// 	 	console.log(spill);
-// 	 	},(((totalSpill - spill) + 1) * 2100))
-
-// 	  	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
-// 	  	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
-// 		$("#xp-bar-fill").css("width",""+fillTo+"%");},(((totalSpill - spill + 1)) * 2200));
-// 		spill--;
-// 	 }
-
-
-// 	// lastFill = 75
-// 	// setTimeout(function(){
-// 	//  	$("#xp-bar-fill").css("width","0%");	
-// 	//  	},((totalSpill - spill + 1) * 2500)+ 4500)
-// 	//  	$("#xp-bar-fill").css("width","0%")
-// 	//   	$("#xp-increase-fx").css("display","inline-block");
-// 	//   	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
-// 	//   	setTimeout(function(){$("#xp-bar-fill").css("-webkit-transition","all 2s ease");
-// 	// 	$("#xp-bar-fill").css("width",""+lastFill+"%");},((totalSpill - spill + 1) * 2500) + 200);
-// 	// 	spill--;
-
-//   	// setTimeout(function(){$(".xp-increase-glow1").fadeOut(500);
-//   	// $(".xp-increase-glow2").fadeOut(500);
-//   	// $(".xp-increase-glow3").fadeOut(500);
-//   	// },2000);
-// }
+function increaseXP(xpAmmount, xpIncrease, completed){
+	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+	$("#xp-increase-fx").css("display","inline-block");
+	var xpPerc = xpAmmount % 100; //Strating percent
+	var spill = Math.trunc((xpAmmount % 100 + xpIncrease) / 100);
+	recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, completed);
+}
 
 function loadProfile(){
 	$("#mainContent").load("profile.html");	
@@ -251,13 +233,6 @@ function loadProfile(){
 	$.post("../api/getProfile.php", {
 		nick : nick
 	}, function(profileInfo){
-		
-		
-		
-		// setTimeout(function(){
-		// 	increaseXP(1050, 500);
-		// },2000)
-
 
 		profileInfo = JSON.parse(profileInfo);
 		if (profileInfo[0]["bio"] != null) {
@@ -274,7 +249,7 @@ function loadProfile(){
 		$("#myWrongAnswers").text(profileInfo[0]["wrongAnswers"]);
 		$("#myLongestStreak").text(profileInfo[0]["highestStreak"]);
 		$("#myPrecentage").text(Math.trunc((profileInfo[0]["correctAnswers"]) /
-		 (profileInfo[0]["wrongAnswers"] + profileInfo[0]["correctAnswers"]) * 100) + "%");
+			(profileInfo[0]["wrongAnswers"] + profileInfo[0]["correctAnswers"]) * 100) + "%");
 		$("#profileName").text(nick);
 		if (profileInfo[0]["profilePic"] == null) {
 			$("#profilePic").prepend("<img id='profilePic' src=uploads/profilePics/pic.png />");
@@ -282,12 +257,8 @@ function loadProfile(){
 			$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
 
 		}
-
 		showXP(xpperc);
-
 	})
-
-	flicker();
 	$.post("../api/getMyQuizes.php", {
 		nick : nick,
 	}, function(quizes){
@@ -335,15 +306,15 @@ function loadMakeQuiz(){
 
 
 ////////////////////////////////////
-if (url.includes("editquiz")) {
-	$("#mainContent").load("quiz.html", function(){
-		var quizid = url.split('=')[1]
-		$(".quizNum").attr("id", quizid)
+	if (url.includes("editquiz")) {
+		$("#mainContent").load("quiz.html", function(){
+			var quizid = url.split('=')[1]
+			$(".quizNum").attr("id", quizid)
 
-		$.post("../api/getQuiz.php", {
-			quizid: quizid
-		}, function(quizInfo){
-			quizInfo = JSON.parse(quizInfo)
+			$.post("../api/getQuiz.php", {
+				quizid: quizid
+			}, function(quizInfo){
+				quizInfo = JSON.parse(quizInfo)
 				$(".quizNum").attr("id", quizid)
 				$("#quizName").text(quizInfo[0]["quizName"])
 				released = quizInfo[0]["released"];
@@ -353,7 +324,7 @@ if (url.includes("editquiz")) {
 				else if (released == 1){
 					$("#uploadContainer").load("inc/unuploadButton.html");
 				}
-				
+
 				$.post("api/getQuestions.php", {
 					quizid : quizid,
 				},
@@ -373,105 +344,103 @@ if (url.includes("editquiz")) {
 				})
 			})
 
-	})
-}
-/////////////////////////////////////////
-else if (url.includes("editquestion")) {
-	$("#currentEditQuestion").load("editQuestion.html", function(){
-		var questionid = url.split('=')[1];
-		$(".currentEditQuestionBox").removeClass("currentEditQuestionBox")
-		$("#"+questionid).addClass("currentEditQuestionBox")
-		$.post("api/getQuestion.php", {
-			questionid : questionid
-		},
-		function(question){
-			question = JSON.parse(question)
-			
-			$("#"+question[0]["answer"]).attr('checked', true);
-			$(".quizId").attr("id", question[0]["quizNum"])
-			$("#question").val(question[0]["question"])
-			$("#q1").val(question[0]["q1"])
-			$("#q2").val(question[0]["q2"])
-			$("#q3").val(question[0]["q3"])
-			$("#q4").val(question[0]["q4"])
-			$(".deleteQuestion").attr("id", question[0]["questKey"])
-			$(".updateQuestion").attr("id", question[0]["questKey"])
 		})
-	})
-}
-
-
-///////////////////////////////////
-else if (url.includes("takequiz")) {
-	$("#mainContent").load("quizStart.html", function(){
-		var quizid = url.split('=')[1]
-		$.post("api/isLegit.php", {
-			nick : nick,
-			quizid : quizid,
-		},function(haveTaken){
-			haveTaken = JSON.parse(haveTaken);
-			quizStuff.taken = haveTaken["count(*)"]
-		});
-		$.post("api/getQuestions.php", {
-			quizid : quizid,
-		},
-		function(quizQuestionsjsn){
-			quizQuestionsjsn = JSON.parse(quizQuestionsjsn)
-			quizStuff.quizQuestions = quizQuestionsjsn
-			quizStuff.taker = nick;
-			$.post("api/getQuiz.php", {
-				quizid : quizid,
+	}
+	/////////////////////////////////////////
+	else if (url.includes("editquestion")) {
+		$("#currentEditQuestion").load("editQuestion.html", function(){
+			var questionid = url.split('=')[1];
+			$(".currentEditQuestionBox").removeClass("currentEditQuestionBox")
+			$("#"+questionid).addClass("currentEditQuestionBox")
+			$.post("api/getQuestion.php", {
+				questionid : questionid
 			},
-			function(quizInfojsn){
-				quizInfojsn = JSON.parse(quizInfojsn)
-				quizStuff.quizInfo = quizInfojsn
-
-				$("#questionAmmount").text("Questions: " + quizStuff.quizQuestions.length)
-				$("#quizCreator").text(quizStuff.quizInfo[0]["quizCreator"])
-				$("#quizName").text(quizStuff.quizInfo[0]["quizName"])
-
-				$.post("../api/getLeaderboard.php", {
-					quizid : quizid
-				}, 
-				function(leaderboard){
-					leaderboard = JSON.parse(leaderboard)
-					$.get("../inc/leaderboardBox.html", function(leaderboardBox){
-						if (leaderboard.length == 0) {
-							$("#leaderboardList").append("No Results...")
-						}
-						for (var i = 0; i < leaderboard.length; i++) {
-							leaderHTML = $.parseHTML(leaderboardBox)
-							$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
-							$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
-							$(leaderHTML).find("#leaderPlace").text(i+1)
-							if (i == 0) {
-								$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
-								$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
-							}
-							if (i == 1) {
-								$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
-								$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
-							}
-							if (i == 2) {
-								$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
-								$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
-								$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
-							}
-							$("#leaderboardList").append(leaderHTML)
-						}
-					})
-					
-				})
-
+			function(question){
+				question = JSON.parse(question)
+				
+				$("#"+question[0]["answer"]).attr('checked', true);
+				$(".quizId").attr("id", question[0]["quizNum"])
+				$("#question").val(question[0]["question"])
+				$("#q1").val(question[0]["q1"])
+				$("#q2").val(question[0]["q2"])
+				$("#q3").val(question[0]["q3"])
+				$("#q4").val(question[0]["q4"])
+				$(".deleteQuestion").attr("id", question[0]["questKey"])
+				$(".updateQuestion").attr("id", question[0]["questKey"])
 			})
 		})
-	})
-}
-}, delayInMilliseconds);
-};
-})(window.history);
+	}
+	///////////////////////////////////
+	else if (url.includes("takequiz")) {
+		$("#mainContent").load("quizStart.html", function(){
+			var quizid = url.split('=')[1]
+			$.post("api/isLegit.php", {
+				nick : nick,
+				quizid : quizid,
+			},function(haveTaken){
+				haveTaken = JSON.parse(haveTaken);
+				quizStuff.taken = haveTaken["count(*)"]
+			});
+			$.post("api/getQuestions.php", {
+				quizid : quizid,
+			},
+			function(quizQuestionsjsn){
+				quizQuestionsjsn = JSON.parse(quizQuestionsjsn)
+				quizStuff.quizQuestions = quizQuestionsjsn
+				quizStuff.taker = nick;
+				$.post("api/getQuiz.php", {
+					quizid : quizid,
+				},
+				function(quizInfojsn){
+					quizInfojsn = JSON.parse(quizInfojsn)
+					quizStuff.quizInfo = quizInfojsn
+
+					$("#questionAmmount").text("Questions: " + quizStuff.quizQuestions.length)
+					$("#quizCreator").text(quizStuff.quizInfo[0]["quizCreator"])
+					$("#quizName").text(quizStuff.quizInfo[0]["quizName"])
+
+					$.post("../api/getLeaderboard.php", {
+						quizid : quizid
+					}, 
+					function(leaderboard){
+						leaderboard = JSON.parse(leaderboard)
+						$.get("../inc/leaderboardBox.html", function(leaderboardBox){
+							if (leaderboard.length == 0) {
+								$("#leaderboardList").append("No Results...")
+							}
+							for (var i = 0; i < leaderboard.length; i++) {
+								leaderHTML = $.parseHTML(leaderboardBox)
+								$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
+								$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
+								$(leaderHTML).find("#leaderPlace").text(i+1)
+								if (i == 0) {
+									$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
+									$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
+									$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
+								}
+								if (i == 1) {
+									$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
+									$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
+									$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
+								}
+								if (i == 2) {
+									$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
+									$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
+									$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
+								}
+								$("#leaderboardList").append(leaderHTML)
+							}
+						})
+						
+					})
+
+				})
+			})
+		})
+	}
+	}, delayInMilliseconds);
+	};
+	})(window.history);
 
 
 $(document).ready(function(){
@@ -480,19 +449,19 @@ $(document).ready(function(){
 
 		$("#hiddenNick").val(nick);
 		$.ajax({
-	        url: '/api/updateProfilePic.php',
-	        type: 'POST',
-	        data: new FormData($('#changeProfilePicForm')[0]),
-	        cache: false,
-	        contentType: false,
-	        processData: false,
-	    });
-	    
-	    setTimeout(
-		  function() 
-		  {
-		    loadProfile()
-		  }, 1000);
+			url: '/api/updateProfilePic.php',
+			type: 'POST',
+			data: new FormData($('#changeProfilePicForm')[0]),
+			cache: false,
+			contentType: false,
+			processData: false,
+		});
+
+		setTimeout(
+			function() 
+			{
+				loadProfile()
+			}, 1000);
 	});
 
 	window.history.pushState('forward', null, './home');
@@ -523,10 +492,10 @@ $(document).ready(function(){
 			}
 			else if (url.includes("profile")) {
 				setTimeout(
-				  function() 
-				  {
-				    loadProfile()
-				  }, 1000);
+					function() 
+					{
+						loadProfile()
+					}, 1000);
 			}
 			else if (url.includes("makeQuiz")) {
 				loadMakeQuiz();
@@ -537,28 +506,38 @@ $(document).ready(function(){
 
 	$(document).on("click", "#endQuiz", function(){
 		var XP = 0;
-		guessed = false;	
-		$("#mainContent").load("quizXPandRe.html");
+		if (quizStuff.taken > 0) {
+			XP += ((quizStuff.right * 20) + (quizStuff.wrong * 4))
+		}
+		else {
+			XP += ((quizStuff.right * 100) + (quizStuff.wrong * 20))
+			$.post("api/uploadScore.php", {
+				taker : quizStuff.taker, 
+				score : quizStuff.score, 
+				quizKey : quizStuff.quizInfo[0]["qKey"],
+			})
+		}
+		$.post("api/updateXp.php", {
+			nick : nick,
+			XP : XP,
+		})
+		console.log(XP)
+		guessed = false;
+		$("#mainContent").load("quizXPandRe.html", function(){
+			$("#account-bar-level").text("Level: " + Math.floor(usersXP / 100));
+			$("#account-bar-next-level").text(Math.floor(usersXP / 100) + 1)
+			increaseXP(usersXP, XP, function(){
+				// XP = 0;
+			})
 
 
+			
+		});
+
+	})
+		
 		// $("#mainContent").load("results.html")
-		// console.log(quizStuff)
-		// if (quizStuff.taken > 0) {
-		// 	XP += ((quizStuff.right * 20) + (quizStuff.wrong * 4))
-		// }
-		// else {
-		// 	XP += ((quizStuff.right * 100) + (quizStuff.wrong * 20))
-		// 	$.post("api/uploadScore.php", {
-		// 		taker : quizStuff.taker, 
-		// 		score : quizStuff.score, 
-		// 		quizKey : quizStuff.quizInfo[0]["qKey"],
-		// 	})
-		// }
-
-		// $.post("api/updateXp.php", {
-		// 	nick : nick,
-		// 	XP : XP,
-		// })
+		
 		// $.post("../api/getLeaderboard.php", {
 		// 	quizid : quizStuff.quizInfo[0]["qKey"]
 		// }, 
@@ -594,7 +573,7 @@ $(document).ready(function(){
 		// 	})
 
 		// })
-	})
+	// })
 
 	$(document).on("click", "#startQuiz", function(){
 		if (nick == null) {
@@ -621,12 +600,6 @@ $(document).ready(function(){
 		}
 	})
 	///////////////////////////
-	///////////////////////////
-	///////////////////////////
-	///////////////////////////
-	///////////////////////////
-	///////////////////////////
-	///////////////////////////
 
 	$(document).on("mouseenter", "#picContainer", function(){
 		$("#changeProfilePicForm").css('visibility', 'visible');
@@ -635,11 +608,6 @@ $(document).ready(function(){
 	$(document).on("mouseleave", "#picContainer", function(){
 		$("#changeProfilePicForm").css('visibility', 'hidden');
 	})
-
-
-	$("#profilePic").hover(function(){
-		console.log("hi")
-	});
 
 	$(document).on("click", "#homeTab", function(){
 		window.history.pushState('forward', null, './home');
@@ -652,10 +620,10 @@ $(document).ready(function(){
 		}
 		window.history.pushState('forward', null, './profile');
 		setTimeout(
-		  function() 
-		  {
-		    loadProfile()
-		  }, 1000);
+			function() 
+			{
+				loadProfile()
+			}, 1000);
 	})
 
 	$(document).on("click", "#takeQuizTab", function(){
@@ -788,6 +756,7 @@ $('#username').bind("enterKey",function(e){
 		else{
 			nick = userInfo[0]["nick"];
 			username = userInfo[0]["username"];
+			usersXP = userInfo[0]["xp"]
 			$("#usernameTitle").text(nick);
 			$("#signinError").text(" ");
 			$.get("../inc/signOutBox.html", function(signOutBox){
