@@ -558,11 +558,11 @@ $(document).ready(function(){
 			nick : nick,
 			XP : XP,
 		})
-		XP = 1000;
 		guessed = false;
 		$("#mainContent").load("quizXPandRe.html", function(){
 
 			var quickP = levelPercentage(usersXP);
+			$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
 			$("#xp-bar-fill").animate({width : ""+quickP+"%"}, {duration : 2000});
 			$("#resultsCorrect").text(quizStuff.right);
 			$("#resultsWrong").text(quizStuff.wrong);
