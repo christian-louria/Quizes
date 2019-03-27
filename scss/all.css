@@ -456,6 +456,10 @@ body {
   font-family: Zawgyi-One,sans-serif;
   margin: 0; }
 
+#forWes {
+  font-size: 2em;
+  color: red; }
+
 #startError {
   color: red;
   text-align: center;
