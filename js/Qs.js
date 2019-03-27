@@ -15,7 +15,6 @@ var quizStuff = {
 var usersXP = 0;
 var createQuestionNumber = 1;
 
-
 function check_answer(e){
 	e = e || window.event;
 	var targ = e.target || e.srcElement;
@@ -173,8 +172,6 @@ function loadQuizes(){
 	})
 }
 
-
-
 function showXP(xpperc){
 	$("#xp-increase-fx").css("display","inline-block");
 	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
@@ -189,29 +186,65 @@ function showXP(xpperc){
 }
 
 
-function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, completed){
-	if (spill == -1) {
-		// setTimeout(function(){
-		// 	$(".xp-increase-glow1").fadeOut(500);
-		//   	$(".xp-increase-glow2").fadeOut(500);
-		//   	$(".xp-increase-glow3").fadeOut(500);
-	 //  	},1000);
-	 completed();
-	 return;
+function levelCalculator(xpTotal){
+	level = 1;
+	return levelRecursion(xpTotal, level);
+}
+
+function levelRecursion(xpTotal, level){
+	if (xpTotal - (level * 50) < 0) {
+		return level
 	}
-	if (xpIncrease + xpPerc > 99) {
+	xpTotal = xpTotal - (level * 50);
+	level++;
+	return levelRecursion(xpTotal, level)
+}
+
+function levelSpill(xpTotal, xpGained){
+	return (levelCalculator(xpTotal + xpGained) - levelCalculator(xpTotal))
+}
+
+function levelTotalToRecursion(levelLeft, level, xpTo){
+	if (levelLeft == 0) {
+		return xpTo
+	}
+	xpTo += level * 50;
+	level++;
+	levelLeft--;
+	return levelTotalToRecursion(levelLeft, level, xpTo)
+}
+
+function levelTotalTo(levelLeft){
+	xpTo = 0;
+	level = 1;
+	return levelTotalToRecursion(levelLeft, level, xpTo)
+}
+
+function levelPercentage(xpTotal){
+	return ((xpTotal - levelTotalTo(levelCalculator(xpTotal) - 1)) / (levelTotalTo(levelCalculator(xpTotal)) - levelTotalTo(levelCalculator(xpTotal) - 1)) * 100)
+}
+
+function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
+	if (spill == -1) {
+		completed();
+		return;
+	}
+	else if (spill > 0){
 		xpStop = 100;
 	}
-
 	else {
-		xpStop =  (xpAmmount % 100) + (xpIncrease);
+		xpStop = levelPercentage(xpAmmount + xpIncrease);
 	}
 	$("#xp-bar-fill").animate({width: ""+xpPerc+"%",boxShadow: "-5px 0px 10px #fff inset"}, {duration : 0, complete : function(){
-		xpChange = xpIncrease - 100;
+		incLevel++;
 		xpPerc = 0;
 		spill--;
 		$("#xp-bar-fill").animate({width : ""+xpStop+"%"}, {duration : 2000, complete : function(){
-			recusiveXP(spill, xpPerc, xpChange, xpAmmount, completed)
+			if (spill > 0) {
+				$("#account-bar-level").text("Level: " + incLevel);
+				$("#account-bar-next-level").text(incLevel + 1);
+			}
+			recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed)
 		}
 	})
 	}
@@ -221,9 +254,10 @@ function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, completed){
 function increaseXP(xpAmmount, xpIncrease, completed){
 	$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
 	$("#xp-increase-fx").css("display","inline-block");
-	var xpPerc = xpAmmount % 100; //Strating percent
-	var spill = Math.trunc((xpAmmount % 100 + xpIncrease) / 100);
-	recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, completed);
+	var xpPerc = levelPercentage(xpAmmount); //Strating percent
+	var spill = levelSpill(xpAmmount, xpIncrease);
+	var incLevel = levelCalculator(usersXP);
+	recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed);
 }
 
 function loadProfile(){
@@ -239,8 +273,8 @@ function loadProfile(){
 			$("#myBio").text(profileInfo[0]["bio"]);
 		}
 		var playerXP = profileInfo[0]["xp"]
-		var xpperc = playerXP % 100;
-		var level = Math.trunc(playerXP / 100);
+		var xpperc = levelPercentage(playerXP);
+		var level = levelCalculator(playerXP);
 		$("#account-bar-level").text("Level: " + level);
 		$("#account-bar-next-level").text(level + 1)
 
@@ -257,6 +291,10 @@ function loadProfile(){
 			$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
 
 		}
+		// increaseXP(3528, 2000, function(){
+		// 	//usersXP += XP;
+		// })
+		console.log(xpperc)
 		showXP(xpperc);
 	})
 	$.post("../api/getMyQuizes.php", {
@@ -479,8 +517,6 @@ $(document).ready(function(){
 		})
 	})
 
-
-
 	if (window.history && window.history.pushState) {
 		$(window).on('popstate', function() {
 			url = window.location.href
@@ -521,17 +557,29 @@ $(document).ready(function(){
 			nick : nick,
 			XP : XP,
 		})
-		console.log(XP)
 		guessed = false;
 		$("#mainContent").load("quizXPandRe.html", function(){
-			$("#account-bar-level").text("Level: " + Math.floor(usersXP / 100));
-			$("#account-bar-next-level").text(Math.floor(usersXP / 100) + 1)
-			increaseXP(usersXP, XP, function(){
-				// XP = 0;
-			})
 
+			var quickP = levelPercentage(usersXP);
+			$("#xp-bar-fill").animate({width : ""+quickP+"%"}, {duration : 2000});
+			$("#resultsCorrect").text(quizStuff.right);
+			$("#resultsWrong").text(quizStuff.wrong);
+			$("#xpUp").text("+ "+ XP);
 
-			
+			$("#resultsCorrect").animate({top: "0px",opacity: "1"}, {duration : 1000, complete : function(){
+				$("#resultsWrong").animate({top: "0px",opacity: "1"}, {duration : 1000, complete : function(){
+					$("#xpUp").animate({top : "0px", opacity : "1"}, {duration : 2000, complete : function(){
+						$("#xpUp").animate({top : "150px"}, {duration : 1000, complete : function(){
+							increaseXP(usersXP, XP, function(){
+								usersXP += XP;
+							})	
+						}})
+					}})	
+				}})
+			}});
+
+			$("#account-bar-level").text("Level: " + levelCalculator(usersXP));
+			$("#account-bar-next-level").text(levelCalculator(usersXP) + 1)		
 		});
 
 	})
