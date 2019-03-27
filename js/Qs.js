@@ -225,6 +225,7 @@ function levelPercentage(xpTotal){
 }
 
 function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
+	console.log(incLevel);
 	if (spill == -1) {
 		completed();
 		return;
@@ -240,9 +241,9 @@ function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
 		xpPerc = 0;
 		spill--;
 		$("#xp-bar-fill").animate({width : ""+xpStop+"%"}, {duration : 2000, complete : function(){
-			if (spill > 0) {
-				$("#account-bar-level").text("Level: " + incLevel);
-				$("#account-bar-next-level").text(incLevel + 1);
+			if (spill > -1) {
+				$("#account-bar-level").text("Level: " + (incLevel - 1));
+				$("#account-bar-next-level").text(incLevel);
 			}
 			recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed)
 		}
@@ -256,7 +257,7 @@ function increaseXP(xpAmmount, xpIncrease, completed){
 	$("#xp-increase-fx").css("display","inline-block");
 	var xpPerc = levelPercentage(xpAmmount); //Strating percent
 	var spill = levelSpill(xpAmmount, xpIncrease);
-	var incLevel = levelCalculator(usersXP);
+	var incLevel = levelCalculator(usersXP) + 1;
 	recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed);
 }
 
@@ -557,6 +558,7 @@ $(document).ready(function(){
 			nick : nick,
 			XP : XP,
 		})
+		XP = 1000;
 		guessed = false;
 		$("#mainContent").load("quizXPandRe.html", function(){
 
@@ -565,6 +567,8 @@ $(document).ready(function(){
 			$("#resultsCorrect").text(quizStuff.right);
 			$("#resultsWrong").text(quizStuff.wrong);
 			$("#xpUp").text("+ "+ XP);
+			$("#account-bar-level").text("Level: " + (levelCalculator(usersXP)));
+			$("#account-bar-next-level").text(levelCalculator(usersXP) + 1);
 
 			$("#resultsCorrect").animate({top: "0px",opacity: "1"}, {duration : 1000, complete : function(){
 				$("#resultsWrong").animate({top: "0px",opacity: "1"}, {duration : 1000, complete : function(){
@@ -578,8 +582,7 @@ $(document).ready(function(){
 				}})
 			}});
 
-			$("#account-bar-level").text("Level: " + levelCalculator(usersXP));
-			$("#account-bar-next-level").text(levelCalculator(usersXP) + 1)		
+				
 		});
 
 	})
@@ -630,6 +633,8 @@ $(document).ready(function(){
 		else{
 			quizStuff.taker = nick;
 			quizStuff.score = 0;
+			quizStuff.right = 0;
+			quizStuff.wrong = 0;
 			subbmited = false;
 			$("#mainContent").load("takeQuiz.html", function(){
 				counter = 0;
@@ -671,7 +676,7 @@ $(document).ready(function(){
 			function() 
 			{
 				loadProfile()
-			}, 1000);
+			}, 500);
 	})
 
 	$(document).on("click", "#takeQuizTab", function(){
