@@ -221,7 +221,8 @@ function levelTotalTo(levelLeft){
 }
 
 function levelPercentage(xpTotal){
-	return ((xpTotal - levelTotalTo(levelCalculator(xpTotal) - 1)) / (levelTotalTo(levelCalculator(xpTotal)) - levelTotalTo(levelCalculator(xpTotal) - 1)) * 100)
+	return ((xpTotal - levelTotalTo(levelCalculator(xpTotal) - 1)) /
+	 (levelTotalTo(levelCalculator(xpTotal)) - levelTotalTo(levelCalculator(xpTotal) - 1)) * 100)
 }
 
 function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
@@ -241,8 +242,7 @@ function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
 		xpPerc = 0;
 		spill--;
 		if (spill == -1) {
-			$("#xpToNext").text("To next: " + (levelTotalTo(levelCalculator(xpAmmount)) - xpAmmount));
-			$("#xpToNext").animate({top : "0px", opacity : "1"}, {duration : 1000})
+			
 		}
 		$("#xp-bar-fill").animate({width : ""+xpStop+"%"}, {duration : 2000, complete : function(){
 			if (spill > -1) {
@@ -581,6 +581,8 @@ $(document).ready(function(){
 						$("#xpUp").animate({top : "150px"}, {duration : 1000, complete : function(){
 							increaseXP(usersXP, XP, function(){
 								usersXP += XP;
+								$("#xpToNext").text("To next: " + (levelTotalTo(levelCalculator(usersXP)) - usersXP));
+								$("#xpToNext").animate({top : "0px", opacity : "1"}, {duration : 1000})
 							})	
 						}})
 					}})	
@@ -631,7 +633,6 @@ $(document).ready(function(){
 
 
 	$(document).on("click", "#backToQuizzesButton", function(){
-		console.log("hi")
 		loadQuizes();
 	})
 

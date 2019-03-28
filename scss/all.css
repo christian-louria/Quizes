@@ -334,6 +334,9 @@
 #editBioButton:hover {
   color: #555555; }
 
+#myBio {
+  width: 300px; }
+
 #bioEdit {
   width: 200px;
   border-radius: 4px; }
