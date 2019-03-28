@@ -20,6 +20,17 @@
 .button:hover {
   transform: scale(1.1); }
 
+#saveBioButton {
+  background: teal;
+  color: white;
+  border: 1px black solid;
+  border-radius: 100px;
+  width: 100px;
+  position: relative;
+  left: 30px;
+  text-align: center;
+  padding: 3px; }
+
 #signOutButton {
   padding: 5px;
   background: teal;
@@ -284,6 +295,17 @@
   margin-top: 15px;
   margin-bottom: 15px; }
 
+#editBioButton:hover {
+  color: #555555; }
+
+#bioEdit {
+  width: 200px;
+  border-radius: 4px; }
+
+#editBioButton {
+  color: #323232;
+  cursor: pointer; }
+
 .split {
   display: flex; }
 
@@ -358,6 +380,12 @@
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: white; }
 
+#xpToNext {
+  text-align: right;
+  opacity: 0;
+  position: relative;
+  top: 30px; }
+
 #account-bar-wrapper {
   width: 100%;
   height: 100px; }
@@ -384,7 +412,7 @@
 
 #xp-bar {
   height: 10px;
-  width: 100%;
+  width: calc(100% - 10px);
   background: #035;
   margin-bottom: auto;
   margin-top: auto;

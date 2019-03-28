@@ -8,6 +8,13 @@
 //   cursor:default;
 // }
 
+#xpToNext{
+  text-align: right;
+  opacity: 0;
+  position: relative;
+  top: 30px;
+}
+
 #account-bar-wrapper{
   width:100%;
   height:100px;
@@ -39,7 +46,7 @@
 
 #xp-bar{
   height:10px;
-  width:100%;
+  width:calc(100% - 10px);
   background:#035;
   margin-bottom: auto;
   margin-top: auto;
@@ -52,7 +59,7 @@
   background:teal;
   font-size:12px;
   line-height:10px;
-  text-align:right;
+  text-align: right;
 }
 
 #doit-btn{

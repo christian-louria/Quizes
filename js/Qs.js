@@ -61,7 +61,6 @@ function check_answer(e){
 	guessed = true;
 }
 
-
 function next_question(){
 	$(".answerBox").addClass("answerHover");
 	$(".nextQuestion").empty()
@@ -76,6 +75,7 @@ function next_question(){
 	$("#2").text(quizStuff.quizQuestions[counter]["q2"])
 	$("#3").text(quizStuff.quizQuestions[counter]["q3"])
 	$("#4").text(quizStuff.quizQuestions[counter]["q4"])
+	$("#questionNumber").text("Question: " + (counter + 1));
 }
 
 function make_quiz(e, quizName){
@@ -240,6 +240,10 @@ function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
 		incLevel++;
 		xpPerc = 0;
 		spill--;
+		if (spill == -1) {
+			$("#xpToNext").text("To next: " + (levelTotalTo(levelCalculator(xpAmmount)) - xpAmmount));
+			$("#xpToNext").animate({top : "0px", opacity : "1"}, {duration : 1000})
+		}
 		$("#xp-bar-fill").animate({width : ""+xpStop+"%"}, {duration : 2000, complete : function(){
 			if (spill > -1) {
 				$("#account-bar-level").text("Level: " + (incLevel - 1));
@@ -262,67 +266,68 @@ function increaseXP(xpAmmount, xpIncrease, completed){
 }
 
 function loadProfile(){
-	$("#mainContent").load("profile.html");	
-	$("#usernameTitle").hide();
+	$("#mainContent").load("profile.html", function(){
+		$("#usernameTitle").hide();
+		$.post("../api/getProfile.php", {
+			nick : nick
+		}, function(profileInfo){
 
-	$.post("../api/getProfile.php", {
-		nick : nick
-	}, function(profileInfo){
-
-		profileInfo = JSON.parse(profileInfo);
-		if (profileInfo[0]["bio"] != null) {
-			$("#myBio").text(profileInfo[0]["bio"]);
-		}
-		var playerXP = profileInfo[0]["xp"]
-		var xpperc = levelPercentage(playerXP);
-		var level = levelCalculator(playerXP);
-		$("#account-bar-level").text("Level: " + level);
-		$("#account-bar-next-level").text(level + 1)
-
-		$("#myXP").text(profileInfo[0]["xp"])
-		$("#myCorrectAnswers").text(profileInfo[0]["correctAnswers"]);
-		$("#myWrongAnswers").text(profileInfo[0]["wrongAnswers"]);
-		$("#myLongestStreak").text(profileInfo[0]["highestStreak"]);
-		$("#myPrecentage").text(Math.trunc((profileInfo[0]["correctAnswers"]) /
-			(profileInfo[0]["wrongAnswers"] + profileInfo[0]["correctAnswers"]) * 100) + "%");
-		$("#profileName").text(nick);
-		if (profileInfo[0]["profilePic"] == null) {
-			$("#profilePic").prepend("<img id='profilePic' src=uploads/profilePics/pic.png />");
-		} else {
-			$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
-
-		}
-		// increaseXP(3528, 2000, function(){
-		// 	//usersXP += XP;
-		// })
-		console.log(xpperc)
-		showXP(xpperc);
-	})
-	$.post("../api/getMyQuizes.php", {
-		nick : nick,
-	}, function(quizes){
-		quizes = JSON.parse(quizes);
-		$.get("../inc/quizBox.html", function(quizBoxhtml){
-			$("#myTotalQuizes").text(quizes.length)
-			for (var i = 0; i < quizes.length; i++) {
-				var html = $.parseHTML(quizBoxhtml);
-				$(html).find(".questionAmmount").text(quizes[i][0])
-				$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
-				$(html).find(".quizNameBox").text(quizes[i]["quizName"])
-				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
-				$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
-
-				(function(tempHtml){
-					$.get("../inc/editButton.html", function(button){
-						var button = $.parseHTML(button)
-						$(tempHtml).find(".canEdit").append(button)
-					})						
-				})(html);	
-
-				$("#myQuizList").append(html);
+			profileInfo = JSON.parse(profileInfo);
+			if (profileInfo[0]["bio"] != null) {
+				$("#myBio").text(profileInfo[0]["bio"]);
 			}
+			var playerXP = profileInfo[0]["xp"]
+			var xpperc = levelPercentage(playerXP);
+			var level = levelCalculator(playerXP);
+			$("#account-bar-level").text("Level: " + level);
+			$("#account-bar-next-level").text(level + 1);
+			$("#xpToNext").text("To next: " + (levelTotalTo(levelCalculator(playerXP)) - playerXP));
+			$("#xpToNext").animate({top : "0px", opacity : "1"}, {duration : 1000});
+			$("#myXP").text(profileInfo[0]["xp"])
+			$("#myCorrectAnswers").text(profileInfo[0]["correctAnswers"]);
+			$("#myWrongAnswers").text(profileInfo[0]["wrongAnswers"]);
+			$("#myLongestStreak").text(profileInfo[0]["highestStreak"]);
+			$("#myPrecentage").text(Math.trunc((profileInfo[0]["correctAnswers"]) /
+				(profileInfo[0]["wrongAnswers"] + profileInfo[0]["correctAnswers"]) * 100) + "%");
+			$("#profileName").text(nick);
+			if (profileInfo[0]["profilePic"] == null) {
+				$("#profilePic").prepend("<img id='profilePic' src=uploads/profilePics/pic.png />");
+			} else {
+				$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
+
+			}
+			// increaseXP(3528, 2000, function(){
+			// 	//usersXP += XP;
+			// })
+			console.log(xpperc)
+			showXP(xpperc);
 		})
-	})
+		$.post("../api/getMyQuizes.php", {
+			nick : nick,
+		}, function(quizes){
+			quizes = JSON.parse(quizes);
+			$.get("../inc/quizBox.html", function(quizBoxhtml){
+				$("#myTotalQuizes").text(quizes.length)
+				for (var i = 0; i < quizes.length; i++) {
+					var html = $.parseHTML(quizBoxhtml);
+					$(html).find(".questionAmmount").text(quizes[i][0])
+					$(html).find(".quizCreatorBox").text(quizes[i]["quizCreator"])
+					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
+					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
+
+					(function(tempHtml){
+						$.get("../inc/editButton.html", function(button){
+							var button = $.parseHTML(button)
+							$(tempHtml).find(".canEdit").append(button)
+						})						
+					})(html);	
+
+					$("#myQuizList").append(html);
+				}
+			})
+		})
+	});	
 }
 
 
@@ -644,6 +649,7 @@ $(document).ready(function(){
 				}
 				else {
 					$("#questionWords").text(quizStuff.quizQuestions[counter]["question"])
+					$("#questionNumber").text("Question: " + 1);
 					$("#1").text(quizStuff.quizQuestions[counter]["q1"])
 					$("#2").text(quizStuff.quizQuestions[counter]["q2"])
 					$("#3").text(quizStuff.quizQuestions[counter]["q3"])
@@ -660,6 +666,28 @@ $(document).ready(function(){
 
 	$(document).on("mouseleave", "#picContainer", function(){
 		$("#changeProfilePicForm").css('visibility', 'hidden');
+	})
+
+	$(document).on("click", "#editBioButton", function(){
+
+		var bio = $("#myBio").text();
+		$("#myBio").hide();
+		$.get("../inc/bioBox.html", function(bioBox){
+			var bioBox = $.parseHTML(bioBox);
+			$(bioBox).find("#bioEdit").val(bio);
+			$("#editBioContainer").html(bioBox);
+		})
+	})
+
+	$(document).on("click", "#saveBioButton", function(){
+		var newBio = $("#bioEdit").val();
+		$.post("../api/updateBio.php", {
+			newBio : newBio,
+			nick : nick
+		});
+		$("#editBioContainer").empty()
+		$("#myBio").text(newBio);
+		$("#myBio").show();
 	})
 
 	$(document).on("click", "#homeTab", function(){
