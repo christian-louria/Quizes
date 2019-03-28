@@ -586,50 +586,58 @@ $(document).ready(function(){
 					}})	
 				}})
 			}});
-
-				
 		});
-
 	})
-		
-		// $("#mainContent").load("results.html")
-		
-		// $.post("../api/getLeaderboard.php", {
-		// 	quizid : quizStuff.quizInfo[0]["qKey"]
-		// }, 
-		// function(leaderboard){
-		// 	leaderboard = JSON.parse(leaderboard)
-		// 	$.get("../inc/leaderboardBox.html", function(leaderboardBox){
 
-		// 		for (var i = 0; i < leaderboard.length; i++) {
-		// 			leaderHTML = $.parseHTML(leaderboardBox)
-		// 			$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
-		// 			$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
-		// 			$(leaderHTML).find("#leaderPlace").text(i+1)
-		// 			if (i == 0) {
-		// 				$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
-		// 				$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-		// 				$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
-		// 			}
-		// 			if (i == 1) {
-		// 				$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
-		// 				$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
-		// 				$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
-		// 			}
-		// 			if (i == 2) {
-		// 				$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
-		// 				$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
-		// 				$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
-		// 			}
-		// 			$("#leaderboardList").append(leaderHTML)
-		// 			quizStuff.score = 0;
-		// 			quizStuff.right = 0;
-		// 			quizStuff.wrong = 0;
-		// 		}
-		// 	})
 
-		// })
-	// })
+	$(document).on("click", "#showLeaderboardButton", function(){
+	$("#xpAndResultsContainer").load("results.html")
+		$("#showLeaderboardButton").hide();
+		$.post("../api/getLeaderboard.php", {
+			quizid : quizStuff.quizInfo[0]["qKey"]
+		}, 
+		function(leaderboard){
+			leaderboard = JSON.parse(leaderboard)
+			$.get("../inc/leaderboardBox.html", function(leaderboardBox){
+
+				for (var i = 0; i < leaderboard.length; i++) {
+					leaderHTML = $.parseHTML(leaderboardBox);
+					$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"]);
+					$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"]);
+					$(leaderHTML).find("#leaderPlace").text(i+1)
+					if (i == 0) {
+						$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace");
+						$(leaderHTML).find("#leaderNick").attr("id", "firstPlace");
+						$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight");
+					}
+					if (i == 1) {
+						$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft");
+						$(leaderHTML).find("#leaderNick").attr("id", "secondPlace");
+						$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight");
+					}
+					if (i == 2) {
+						$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft");
+						$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace");
+						$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight");
+					}
+					$("#leaderboardList").append(leaderHTML);
+					quizStuff.score = 0;
+					quizStuff.right = 0;
+					quizStuff.wrong = 0;
+				}
+			})
+		})
+	})
+
+
+	$(document).on("click", "#backToQuizzesButton", function(){
+		console.log("hi")
+		loadQuizes();
+	})
+
+
+
+		
 
 	$(document).on("click", "#startQuiz", function(){
 		if (nick == null) {
@@ -799,8 +807,6 @@ else{
 
 
 
-
-
 $(document).on("click", "#uploadButton", function(){
 	quizNum = url.split('=')[1]
 	$.post('api/releaseQuiz.php', {
@@ -921,7 +927,6 @@ $(document).on("click", "#makeQuizTab", function(){
 
 
 
-
 $(document).on('click', '.deleteQuestion', function(){
 	questkey = $(".deleteQuestion").attr("id")
 	$.post("api/deleteQuestion.php", {
@@ -995,5 +1000,4 @@ $(document).on("click", "#makeAccount", function(){
 	}
 
 })
-
 });
