@@ -1,4 +1,3 @@
-
 <?php 
 	$nick = $_POST["nick"];
 	$quizKey = $_POST['quizid'];

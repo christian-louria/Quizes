@@ -4,13 +4,13 @@ var guessed = false;
 var subbmited = false;
 var quizStuff = {
 	score : 0,
-	currentQuestion : 0,
 	quizQuestions : [], 
 	quizInfo : [],
 	taker : null,
 	taken : 0,
 	right : 0,
 	wrong : 0,
+	prevAnswer : 0,
 }
 var usersXP = 0;
 var createQuestionNumber = 1;
@@ -26,13 +26,25 @@ function check_answer(e){
 	}
 	var answer = targ.attr("id")
 
-	if (!guessed) {
+	console.log(quizStuff.prevGuess)
+	console.log(answer)
+
+	if (quizStuff.prevGuess > 0) {
+		display_next(quizStuff.prevGuess);
+	}
+	else {
+		display_next(answer);
+	}
+}
+
+function display_next(answer){
+	if (!(guessed)) {
 		$(".answerBox").removeClass("answerHover");
 		$(".answerBox").unbind('mouseenter').unbind('mouseleave')
 		//$(".answerBox").off('hover');
 
-		$("#"+quizStuff.quizQuestions[counter]["answer"]).addClass("correct")
-		if (answer == quizStuff.quizQuestions[counter]["answer"]) {
+		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]).addClass("correct")
+		if (answer == quizStuff.quizQuestions[questionCounter]["answer"]) {
 			quizStuff.score += 100;
 			quizStuff.right++;
 			$("#score").text("Score: " + quizStuff.score)
@@ -48,7 +60,7 @@ function check_answer(e){
 				nick, nick
 			})
 		}
-		if (counter + 1 == quizStuff.quizQuestions.length) {
+		if (questionCounter + 1 == quizStuff.quizQuestions.length) {
 			$(".nextQuestion").attr("id", "endQuiz")
 			$(".nextQuestion").text("Upload Results")
 		}
@@ -57,9 +69,17 @@ function check_answer(e){
 			$(".nextQuestion").text("Next Question")
 			$(".nextQuestion").attr('onClick', 'next_question();');
 		}
+		guessed = true;
+		if (quizStuff.taken == 0 && quizStuff.prevGuess == 0) {
+			$.post("../api/addGuessed.php", {
+				nick : nick,
+				question : quizStuff.quizQuestions[questionCounter].questKey,
+				answer : answer,
+			})
+		}
 	}
-	guessed = true;
 }
+
 
 function next_question(){
 	$(".answerBox").addClass("answerHover");
@@ -68,14 +88,23 @@ function next_question(){
 	$(".nextQuestion").removeAttr('onClick', 'next_question();');
 	$(".answerBox").removeClass("correct")
 	$(".answerBox").removeClass("wrong")
-	counter++;
+	questionCounter++;
 	guessed = false;
-	$("#questionWords").text(quizStuff.quizQuestions[counter]["question"])
-	$("#1").text(quizStuff.quizQuestions[counter]["q1"])
-	$("#2").text(quizStuff.quizQuestions[counter]["q2"])
-	$("#3").text(quizStuff.quizQuestions[counter]["q3"])
-	$("#4").text(quizStuff.quizQuestions[counter]["q4"])
-	$("#questionNumber").text("Question: " + (counter + 1));
+	$("#questionWords").text(quizStuff.quizQuestions[questionCounter]["question"])
+	$("#1").text(quizStuff.quizQuestions[questionCounter]["q1"])
+	$("#2").text(quizStuff.quizQuestions[questionCounter]["q2"])
+	$("#3").text(quizStuff.quizQuestions[questionCounter]["q3"])
+	$("#4").text(quizStuff.quizQuestions[questionCounter]["q4"])
+	$("#questionNumber").text("Question: " + (questionCounter + 1));
+	if (quizStuff.taken == 0) {
+		$.post("../api/getGuessed.php",{
+			nick : nick,
+			question : quizStuff.quizQuestions[questionCounter].questKey,
+		}, function(prevGuess){
+			prevGuess = JSON.parse(prevGuess);
+			quizStuff.prevGuess = prevGuess['answer'];
+		})
+	}
 }
 
 function make_quiz(e, quizName){
@@ -299,7 +328,6 @@ function loadProfile(){
 			// increaseXP(3528, 2000, function(){
 			// 	//usersXP += XP;
 			// })
-			console.log(xpperc)
 			showXP(xpperc);
 		})
 		$.post("../api/getMyQuizes.php", {
@@ -418,12 +446,12 @@ function loadMakeQuiz(){
 	else if (url.includes("takequiz")) {
 		$("#mainContent").load("quizStart.html", function(){
 			var quizid = url.split('=')[1]
-			$.post("api/isLegit.php", {
+			$.post("../api/isLegit.php", {
 				nick : nick,
 				quizid : quizid,
 			},function(haveTaken){
 				haveTaken = JSON.parse(haveTaken);
-				quizStuff.taken = haveTaken["count(*)"]
+				quizStuff.taken = haveTaken["count(*)"];
 			});
 			$.post("api/getQuestions.php", {
 				quizid : quizid,
@@ -636,10 +664,6 @@ $(document).ready(function(){
 		loadQuizes();
 	})
 
-
-
-		
-
 	$(document).on("click", "#startQuiz", function(){
 		if (nick == null) {
 			$("#startError").text("Must log in.")
@@ -650,19 +674,29 @@ $(document).ready(function(){
 			quizStuff.right = 0;
 			quizStuff.wrong = 0;
 			subbmited = false;
+			guessed = false;
 			$("#mainContent").load("takeQuiz.html", function(){
-				counter = 0;
+				questionCounter = 0;
 				$("#score").text("Score: 0")
 				if (quizStuff.quizQuestions.length == 0) {
 					$("#questionNumber").text("No Questions :(")
 				}
 				else {
-					$("#questionWords").text(quizStuff.quizQuestions[counter]["question"])
+					$("#questionWords").text(quizStuff.quizQuestions[questionCounter]["question"])
 					$("#questionNumber").text("Question: " + 1);
-					$("#1").text(quizStuff.quizQuestions[counter]["q1"])
-					$("#2").text(quizStuff.quizQuestions[counter]["q2"])
-					$("#3").text(quizStuff.quizQuestions[counter]["q3"])
-					$("#4").text(quizStuff.quizQuestions[counter]["q4"])
+					$("#1").text(quizStuff.quizQuestions[questionCounter]["q1"])
+					$("#2").text(quizStuff.quizQuestions[questionCounter]["q2"])
+					$("#3").text(quizStuff.quizQuestions[questionCounter]["q3"])
+					$("#4").text(quizStuff.quizQuestions[questionCounter]["q4"])
+					if (quizStuff.taken == 0) {
+						$.post("../api/getGuessed.php",{
+							nick : nick,
+							question : quizStuff.quizQuestions[questionCounter].questKey,
+						}, function(prevGuess){
+							prevGuess = JSON.parse(prevGuess);
+							quizStuff.prevGuess = prevGuess['answer'];
+						})
+					}
 				}
 			})
 		}
