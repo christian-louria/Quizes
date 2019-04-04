@@ -1,6 +1,6 @@
 <?php 
 	
-	$quizNum = (int)$_POST["quizid"];
+	$quizNum = $_POST["quizid"];
 
 	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
 	$getQuestions = $conn->prepare('SELECT * FROM questions WHERE quizNum = ?');

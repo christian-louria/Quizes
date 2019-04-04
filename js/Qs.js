@@ -11,6 +11,7 @@ var quizStuff = {
 	right : 0,
 	wrong : 0,
 	prevAnswer : 0,
+	quizId : 0,
 }
 var usersXP = 0;
 var createQuestionNumber = 1;
@@ -75,6 +76,7 @@ function display_next(answer){
 				nick : nick,
 				question : quizStuff.quizQuestions[questionCounter].questKey,
 				answer : answer,
+				quizid : quizStuff.quizId,
 			})
 		}
 	}
@@ -294,6 +296,57 @@ function increaseXP(xpAmmount, xpIncrease, completed){
 	recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed);
 }
 
+
+function load_prev_results(){
+	$("#mainContent").load("prevResults.html", function(){
+		$.post("../api/getFirstResults.php", {
+			nick : nick,
+			quizid : quizStuff.quizId,
+		}, function(firstResults){
+			firstResults = JSON.parse(firstResults);
+
+
+			$.get('../inc/boxBox.html', function(boxBoxhtmo){
+				for (var i = 0; firstResults[0].length > i; i++) {
+					boxBox = $.parseHTML(boxBoxhtmo);
+					// debugger;
+
+					(function(tempHtml, index){
+						//console.log(tempHtml)
+						if (firstResults[0][i]['answer'] == firstResults[1][i]['answer']) {
+							$.get("../inc/correctBox.html", function(correctBox){
+								console.log(firstResults)
+								correctBox = $.parseHTML(correctBox);
+								$(correctBox).find("#resultQuestionNumber").html("Question " + (index + 1));
+								$(correctBox).find("#resultQuestion").html(firstResults[1][index]['question'])
+								$(correctBox).find("#resultAnswer").html(firstResults[1][index]["q" +
+								 firstResults[0][index]['answer']])
+								$(tempHtml[0]).append(correctBox)
+							})							
+						}
+						else {
+							$.get('../inc/wrongBox.html', function(wrongBox){
+								wrongBox = $.parseHTML(wrongBox);
+								$(wrongBox).find("#resultQuestionNumber").html("Question " + (index + 1));
+								$(wrongBox).find("#resultQuestion").html(firstResults[1][index]['question'])
+								$(wrongBox).find("#resultWrongAnswer").html(firstResults[1][index]["q" +
+								 firstResults[0][index]['answer']])
+								$(wrongBox).find("#resultRightAnswer").html(firstResults[1][index]["q" +
+								 firstResults[1][index]['answer']])
+								$(tempHtml[0]).append(wrongBox)
+							})
+						}
+					})(boxBox, i);
+					$("#prevAnswersWrapper").append(boxBox);
+
+				}
+			})
+
+
+		})
+	})
+}
+
 function loadProfile(){
 	$("#mainContent").load("profile.html", function(){
 		$("#usernameTitle").hide();
@@ -446,12 +499,16 @@ function loadMakeQuiz(){
 	else if (url.includes("takequiz")) {
 		$("#mainContent").load("quizStart.html", function(){
 			var quizid = url.split('=')[1]
+			quizStuff.quizId = quizid;
 			$.post("../api/isLegit.php", {
 				nick : nick,
-				quizid : quizid,
+				quizid : quizStuff.quizId,
 			},function(haveTaken){
 				haveTaken = JSON.parse(haveTaken);
 				quizStuff.taken = haveTaken["count(*)"];
+				if (haveTaken["count(*)"] == 0) {
+					$("#seeResultsButton").hide();
+				}
 			});
 			$.post("api/getQuestions.php", {
 				quizid : quizid,
@@ -659,6 +716,11 @@ $(document).ready(function(){
 		})
 	})
 
+	$(document).on("click", "#seeResultsButton", function(){
+		window.history.pushState("object or string", "Title", "?quizResults=" + quizStuff.quizId);
+		load_prev_results();
+		console.log("HI")
+	})
 
 	$(document).on("click", "#backToQuizzesButton", function(){
 		loadQuizes();
@@ -669,6 +731,13 @@ $(document).ready(function(){
 			$("#startError").text("Must log in.")
 		}
 		else{
+			$.post("../api/isLegit.php", {
+				nick : nick,
+				quizid : quizStuff.quizId,
+			},function(haveTaken){
+				haveTaken = JSON.parse(haveTaken);
+				quizStuff.taken = haveTaken["count(*)"];
+			});
 			quizStuff.taker = nick;
 			quizStuff.score = 0;
 			quizStuff.right = 0;
@@ -897,6 +966,7 @@ $('#username').bind("enterKey",function(e){
 	})
 	$("#username").val('');
 });
+
 
 
 $(document).on("click", "#signin", function(){

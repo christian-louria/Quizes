@@ -1,0 +1,85 @@
+.innerResultBox{
+	position: relative;
+	padding-top: 100%;
+	width: 100%;
+	border: 2px solid black;
+	margin-top: -2px;
+	transition: all .2s ease-in-out;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#correctBox{
+	background-color: #164426;
+}
+
+.innerResultBox:hover{
+	z-index: 10;
+	transform: scale(1.1);
+	-webkit-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+}
+
+#wrongBox{
+	background-color: #391616;
+}
+
+#resultQuestion{
+	margin-top: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+	overflow: hidden;
+	font-weight: bold;
+	border-bottom: 1px white dotted;
+	padding-bottom: 5px;
+}
+
+#resultWrongAnswer{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	border-bottom: 1px white dotted;
+	padding-bottom: 10px;
+}
+
+#resultAnswer{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+#resultRightAnswer{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+#resultQuestionNumber{
+	margin: 10px;
+	font-size: 1.1em;
+	font-weight: bolder;
+	overflow: hidden;
+}
+
+#boxText{
+	color: white;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top: 0px;
+	left: 0px;
+}
+
+#prevAnswersWrapper{
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	margin-right: 5px;
+}
