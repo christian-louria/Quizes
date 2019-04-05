@@ -1,10 +1,17 @@
+.rightExpand{
+	transition: all .2s ease-in-out;
+}
+
+.leftExpand{
+	transition: all .2s ease-in-out;
+}
+
 .innerResultBox{
 	position: relative;
 	padding-top: 100%;
 	width: 100%;
 	border: 2px solid black;
 	margin-top: -2px;
-	transition: all .2s ease-in-out;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -13,23 +20,53 @@
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
     cursor: pointer;
-    overflow: hidden;
+    overflow: scroll;
+}
+
+.resultsContainer{
+	display: none;
+}
+
+.answerResultBox{
+	color: teal;
+	text-align: center;
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: white;
+	border-radius: 100px;
+	padding: 10px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	cursor: pointer;
+}
+
+
+.boxBox{
+	box-shadow: none;
+	z-index: 0; transform: scale(1);
+	transition: all 0.2s ease-in-out 0s;
+	width: 100%;
+	position: relative;
+	left: 0px;
+}
+
+#scoreResult{
+	margin-top: 5px;
+	text-align: center;
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 #correctBox{
+	transition: all .2s ease-in-out;
 	background-color: #164426;
-}
-
-.innerResultBox:hover{
-	z-index: 10;
-	transform: scale(1.1);
-	-webkit-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
-	-moz-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
-	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 }
 
 #wrongBox{
 	background-color: #391616;
+	transition: all .2s ease-in-out;
 }
 
 #resultQuestion{
@@ -70,6 +107,7 @@
 }
 
 #boxText{
+	transition: all .2s ease-in-out;
 	color: white;
 	position: absolute;
 	width: 100%;

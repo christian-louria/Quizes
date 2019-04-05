@@ -14,6 +14,15 @@ body{
 	margin: 0;
 }
 
+#confetti{
+	pointer-events: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
 #forWes{
 	font-size: 2em;
 	color: red;
@@ -79,8 +88,8 @@ body{
 }
 
 .header2{
-	color: teal;
-	font-size: 3em;
+	color: white;
+	font-size: 3.5em;
 	text-align: center;
 	margin-top: 50px;
 	font-weight: bold;
@@ -294,7 +303,6 @@ body{
 	margin-bottom: 20px;
 	margin-top: 20px;
 	cursor: pointer;
-
 }
 
 .correct{
