@@ -12,6 +12,7 @@ function check_answer(e){
 	console.log(quizStuff.prevGuess)
 	console.log(answer)
 	$("#susp")[0].pause();
+	$("#susp")[0].currentTime = 0;
 	if (quizStuff.prevGuess > 0) {
 		display_next(quizStuff.prevGuess);
 	}
@@ -66,6 +67,9 @@ function display_next(answer){
 }
 
 function next_question(){
+	$("#susp")[0].play();
+	$("#drop")[0].pause();
+	$("#drop")[0].currentTime = 0;
 	$(".answerBox").addClass("answerHover");
 	$(".nextQuestion").empty()
 	$(".nextQuestion").removeAttr("id", "nextQuestion")
