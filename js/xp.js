@@ -71,6 +71,14 @@ function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
 		}
 		$("#xp-bar-fill").animate({width : ""+xpStop+"%"}, {duration : 2000, complete : function(){
 			if (spill > -1) {
+				// $("#confetti").animate({opacity : "1"}, {duration : 1, complete : function(){
+				// 	$("#confetti").animate({opacity : "1"}, {duration : 1000, complete : function(){
+				// 		$("#confetti").animate({opacity : "0"}, {duration : 200})
+				// 	}})
+				// }})
+				$("#confetti").animate({top : "100%", bottom : "-100%"}, {duration : 3000, complete : function(){
+					$("#confetti").animate({top : "-100%", bottom : "100%"} , {duration : 1})
+				}})
 				$("#account-bar-level").text("Level: " + (incLevel - 1));
 				$("#account-bar-next-level").text(incLevel);
 			}

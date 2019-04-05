@@ -11,7 +11,7 @@ function check_answer(e){
 
 	console.log(quizStuff.prevGuess)
 	console.log(answer)
-
+	$("#susp")[0].pause();
 	if (quizStuff.prevGuess > 0) {
 		display_next(quizStuff.prevGuess);
 	}
@@ -28,6 +28,7 @@ function display_next(answer){
 
 		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]).addClass("correct")
 		if (answer == quizStuff.quizQuestions[questionCounter]["answer"]) {
+			$("#drop")[0].play();
 			quizStuff.score += 100;
 			quizStuff.right++;
 			$("#score").text("Score: " + quizStuff.score)
@@ -115,6 +116,7 @@ function next_question(){
 			nick : nick,
 			XP : XP,
 		})
+		XP = 2000;
 		guessed = false;
 		$("#mainContent").load("quizXPandRe.html", function(){
 
@@ -175,6 +177,7 @@ function next_question(){
 					$("#2").text(quizStuff.quizQuestions[questionCounter]["q2"])
 					$("#3").text(quizStuff.quizQuestions[questionCounter]["q3"])
 					$("#4").text(quizStuff.quizQuestions[questionCounter]["q4"])
+					$("#susp")[0].play();
 					if (quizStuff.taken == 0) {
 						$.post("../api/getGuessed.php",{
 							nick : nick,
