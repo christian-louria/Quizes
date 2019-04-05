@@ -38,6 +38,85 @@
 		})
 	})
 
+
+
+function load_prev_results(){
+	$("#mainContent").load("prevResults.html", function(){
+		$.post("../api/getFirstResults.php", {
+			nick : nick,
+			quizid : quizStuff.quizId,
+		}, function(firstResults){
+			firstResults = JSON.parse(firstResults);
+			$.get('../inc/boxBox.html', function(boxBoxhtmo){
+				prevScore = 0;
+				for (var i = 0; firstResults[0].length > i; i++) {
+					boxBox = $.parseHTML(boxBoxhtmo);
+					// debugger;
+					
+					(function(tempHtml, index){
+						//console.log(tempHtml)
+						if (firstResults[0][index]['answer'] == firstResults[1][index]['answer']) {
+							$.get("../inc/correctBox.html", function(correctBox){
+								prevScore += 100;
+								correctBox = $.parseHTML(correctBox);
+								$(correctBox).find("#resultQuestionNumber").html("Question " + (index + 1));
+								$(correctBox).find("#resultQuestion").html(firstResults[1][index]['question'])
+								$(correctBox).find("#resultAnswer").html(firstResults[1][index]["q" +
+								 firstResults[0][index]['answer']])
+								$(correctBox).find("#1").text(quizStuff.quizQuestions[index]["q1"])
+								$(correctBox).find("#2").text(quizStuff.quizQuestions[index]["q2"])
+								$(correctBox).find("#3").text(quizStuff.quizQuestions[index]["q3"])
+								$(correctBox).find("#4").text(quizStuff.quizQuestions[index]["q4"])
+								$(correctBox).find("#" + firstResults[1][index]['answer']).css({backgroundColor : "green", color : "white"})
+								$(tempHtml[0]).append(correctBox)
+								$("#scoreResult").html("Score: " + prevScore);
+								if (index % 4 < 2) {
+									$(tempHtml[0]).addClass("rightExpand");
+								}
+								else {
+									$(tempHtml[0]).addClass("leftExpand");
+								}
+							})							
+						}
+						else {
+							$.get('../inc/wrongBox.html', function(wrongBox){
+								wrongBox = $.parseHTML(wrongBox);
+								$(wrongBox).find("#resultQuestionNumber").html("Question " + (index + 1));
+								$(wrongBox).find("#resultQuestion").html(firstResults[1][index]['question'])
+								$(wrongBox).find("#resultWrongAnswer").html(firstResults[1][index]["q" +
+								 firstResults[0][index]['answer']])
+								$(wrongBox).find("#resultRightAnswer").html(firstResults[1][index]["q" +
+								 firstResults[1][index]['answer']])
+								$(wrongBox).find("#1").text(quizStuff.quizQuestions[index]["q1"])
+								$(wrongBox).find("#2").text(quizStuff.quizQuestions[index]["q2"])
+								$(wrongBox).find("#3").text(quizStuff.quizQuestions[index]["q3"])
+								$(wrongBox).find("#4").text(quizStuff.quizQuestions[index]["q4"])
+								$(wrongBox).find("#" + firstResults[0][index]['answer']).css({backgroundColor : "red", color : "white"})
+								$(wrongBox).find("#" + firstResults[1][index]['answer']).css({backgroundColor : "green", color : "white"})
+								$(tempHtml[0]).append(wrongBox)
+								if (index % 4 < 2) {
+									$(tempHtml[0]).addClass("rightExpand");
+								}
+								else {
+									$(tempHtml[0]).addClass("leftExpand");
+								}
+							})
+						}
+
+					})(boxBox, i);
+					$("#quizResultsName").text(quizStuff.quizInfo[0]['quizName'])
+					$("#prevAnswersWrapper").append(boxBox);
+					
+
+				}
+			})
+
+
+		})
+	})
+}
+
+
 	$(document).on("click", ".rightExpand", function(){
 		$(this).closest('.boxBox').css({width : "180%", transition: "all .2s ease-in-out"});
 		$(this).closest('.boxBox').find("#resultAnswer").hide();

@@ -120,7 +120,6 @@ function next_question(){
 			nick : nick,
 			XP : XP,
 		})
-		XP = 2000;
 		guessed = false;
 		$("#mainContent").load("quizXPandRe.html", function(){
 
