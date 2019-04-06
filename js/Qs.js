@@ -226,6 +226,7 @@ $(document).on("click", "#signin", function(){
 		else{
 			nick = userInfo[0]["nick"];
 			username = userInfo[0]["username"];
+			usersXP = userInfo[0]['xp'];
 			$("#usernameTitle").text(nick);
 			$("#signinError").text(" ");
 			$.get("../inc/signOutBox.html", function(signOutBox){
