@@ -161,3 +161,30 @@ function loadMakeQuiz(){
 	$("#usernameTitle").show();
 	$("#mainContent").load("makeQuiz.html");
 }
+
+$(document).on("click", "#homeTab", function(){
+		window.history.pushState('forward', null, './home');
+		loadIndex();
+	})
+
+	$(document).on("click", "#profileTab", function(){
+		if (nick == null) {
+			return;
+		}
+		window.history.pushState('forward', null, './profile');
+		setTimeout(
+			function() 
+			{
+				loadProfile()
+			}, 500);
+	})
+
+	$(document).on("click", "#takeQuizTab", function(){
+		window.history.pushState('forward', null, './quizList');
+		loadQuizes();
+	})
+
+	$(document).on("click", "#makeQuizTab", function(){
+	window.history.pushState('forward', null, './makeQuiz');
+	loadMakeQuiz();
+})
