@@ -1,0 +1,36 @@
+.playerBox{
+	display: grid;
+	grid-template-columns: 70px 1fr;
+	border-bottom: black 1px solid;
+	border-top: black 1px solid;
+	margin-bottom: -1px;
+	padding: 5px;
+	cursor: pointer;
+	transition: all .2s ease-in-out;
+	height: 70px;
+}
+
+
+.playerBox:hover{
+	background-color: #B2B2B2;
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+}
+
+.playerPic{
+	border: 1px solid black;
+	height: 50px;
+	width: 50px;
+	border-radius: 25px;
+	margin:10px;
+	overflow: hidden;
+}
+
+.playerPicPhoto{
+	width: 50px;
+}
+
+.playerName{
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+}

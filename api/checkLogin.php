@@ -15,6 +15,10 @@
 			array_push($userInfoList, $row);
 		}
 
+		$updateTime = $conn->prepare('UPDATE users SET users.lastOn = CURRENT_TIMESTAMP WHERE username = ?');
+		$updateTime->bind_param("s", $username);
+		$updateTime->execute();
+
 		echo json_encode($userInfoList);
 	}
 	else {

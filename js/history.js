@@ -9,8 +9,6 @@
 		setTimeout(function() {
 			url = window.location.href
 
-
-////////////////////////////////////
 	if (url.includes("editquiz")) {
 		$("#mainContent").load("quiz.html", function(){
 			var quizid = url.split('=')[1]
@@ -152,24 +150,24 @@
 	})(window.history);
 
 
-	// if (window.history && window.history.pushState) {
-	// 	$(window).on('popstate', function() {
-	// 		url = window.location.href
-	// 		if (url.includes("home")){
-	// 			loadIndex();
-	// 		}
-	// 		else if (url.includes("quizList")) {
-	// 			loadQuizes();
-	// 		}
-	// 		else if (url.includes("profile")) {
-	// 			setTimeout(
-	// 				function() 
-	// 				{
-	// 					loadProfile()
-	// 				}, 1000);
-	// 		}
-	// 		else if (url.includes("makeQuiz")) {
-	// 			loadMakeQuiz();
-	// 		}
-	// 	});
-	// }
+	if (window.history && window.history.pushState) {
+		$(window).on('popstate', function() {
+			url = window.location.href
+			if (url.includes("home")){
+				loadIndex();
+			}
+			else if (url.includes("quizList")) {
+				loadQuizes();
+			}
+			else if (url.includes("profile")) {
+				setTimeout(
+					function() 
+					{
+						loadProfile()
+					}, 1000);
+			}
+			else if (url.includes("makeQuiz")) {
+				loadMakeQuiz();
+			}
+		});
+	}

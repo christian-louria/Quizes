@@ -7,6 +7,7 @@
 @import 'xpBar';
 @import 'results';
 @import 'mobile';
+@import 'index';
 
 body{
 	color: teal;
@@ -25,12 +26,16 @@ body{
     .questionAmmount{display: none};
     .recentScore{display: none};
     .recentQuizboxContainer{grid-template-columns: 100% 0% 0% !important}
-    #signin{width: 50px !important};
-    #signin{margin-top: 0px !important};
+    #signinMobile{width: 50px !important};
+    #signinMobile{margin-top: 0px !important};
     .answerBox{width: 120px !important};
     #questionWords{font-size: 1em !important};
     #questionNumber{font-size: 1em !important};
-    #mobileSignin{display: grid !important}
+    #mobileSignin{display: grid !important};
+    #recentQuizes{font-size: 1em !important};
+    #topPlayersWords{font-size: 1em !important};
+    .quizNameBox{font-size: 1em !important};
+
 }
 
 #confetti{
@@ -42,6 +47,14 @@ body{
 	left: 0;
 	right: 0;
 	// opacity: 0;
+}
+
+.updateNumber{
+	margin-top: 5px;
+	color: black;
+	font-weight: bolder;
+	font-size: 1.5em;
+	margin-bottom: 5px;
 }
 
 #forWes{
@@ -81,8 +94,6 @@ body{
 }
 
 #questionAmmount{
-	margin-top: 30px;
-	margin-bottom: 30px;
 	text-align: center;
 	color: grey;
 }
@@ -116,6 +127,14 @@ body{
 	font-weight: bold;
 }
 
+.header3{
+	color: teal;
+	font-size: 3.5em;
+	text-align: center;
+	margin-top: 50px;
+	font-weight: bold;
+}
+
 .error{
 	color: red;
 	font-weight: bold;
@@ -141,7 +160,7 @@ body{
 
 #recentAndPlayers{
 	display: grid;
-	grid-template-columns: 55% 1fr;
+	grid-template-columns: 50% 1fr;
 }
 
 .recentScore{
@@ -149,7 +168,8 @@ body{
 }
 
 #ammountScore{
-	display: grid;
+	display: flex;
+	align-items: center;
 	grid-template-columns: 30% 1fr;
 }
 
@@ -158,13 +178,14 @@ body{
 }
 
 .questionAmmount{
+	width: 30px;
 	color: black;
-	padding: 14px;
+
 }
 
 .recentQuizboxContainer{
 	display: grid;
-	grid-template-columns: 65% 8% 1fr;
+	grid-template-columns: 65% 10px 1fr;
 
 }
 
@@ -352,6 +373,7 @@ body{
 
 .recentQuizesBox:hover{
 	background-color: #B2B2B2;
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 }
 
 
@@ -360,8 +382,13 @@ body{
 
 }
 
-.quizCreatorBox{
+.quizCreatorBoxText{
 	color: black;
+	display: inline-block;
+}
+
+.quizCreatorBoxText:hover{
+	text-decoration: underline;
 }
 
 #addQuizWords{
@@ -389,11 +416,29 @@ body{
 	height: 25px;
 	font-size: .9em;
 	border-radius: 5px;
-
 }
 
 
+#usernameMobile{
+	width: 200px;
+	height: 25px;
+	font-size: .9em;
+	border-radius: 5px;
+}
+
 #signin{
+	padding: 5px;
+	background: teal;
+	color: white;
+	border: 1px black solid;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	width: 190px;
+	border-radius: 100px;
+}
+
+#signinMobile{
 	padding: 5px;
 	background: teal;
 	color: white;
@@ -413,7 +458,7 @@ body{
 
 #bodyOrganizer{
 	display: grid;
-	grid-template-columns: 300px 1fr 300px;
+	grid-template-columns: 270px 1fr 270px;
 }
 
 #main{
@@ -422,6 +467,7 @@ body{
 }
 
 #usernameTitle{
+	box-shadow: 0px 10px 12px -12px rgba(0,0,0,0.75);
 	font-size: 4em;
 	padding-left: 30px;
 	padding-top: 10px;
@@ -442,10 +488,11 @@ body{
 	font-weight: bolder;
 	font-size: 1.3em;
 	cursor: pointer;
-	transition: padding .1s;
+	transition: padding .2s;
 }
 
 .tabs:hover{
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 	background-color: #B2B2B2;
 	padding: 15px;
 }
@@ -488,22 +535,31 @@ body{
 
 #recentQuizes{
 	padding: 20px;
-	font-size: 3em;
+	font-size: 3vw;
 	font-weight: bolder;
 	border-bottom: black 1px solid;
 
 }
 
+#quizList{
+	overflow: scroll;
+}
+
+#allChanges{
+	padding: 10px;
+}
+
 #recentQuizesContainer{
 	background-color: lightgrey;
 	border-radius: 20px;
-	height: 510px;
 	width: 90%;
 	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 	margin-left: 5%;
 	margin-right: 5%;
 	overflow: hidden;
+	border: 2px solid black;
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 }
 
 
@@ -516,10 +572,12 @@ body{
 	margin-left: 6%;
 	margin-right: 6%;
 	overflow: hidden;
+	border: 2px solid black;
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 }
 
 #topPlayersWords{
-	margin: 20px;
+	margin: 15px;
 	font-size: 3em;
 	font-weight: bolder;
 	overflow: hidden;

@@ -1,3 +1,24 @@
+function login(username){
+	console.log(username)
+	$.post("api/checkLogin.php", {
+		username : username,
+	}, function(userInfo){
+		userInfo = JSON.parse(userInfo)
+		localStorage.setItem("username", userInfo[0]["username"]);
+		nick = userInfo[0]["nick"];
+		username = userInfo[0]["username"];
+		usersXP = userInfo[0]["xp"]
+		$("#usernameTitle").text(nick);
+		$.get("../inc/signOutBox.html", function(signOutBox){
+			var signOutBox = $.parseHTML(signOutBox);
+			$(signOutBox).find("#usernameOut").text(username)
+			$(".signinBoxWrapper").html(signOutBox);
+		})
+	})
+}
+
+
+
 $('#username').bind("enterKey",function(e){
 	var $form = $( this ).parent().parent().children();
 	username = $form.find( "input[name='username']" ).val(),
@@ -11,6 +32,7 @@ $('#username').bind("enterKey",function(e){
 			return;
 		}
 		else{
+			localStorage.setItem("username", userInfo[0]["username"]);
 			nick = userInfo[0]["nick"];
 			username = userInfo[0]["username"];
 			usersXP = userInfo[0]["xp"]
@@ -35,6 +57,43 @@ $('#username').bind("enterKey",function(e){
 
 
 
+$(document).on("click", "#signinMobile", function(){
+	var $form = $( this ).parent().parent().children();
+	username = $form.find( "input[name='usernameMobile']" ).val(),
+	$.post("api/checkLogin.php", {
+		username : username
+	}, function(userInfo){
+		userInfo = JSON.parse(userInfo)
+
+		if (!userInfo) {
+			$("#signinError").text("WAit a minUte... Who are you??")
+		}
+		else{
+			localStorage.setItem("username", userInfo[0]["username"]);
+			nick = userInfo[0]["nick"];
+			username = userInfo[0]["username"];
+			usersXP = userInfo[0]['xp'];
+			$("#usernameTitle").text(nick);
+			$("#signinError").text(" ");
+			$.get("../inc/signOutBox.html", function(signOutBox){
+				var signOutBox = $.parseHTML(signOutBox);
+				$(signOutBox).find("#usernameOut").text(username)
+				$(".signinBoxWrapper").html(signOutBox);
+			})
+		}
+		$("#profileTab").css("background-color", "transparent");
+		$(document).on("mouseenter", "#profileTab", function(){
+			$("#profileTab").css("background-color", "#B2B2B2")
+		})
+		$(document).on("mouseleave", "#profileTab", function(){
+			$("#profileTab").css("background-color", "transparent")
+		})
+		$("#username").val('');
+	})
+})
+
+
+
 $(document).on("click", "#signin", function(){
 	var $form = $( this ).parent().parent().children();
 	username = $form.find( "input[name='username']" ).val(),
@@ -47,6 +106,7 @@ $(document).on("click", "#signin", function(){
 			$("#signinError").text("WAit a minUte... Who are you??")
 		}
 		else{
+			localStorage.setItem("username", userInfo[0]["username"]);
 			nick = userInfo[0]["nick"];
 			username = userInfo[0]["username"];
 			usersXP = userInfo[0]['xp'];
