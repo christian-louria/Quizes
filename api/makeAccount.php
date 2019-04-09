@@ -1,13 +1,14 @@
 <?php 
 	require '../vendor/autoload.php';
-	
+
 
 	$username = $_POST["makeUser"];
 	$nick = $_POST["makeNick"];
 
-	
-	$dotenv = Dotenv\Dotenv::create(__DIR__ . '/..');
-	$dotenv->load();
+    if (file_exists(__DIR__ . '/../.env')) {
+		$dotenv = Dotenv\Dotenv::create(__DIR__ . '/..');
+		$dotenv->load();
+	}
 
 	$conn = mysqli_connect($_ENV["DB_SERVER"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_DATABASE"]);
 	$insertUser = $conn->prepare("INSERT INTO users(nick, username) VALUES (?,?)");
