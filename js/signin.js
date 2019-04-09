@@ -1,5 +1,4 @@
 function login(username){
-	console.log(username)
 	$.post("api/checkLogin.php", {
 		username : username,
 	}, function(userInfo){
@@ -13,6 +12,13 @@ function login(username){
 			var signOutBox = $.parseHTML(signOutBox);
 			$(signOutBox).find("#usernameOut").text(username)
 			$(".signinBoxWrapper").html(signOutBox);
+		})
+		$("#profileTab").css("background-color", "transparent");
+		$(document).on("mouseenter", "#profileTab", function(){
+			$("#profileTab").css("background-color", "#B2B2B2")
+		})
+		$(document).on("mouseleave", "#profileTab", function(){
+			$("#profileTab").css("background-color", "transparent")
 		})
 	})
 }

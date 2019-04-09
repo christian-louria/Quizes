@@ -1,8 +1,52 @@
+.profileQuizzesandScoresBox{
+	display: grid;
+	grid-template-columns: 50% 1fr;
+	margin: 10px;
+}
+
+.profilesQuizzesBox{
+	margin-right: 2%;
+	overflow: hidden;
+	background-color: $accent;
+	border: 2px solid black;
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+	border-radius: 20px;
+}
+
+.profilesScoresBox{
+	margin-left: 2%;
+	overflow: hidden;
+	border-radius: 20px;
+	background-color: $accent;
+	border: 2px solid black;
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+}
+
+.profilesQuizzesText{
+	margin: 10px;
+    font-weight: bold;
+    font-size: 3vw;
+}
+
+.profilesQuizzesScore{
+	margin: 10px;
+    font-weight: bold;
+    font-size: 3vw;
+}
+
+.playersLevel{
+	font-size: 2em;
+	color: #00C3C2;
+	margin-bottom: 3px;
+}
+
+
 #editBioButton:hover{
 	color: #555555;
 }
 
 #myBio{
+	margin-bottom: 10px;
 	width: 300px;
 }
 

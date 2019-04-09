@@ -8,11 +8,9 @@ function check_answer(e){
 		targ = $(targ)
 	}
 	var answer = targ.attr("id")
-
-	console.log(quizStuff.prevGuess)
-	console.log(answer)
-	$("#susp")[0].pause();
-	$("#susp")[0].currentTime = 0;
+	// $("#susp")[0].pause();
+	// $("#susp")[0].currentTime = 0;
+	// $("#drop")[0].play();
 	if (quizStuff.prevGuess > 0) {
 		display_next(quizStuff.prevGuess);
 	}
@@ -29,7 +27,6 @@ function display_next(answer){
 
 		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]).addClass("correct")
 		if (answer == quizStuff.quizQuestions[questionCounter]["answer"]) {
-			$("#drop")[0].play();
 			quizStuff.score += 100;
 			quizStuff.right++;
 			$("#score").text("Score: " + quizStuff.score)
@@ -67,9 +64,9 @@ function display_next(answer){
 }
 
 function next_question(){
-	$("#susp")[0].play();
-	$("#drop")[0].pause();
-	$("#drop")[0].currentTime = 0;
+	// $("#drop")[0].pause();
+	// $("#susp")[0].play();
+	// $("#drop")[0].currentTime = 0;
 	$(".answerBox").addClass("answerHover");
 	$(".nextQuestion").empty()
 	$(".nextQuestion").removeAttr("id", "nextQuestion")

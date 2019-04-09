@@ -24,10 +24,7 @@ function users_profile(userProf){
 			var playerXP = profileInfo[0]["xp"]
 			var xpperc = levelPercentage(playerXP);
 			var level = levelCalculator(playerXP);
-			$("#account-bar-level").text("Level: " + level);
-			$("#account-bar-next-level").text(level + 1);
-			$("#xpToNext").text("To next: " + (levelTotalTo(levelCalculator(playerXP)) - playerXP));
-			$("#xpToNext").animate({top : "0px", opacity : "1"}, {duration : 1000});
+			$(".playersLevel").text("Lvl: " + level);
 			$("#myXP").text(profileInfo[0]["xp"])
 			$("#myCorrectAnswers").text(profileInfo[0]["correctAnswers"]);
 			$("#myWrongAnswers").text(profileInfo[0]["wrongAnswers"]);
@@ -41,13 +38,13 @@ function users_profile(userProf){
 				$("#profilePic").prepend("<img id='profilePic' src="+profileInfo[0]["profilePic"]+" />");
 
 			}
-			// increaseXP(3528, 2000, function(){
-			// 	//usersXP += XP;
-			// })
-			showXP(xpperc);
+			$(".profilesQuizzesText").text(userProf + "'s Quizzes");
+			$(".profilesQuizzesScore").text(userProf + "'s Scores");
 		})
+
+
 		$.post("../api/getMyQuizes.php", {
-			nick : nick,
+			nick : userProf,
 		}, function(quizes){
 			quizes = JSON.parse(quizes);
 			$.get("../inc/quizBox.html", function(quizBoxhtml){
@@ -60,14 +57,8 @@ function users_profile(userProf){
 					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
 					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
 
-					(function(tempHtml){
-						$.get("../inc/editButton.html", function(button){
-							var button = $.parseHTML(button)
-							$(tempHtml).find(".canEdit").append(button)
-						})						
-					})(html);	
 
-					$("#myQuizList").append(html);
+					$(".profilesQuizes").append(html);
 				}
 			})
 		})
@@ -131,10 +122,38 @@ function loadIndex(){
 				$(html).find(".quizCreatorBoxText").text(quizes[i]["quizCreator"])
 				$(html).find(".quizNameBox").text(quizes[i]["quizName"])
 				$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');')
-				$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
-				$(html).find(".quizCreatorBoxText").attr('onClick', 'users_profile("'+quizes[i]["quizCreator"]+'");')			
+				$(html).find(".quizNum").attr("id", quizes[i]["qKey"]);
+				$(html).find(".quizCreatorBoxText").attr('onClick', 'users_profile("'+quizes[i]["quizCreator"]+'");');
+
+				(function(tempHtml) { 
+					$.post("../api/getMyScore.php", {
+						nick : nick,
+						quizid : quizes[i]["qKey"],
+					}, function(score){
+						score = $.parseJSON(score);
+						if (score == null) {
+							$(tempHtml).find(".recentScore").text("- - - -");
+						}
+						else{
+							$(tempHtml).find(".recentScore").text(score["score"]);
+						}
+					});
+				}(html));
 				$("#quizList").append(html);
 			}
+		})
+	})
+	$.getJSON("api/getRecentPlayer.php", function(players){
+		$.get("../inc/playerBox.html", function(playerBox){
+			for (var i = 0; i < players.length; i++){
+				var html = $.parseHTML(playerBox);
+				$(html).find(".playerName").text(players[i]['nick']);
+				$(html).attr('onClick', 'users_profile("'+players[i]["nick"]+'");');
+				$(html).find(".playerPic").prepend("<img class='playerPicPhoto' src="+players[i]["profilePic"]+" />");
+
+				$("#recentPlayers").append(html);
+			}
+
 		})
 	})
 }
