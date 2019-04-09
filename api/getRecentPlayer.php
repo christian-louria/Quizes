@@ -1,5 +1,11 @@
 <?php 
-	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
+	require '../vendor/autoload.php';
+
+	
+	$dotenv = Dotenv\Dotenv::create(__DIR__ . '/..');
+	$dotenv->load();
+
+	$conn = mysqli_connect($_ENV["DB_SERVER"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_DATABASE"]);
 	$getPlayers = $conn->prepare('SELECT * FROM users ORDER BY lastOn DESC LIMIT 3');
 	$getPlayers->execute();
 	$players = $getPlayers->get_result();

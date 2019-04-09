@@ -1,6 +1,12 @@
 <?php 
+	require '../vendor/autoload.php';
+	
 	$nick = $_POST['nick'];
-	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
+	
+	$dotenv = Dotenv\Dotenv::create(__DIR__ . '/..');
+	$dotenv->load();
+
+	$conn = mysqli_connect($_ENV["DB_SERVER"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_DATABASE"]);
 	$updateInfo = $conn->prepare('UPDATE users SET highestStreak = GREATEST(highestStreak, streak + 1), streak = streak + 1, correctAnswers = correctAnswers + 1 WHERE nick = ?' );
 
 	$updateInfo->bind_param("s", $nick);

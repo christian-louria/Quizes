@@ -1,8 +1,14 @@
 <?php 
+	require '../vendor/autoload.php';
+	
 
 	$quizCreator = $_POST['nick'];
 
-	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
+	
+	$dotenv = Dotenv\Dotenv::create(__DIR__ . '/..');
+	$dotenv->load();
+
+	$conn = mysqli_connect($_ENV["DB_SERVER"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_DATABASE"]);
 	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE quizCreator = ?');
 	$getQuizes->bind_param("s", $quizCreator);
 	$getQuizes->execute();

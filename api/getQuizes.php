@@ -1,5 +1,11 @@
 <?php 
-	$conn = mysqli_connect('***REMOVED***', '***REMOVED***', '***REMOVED***', '***REMOVED***');
+	require '../vendor/autoload.php';
+	
+	
+	$dotenv = Dotenv\Dotenv::create(__DIR__ . '/..');
+	$dotenv->load();
+
+	$conn = mysqli_connect($_ENV["DB_SERVER"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_DATABASE"]);
 	$getQuizes = $conn->prepare('SELECT * FROM quizes WHERE released = 1');
 	$getQuizes->execute();
 	$quizes = $getQuizes->get_result();
