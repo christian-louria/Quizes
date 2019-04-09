@@ -1,3 +1,4 @@
+$accent: #C7CFCF;
 @import 'buttons';
 @import 'textBoxes';
 @import 'leaderboards';
@@ -11,7 +12,7 @@
 
 body{
 	color: teal;
-	background-color: lightgrey;
+	background-color: $accent;
 	font-family: Zawgyi-One,sans-serif;
 	margin: 0;
 }
@@ -104,7 +105,7 @@ body{
 }
 
 .editPic:hover{
-	background-color: lightgrey;
+	background-color: $accent;
 }
 
 .editPic{
@@ -149,7 +150,7 @@ body{
 
 #allQuizContainer{
 	padding-bottom: 15px;
-	background-color: lightgrey;
+	background-color: $accent;
 	border-radius: 20px;
 	width: 90%;
 	margin-top: 20px;
@@ -373,7 +374,7 @@ body{
 
 .recentQuizesBox:hover{
 	background-color: #B2B2B2;
-	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 0px 12px 0px rgba(0,0,0,0.75);
 }
 
 
@@ -492,7 +493,7 @@ body{
 }
 
 .tabs:hover{
-	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 0px 12px 0px rgba(0,0,0,0.75);
 	background-color: #B2B2B2;
 	padding: 15px;
 }
@@ -550,7 +551,7 @@ body{
 }
 
 #recentQuizesContainer{
-	background-color: lightgrey;
+	background-color: $accent;
 	border-radius: 20px;
 	width: 90%;
 	margin-top: 20px;
@@ -564,7 +565,7 @@ body{
 
 
 #topPlayersContainer{
-	background-color: lightgrey;
+	background-color: $accent;
 	border-radius: 20px;
 	height: 510px;
 	margin-top: 20px;

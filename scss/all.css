@@ -336,10 +336,47 @@
   margin-top: 15px;
   margin-bottom: 15px; }
 
+.profileQuizzesandScoresBox {
+  display: grid;
+  grid-template-columns: 50% 1fr;
+  margin: 10px; }
+
+.profilesQuizzesBox {
+  margin-right: 2%;
+  overflow: hidden;
+  background-color: #C7CFCF;
+  border: 2px solid black;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 20px; }
+
+.profilesScoresBox {
+  margin-left: 2%;
+  overflow: hidden;
+  border-radius: 20px;
+  background-color: #C7CFCF;
+  border: 2px solid black;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75); }
+
+.profilesQuizzesText {
+  margin: 10px;
+  font-weight: bold;
+  font-size: 3vw; }
+
+.profilesQuizzesScore {
+  margin: 10px;
+  font-weight: bold;
+  font-size: 3vw; }
+
+.playersLevel {
+  font-size: 2em;
+  color: #00C3C2;
+  margin-bottom: 3px; }
+
 #editBioButton:hover {
   color: #555555; }
 
 #myBio {
+  margin-bottom: 10px;
   width: 300px; }
 
 #bioEdit {
@@ -673,7 +710,7 @@
 
 body {
   color: teal;
-  background-color: lightgrey;
+  background-color: #C7CFCF;
   font-family: Zawgyi-One,sans-serif;
   margin: 0; }
 
@@ -779,7 +816,7 @@ body {
   text-align: center; }
 
 .editPic:hover {
-  background-color: lightgrey; }
+  background-color: #C7CFCF; }
 
 .editPic {
   text-align: center;
@@ -815,7 +852,7 @@ body {
 
 #allQuizContainer {
   padding-bottom: 15px;
-  background-color: lightgrey;
+  background-color: #C7CFCF;
   border-radius: 20px;
   width: 90%;
   margin-top: 20px;
@@ -990,7 +1027,7 @@ body {
 
 .recentQuizesBox:hover {
   background-color: #B2B2B2;
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75); }
+  box-shadow: inset 0px 0px 12px 0px rgba(0, 0, 0, 0.75); }
 
 .quizNameBox {
   font-size: 1.5em; }
@@ -1084,7 +1121,7 @@ body {
   transition: padding .2s; }
 
 .tabs:hover {
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0px 0px 12px 0px rgba(0, 0, 0, 0.75);
   background-color: #B2B2B2;
   padding: 15px; }
 
@@ -1122,7 +1159,7 @@ body {
   padding: 10px; }
 
 #recentQuizesContainer {
-  background-color: lightgrey;
+  background-color: #C7CFCF;
   border-radius: 20px;
   width: 90%;
   margin-top: 20px;
@@ -1134,7 +1171,7 @@ body {
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.75); }
 
 #topPlayersContainer {
-  background-color: lightgrey;
+  background-color: #C7CFCF;
   border-radius: 20px;
   height: 510px;
   margin-top: 20px;
