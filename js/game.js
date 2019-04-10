@@ -98,6 +98,27 @@ function next_question(){
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
+$(document).on("click", "#addComment", function(){
+	var $form = $( this ).parent().parent().parent().parent().children();
+	comment = $form.find( "input[name='newComment']" ).val();
+	if (comment == null) {
+		return;
+	}
+	$.post("../api/addComment.php", {
+		nick : nick, 
+		quizid : quizStuff.quizId,
+		comment : comment,
+	}, function(){
+		$.get("../inc/commentBox.html", function(commentBox){
+			commentBoxHTML = $.parseHTML(commentBox);
+			$(commentBoxHTML).find(".commentNick").text(nick);
+			$(commentBoxHTML).find(".commentComment").text(comment);
+
+			$(".allComments").append(commentBoxHTML)
+		})
+	})
+})
+
 
 
 	$(document).on("click", "#endQuiz", function(){

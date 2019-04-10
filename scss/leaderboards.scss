@@ -51,6 +51,7 @@
 #leaderPlace{
 	vertical-align: middle;
 	margin-left: 20px;
+	text-align: center;
 }
 
 #leaderboard{
@@ -64,18 +65,19 @@
 }
 
 #secondPlaceLeft{
-	margin-left: 10px;
+	text-align: center;
 	font-size: 1.5em;
 	color: silver;
 }
 
 #firstPlace{
+	text-align: center;
 	font-size: 1.8em;
 	color: gold;
 }
 
 #firstPlaceRight{
-	text-align: right;
+	text-align: center;
 	font-size: 1.8em;
 	color: gold;
 }
@@ -86,16 +88,15 @@
 }
 
 #secondPlaceRight{
-	text-align: right;
+	text-align: center;
 	font-size: 1.5em;
 	color: silver;
-	margin-right: 5px;
 }
 
 #thirdPlaceLeft{
+	text-align: center;
 	font-size: 1.2em;
 	color: #A56E2A;
-	margin-left: 15px;
 }
 
 #thirdPlace{
@@ -104,23 +105,24 @@
 }
 
 #thirdPlaceRight{
-	text-align: right;
+	text-align: center;
 	font-size: 1.2em;
 	color: #A56E2A;
-	margin-right: 10px;
 }
 
 
 #leaderboardSingle{
 	padding: 5px;
 	display: grid;
-	grid-template-columns: 10% 50% 1fr;
+	grid-template-columns: 10% 65% 1fr;
 	color: white;
 	font-weight: bold;
 }
 
 #leaderboardContainer{
-	background-image: linear-gradient(to bottom right, teal, teal,black);
+	background-color: #485461;
+	background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
+	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 	text-align: center;
 	border-radius: 20px;
 	overflow: hidden;
@@ -131,7 +133,6 @@
 }
 
 #leaderboardScore{
-	text-align: right;
-	margin-right: 20px;
+	text-align: center;
 }
 

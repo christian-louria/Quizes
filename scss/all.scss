@@ -9,6 +9,8 @@ $accent: #C7CFCF;
 @import 'results';
 @import 'mobile';
 @import 'index';
+@import 'textinput';
+@import 'coolButtons';
 
 body{
 	color: teal;
@@ -38,6 +40,24 @@ body{
     .quizNameBox{font-size: 1em !important};
 
 }
+
+.center{
+	position: relative;
+	top: 0px;
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+
+.centerButton{
+	position: relative;
+	top: 0px;
+	text-align: center;
+	margin-top: -3px;
+}
+
+
 
 #confetti{
 	width: 100%;
@@ -76,23 +96,10 @@ body{
 
 
 #startQuiz{
-	background-color: green;
-	border-radius: 100px;
-	width: 100px;
-	font-size: 1.3em;
-	margin-right: auto;
-	margin-left: auto;
-	padding: 5px;
-	color: white;
-	text-align: center;
-	margin-top: 20px;
-	font-weight: bold;
 	cursor: pointer;
 }
 
-#startQuiz:hover{
-	background-color: #00A800;
-}
+
 
 #questionAmmount{
 	text-align: center;

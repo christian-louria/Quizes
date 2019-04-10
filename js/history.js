@@ -143,6 +143,23 @@
 
 				})
 			})
+			$.post("../api/getComments.php", {
+				quizid : quizid,
+			}, function(comments){
+				comments = JSON.parse(comments);
+				$.get("../inc/commentBox.html", function(commentBox){
+					console.log(comments)
+					for (var i = 0; comments.length > i; i++) {
+						commentBoxHTML = $.parseHTML(commentBox);
+						$(commentBoxHTML).find(".commentNick").text(comments[i]['nick'])
+						$(commentBoxHTML).find(".commentNick").attr('onClick', 'users_profile("'+comments[i]["nick"]+'");');
+						$(commentBoxHTML).find(".commentComment").text(comments[i]['comment'])
+						$(commentBoxHTML).find(".commentDate").text(timeDifference(new Date(), comments[i]['time']))
+						$(".allComments").append(commentBoxHTML)
+					}
+				})
+				
+			})
 		})
 	}
 	}, delayInMilliseconds);

@@ -1,3 +1,13 @@
+.textInside{
+	pointer-events: none;
+	position: relative;
+	top: 30px;
+	z-index: 1;
+	font-weight: bolder;
+	color: white;
+}
+
+
 .button{
 	transition: all .2s ease-in-out;
     cursor: pointer;
@@ -16,16 +26,8 @@
 }
 
 #seeResultsButton{
-	margin-right: auto;
-	margin-left: auto;
-	width: 200px;
-	background-color: grey;
-	color: white;
-	padding: 10px;
-	border-radius: 100px;
+	font-weight: bold;
 	cursor: pointer;
-	text-align: center;
-	margin-top: 20px;
 }
 
 #backToQuizzesButton{

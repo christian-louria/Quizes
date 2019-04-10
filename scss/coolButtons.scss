@@ -1,0 +1,69 @@
+
+.social-btns .btn.results:before {
+  background-color: teal;
+}
+.social-btns .btn.results .fa {
+  color: teal;
+}
+
+.social-btns .btn.start:before {
+  background-color: green;
+}
+.social-btns .btn.start .fa {
+  color: green;
+}
+.social-btns .btn:focus:before,
+.social-btns .btn:hover:before {
+  top: -200%;
+  left: -10%;
+}
+
+//////////////////////
+.social-btns {
+    height: 40px;
+    margin: auto;
+    font-size: 0;
+    text-align: center;
+}
+
+
+.social-btns .btn {
+    background-color: #191919;
+    width: 100px;
+    height: 30px;
+    margin: 0 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
+    opacity: 0.99;
+}
+.social-btns .btn, .social-btns .btn:before, .social-btns .btn .fa {
+    transition: all 0.35s;
+    transition-timing-function: cubic-bezier(0.31, -0.105, 0.43, 1.59);
+}
+.btn {
+    border: 1px solid black;
+    display: inline-block;
+    padding: 5px;
+    height: 25px;
+    background: #000;
+    cursor: pointer;
+}
+
+
+.social-btns .btn:before {
+    content: '';
+    width: 150%;
+    height: 400%;
+    position: absolute;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.social-btns .btn:before {
+    top: 80%;
+    left: -124%;
+}
+
+
