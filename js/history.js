@@ -85,8 +85,8 @@
 			},function(haveTaken){
 				haveTaken = JSON.parse(haveTaken);
 				quizStuff.taken = haveTaken["count(*)"];
-				if (haveTaken["count(*)"] == 0) {
-					$("#seeResultsButton").hide();
+				if (haveTaken["count(*)"] != 0) {
+					$("#seeResultsButtonHider").show();
 				}
 			});
 			$.post("api/getQuestions.php", {

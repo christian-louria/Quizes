@@ -985,6 +985,9 @@ LEVEL 4. SETTINGS
   --fieldBorderColor: white;
   --fieldBorderColorActive: teal; }
 
+#seeResultsButtonHider {
+  display: none; }
+
 .centerButton {
   position: relative;
   top: 0px;
