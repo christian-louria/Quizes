@@ -239,6 +239,7 @@ function loadProfile(){
 					$(html).find(".quizCreatorBoxText").text(quizes[i]["quizCreator"])
 					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
 					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+					
 					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
 					(function(tempHtml){
 						$.get("../inc/editButton.html", function(button){
