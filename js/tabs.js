@@ -69,6 +69,7 @@ function users_profile(userProf){
 
 function quiz_page(e){
 	$("#usernameTitle").show();
+	$(".xpModal").empty()
 	if (!e) var e = window.event;
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
@@ -112,6 +113,7 @@ function edit_question(e){
 }
 
 function loadIndex(){
+	$("#catchupXPHider").hide()
 	$("#mainContent").load("home.html");
 	$("#usernameTitle").show();
 	$.getJSON("api/getQuizesRecent.php", function(quizes){
@@ -159,6 +161,7 @@ function loadIndex(){
 }
 
 function loadQuizes(){
+	$("#catchupXPHider").hide()
 	$("#usernameTitle").show();
 	$("#mainContent").load("quizes.html");
 	$.getJSON("../api/getQuizes.php", function(quizes){
@@ -185,6 +188,8 @@ function loadQuizes(){
 }
 
 function loadProfile(){
+	$("#xpBarModal").empty()
+	$("#catchupXPHider").hide()
 	$("#mainContent").load("profile.html", function(){
 		$("#usernameTitle").hide();
 		$.post("../api/getProfile.php", {
@@ -218,8 +223,10 @@ function loadProfile(){
 			// increaseXP(3528, 2000, function(){
 			// 	//usersXP += XP;
 			// })
-			showXP(xpperc);
+			showXP(xpperc); 
 		})
+
+
 		$.post("../api/getMyQuizes.php", {
 			nick : nick,
 		}, function(quizes){
@@ -233,7 +240,6 @@ function loadProfile(){
 					$(html).find(".quizNameBox").text(quizes[i]["quizName"])
 					$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
 					$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
-
 					(function(tempHtml){
 						$.get("../inc/editButton.html", function(button){
 							var button = $.parseHTML(button)
@@ -241,14 +247,37 @@ function loadProfile(){
 						})						
 					})(html);	
 
-					$("#myQuizList").append(html);
+					$(".profilesQuizes").append(html);
 				}
 			})
 		})
+
+
+		// $.post("../api/getMyQuizes.php", {
+		// 	nick : nick,
+		// }, function(quizes){
+		// 	quizes = JSON.parse(quizes);
+		// 	$.get("../inc/quizBox.html", function(quizBoxhtml){
+		// 		$("#myTotalQuizes").text(quizes.length)
+		// 		for (var i = 0; i < quizes.length; i++) {
+		// 			var html = $.parseHTML(quizBoxhtml);
+		// 			$(html).find(".questionAmmount").text(quizes[i][0])
+		// 			$(html).find(".quizCreatorBoxText").text(quizes[i]["quizCreator"])
+		// 			$(html).find(".quizNameBox").text(quizes[i]["quizName"])
+		// 			$(html).find(".quizNum").attr("id", quizes[i]["qKey"])
+		// 			$(html).attr('onClick', 'take_quiz('+quizes[i]["qKey"]+');');
+
+					
+
+		// 			$("#myQuizList").append(html);
+		// 		}
+		// 	})
+		// })
 	});	
 }
 
 function loadMakeQuiz(){
+	$("#catchupXPHider").hide()
 	$("#usernameTitle").show();
 	$("#mainContent").load("makeQuiz.html");
 }

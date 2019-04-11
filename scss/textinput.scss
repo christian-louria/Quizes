@@ -1,9 +1,29 @@
+.noTop{
+  top: 24px !important;
+}
+
+.moreTop{
+  margin-top: 30px !important;
+}
+
+
+.questionWidth{
+  width: 80%;
+  margin-left: 10%;
+  font-size: 1.5em !important;
+}
+
+
 .commentWidth{
   width: 100%;
 }
 
 .loginWidth{
   width: 200px;
+}
+
+.whiteText{
+  color: white;
 }
 
 
@@ -118,6 +138,7 @@ LEVEL 3. PRESENTATION STYLES
   cursor: text;
 
   position: absolute;
+  top: 16px;
   bottom: 0;
   left: 0;
 }
@@ -188,6 +209,7 @@ LEVEL 3. PRESENTATION STYLES
   border: var(--uiFieldBorderWidth) solid var(--fieldBorderColorActive);
 
   position: absolute;
+  top: 16px;
   bottom: 0;
   left: 0;
 
@@ -211,6 +233,7 @@ LEVEL 4. SETTINGS
 */
 
 .field{
-  --fieldBorderColor: #191919;
+  --fieldBorderColor: white;
   --fieldBorderColorActive: teal;
 }
+

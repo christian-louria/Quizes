@@ -3,7 +3,7 @@ $(document).on("click", "#addQuiz", function(){
 		$("#makeQuizError").text("Must log in to create a quiz");
 	}
 	else{
-		var $form = $(this).parent().parent().children();
+		var $form = $(this).parent().parent().parent().parent().children();
 		var quizName = $form.find( "input[name='createQuizName']" ).val();
 		if (typeof quizName === 'undefined') {
 			$("#makeQuizError").text("Quiz has gotta have a name");
@@ -30,7 +30,7 @@ $(document).on("keyup", '#createQuizName', function(e) {
 			$("#makeQuizError").text("Must log in to create a quiz");
 		}
 		else{
-			var $form = $(this).parent().parent().children();
+			var $form = $(this).parent().parent().parent().parent().children();
 			quizName = $form.find( "input[name='createQuizName']" ).val();
 			quizCreator = nick;
 			$.post("api/addQuiz.php",{
@@ -49,13 +49,15 @@ $(document).on("keyup", '#createQuizName', function(e) {
 
 
 $(document).on("click", "#addQuestion", function(){
-	var $form = $( this ).parent().parent().children();
+	var $form = $( this ).parent().parent().parent().parent().children();
 	question = $form.find( "input[name='question']" ).val(),
-	q1 = $form.find( "input[name='q1']" ).val(),
-	q2 = $form.find( "input[name='q2']" ).val(),
-	q3 = $form.find( "input[name='q3']" ).val(),
-	q4 = $form.find( "input[name='q4']" ).val(),
-	answer = $form.find( 'input[name=q]:checked').attr("id"),
+	console.log(question)
+	q1 = $form.find( "input[name='q1']" ).val();
+	q2 = $form.find( "input[name='q2']" ).val();
+	q3 = $form.find( "input[name='q3']" ).val();
+	q4 = $form.find( "input[name='q4']" ).val();
+	answer = $form.find( 'input[name=q]:checked').attr("id");
+	console.log(q1)
 	quizNum = $form.find( "div[class='quizNum']" ).attr("id");
 
 	if (question == null || q1 == null || q2 == null 
@@ -108,12 +110,16 @@ $(document).on('click', '.deleteQuestion', function(){
 	$.post("api/deleteQuestion.php", {
 		questkey : questkey
 	})
+
+	var quizid = $(".quizId").attr("id")
+	
+	quiz_page(parseInt(quizid));
 })
 
 $(document).on("click", ".updateQuestion", function(){
-	
+	console.log("here")
 	questkey = $(".updateQuestion").attr("id")
-	var $form = $( this ).parent().parent().children();
+	var $form = $( this ).parent().parent().parent().parent().children();
 	question = $form.find( "input[name='question']" ).val(),
 	q1 = $form.find( "input[name='q1']" ).val(),
 	q2 = $form.find( "input[name='q2']" ).val(),

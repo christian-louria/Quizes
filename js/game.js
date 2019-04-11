@@ -7,7 +7,7 @@ function check_answer(e){
 	else{
 		targ = $(targ)
 	}
-	var answer = targ.attr("id")
+	var answer = targ.attr("id").charAt(0);
 	// $("#susp")[0].pause();
 	// $("#susp")[0].currentTime = 0;
 	// $("#drop")[0].play();
@@ -20,12 +20,12 @@ function check_answer(e){
 }
 
 function display_next(answer){
+	console.log(answer)
 	if (!(guessed)) {
-		$(".answerBox").removeClass("answerHover");
-		$(".answerBox").unbind('mouseenter').unbind('mouseleave')
-		//$(".answerBox").off('hover');
 
-		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]).addClass("correct")
+		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]+"button").addClass("right")
+		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]+"button").addClass("forceHover")
+
 		if (answer == quizStuff.quizQuestions[questionCounter]["answer"]) {
 			quizStuff.score += 100;
 			quizStuff.right++;
@@ -36,20 +36,25 @@ function display_next(answer){
 
 		}
 		else {
-			$("#"+answer).addClass("wrong")
+			$("#"+answer+"button").addClass("wrong")
+			$("#"+answer+"button").addClass("forceHover")
+			
+			//$("#"+answer+"button").addClass("btnWrong")
 			quizStuff.wrong++;
 			$.post("../api/guessWrong.php", {
 				nick, nick
 			})
 		}
 		if (questionCounter + 1 == quizStuff.quizQuestions.length) {
-			$(".nextQuestion").attr("id", "endQuiz")
-			$(".nextQuestion").text("Upload Results")
+			$(".nextQuestion").show()
+			$(".upNextAction").attr("id", "endQuiz")
+			$("#upNext").text("Upload Results")
 		}
 		else {
-			$(".nextQuestion").attr("id", "nextQuestion")
-			$(".nextQuestion").text("Next Question")
-			$(".nextQuestion").attr('onClick', 'next_question();');
+			$(".nextQuestion").show()
+			//$(".nextQuestion").attr("id", "nextQuestion")
+			$("#upNext").text("Next Question")
+			$(".upNextAction").attr('onClick', 'next_question();');
 		}
 		guessed = true;
 		if (quizStuff.taken == 0 && quizStuff.prevGuess == 0) {
@@ -67,12 +72,12 @@ function next_question(){
 	// $("#drop")[0].pause();
 	// $("#susp")[0].play();
 	// $("#drop")[0].currentTime = 0;
-	$(".answerBox").addClass("answerHover");
-	$(".nextQuestion").empty()
-	$(".nextQuestion").removeAttr("id", "nextQuestion")
-	$(".nextQuestion").removeAttr('onClick', 'next_question();');
-	$(".answerBox").removeClass("correct")
-	$(".answerBox").removeClass("wrong")
+	$(".nextQuestion").hide()
+	//$(".upNextAction").removeAttr("id", "nextQuestion")
+	$(".upNextAction").removeAttr('onClick', 'next_question();');
+	$(".btn-quiz").removeClass("right")
+	$(".btn-quiz").removeClass("wrong")
+	$(".btn-quiz").removeClass("forceHover")
 	questionCounter++;
 	guessed = false;
 	$("#questionWords").text(quizStuff.quizQuestions[questionCounter]["question"])
@@ -138,9 +143,15 @@ $(document).on("click", "#addComment", function(){
 			nick : nick,
 			XP : XP,
 		})
+		$.post("../api/updateCreatorXP.php", {
+			creator : quizStuff.quizInfo[0]["quizCreator"],
+			xp : (quizStuff.quizQuestions.length * 10),
+			quizName : quizStuff.quizInfo[0]['quizName'],
+			taker : nick,
+		})
 		guessed = false;
 		$("#mainContent").load("quizXPandRe.html", function(){
-
+			console.log(usersXP)
 			var quickP = levelPercentage(usersXP);
 			$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
 			$("#xp-bar-fill").animate({width : ""+quickP+"%"}, {duration : 2000});
@@ -198,7 +209,7 @@ $(document).on("click", "#addComment", function(){
 					$("#2").text(quizStuff.quizQuestions[questionCounter]["q2"])
 					$("#3").text(quizStuff.quizQuestions[questionCounter]["q3"])
 					$("#4").text(quizStuff.quizQuestions[questionCounter]["q4"])
-					$("#susp")[0].play();
+					//$("#susp")[0].play();
 					if (quizStuff.taken == 0) {
 						$.post("../api/getGuessed.php",{
 							nick : nick,

@@ -76,6 +76,7 @@
 	///////////////////////////////////
 	else if (url.includes("takequiz")) {
 		$("#mainContent").load("quizStart.html", function(){
+			$("#xpBarModal").empty()
 			var quizid = url.split('=')[1]
 			quizStuff.quizId = quizid;
 			$.post("../api/isLegit.php", {
@@ -104,6 +105,7 @@
 
 					$("#questionAmmount").text("Questions: " + quizStuff.quizQuestions.length)
 					$("#quizCreator").text(quizStuff.quizInfo[0]["quizCreator"])
+					$("#quizCreator").attr('onClick', 'users_profile("'+quizStuff.quizInfo[0]["quizCreator"]+'");');
 					$("#quizName").text(quizStuff.quizInfo[0]["quizName"])
 
 					$.post("../api/getLeaderboard.php", {
@@ -154,7 +156,7 @@
 						$(commentBoxHTML).find(".commentNick").text(comments[i]['nick'])
 						$(commentBoxHTML).find(".commentNick").attr('onClick', 'users_profile("'+comments[i]["nick"]+'");');
 						$(commentBoxHTML).find(".commentComment").text(comments[i]['comment'])
-						$(commentBoxHTML).find(".commentDate").text(timeDifference(new Date(), comments[i]['time']))
+						$(commentBoxHTML).find(".commentDate").text(comments[i]['time'])
 						$(".allComments").append(commentBoxHTML)
 					}
 				})

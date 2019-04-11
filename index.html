@@ -8,6 +8,58 @@
 <body>
 	<canvas id="confetti" width="300" height="300" class="active"></canvas>
 	<div id="body">
+			<div id="blur">
+				
+			</div>
+
+			<div class="xpModalContainer">
+				<div class="xpModal">
+					<div class="modalHeader">
+						While you were gone...
+					</div>
+					<div class="creatorQuizList">
+						
+					</div>
+					
+					
+				</div>
+				<div id="xpBarModal">
+					<div class="totalContainer">
+						<div class="creatorTotalWords">
+							Total
+						</div>
+						<div class="xpHider">
+							<div class="creatorTotalNumber">
+								0
+							</div>
+						</div>
+						
+					</div>
+						<div id='account-bar-wrapper'>
+						  <div id='account-bar'>
+						    <div id='account-bar-level'></div>
+						    <div id="barAndNext">
+								<div id='xp-bar'>
+							      <div id='xp-bar-fill'>
+							        <div id='xp-increase-fx'>
+							        	<div id='xp-increase-fx-flicker'>
+							        		<div class='xp-increase-glow1'></div>
+							        		<div class='xp-increase-glow2'></div>
+							        		<div class='xp-increase-glow3'></div>
+							        	</div>
+							        	<div class='xp-increase-glow2'></div></div>
+							      </div>
+							    </div>
+						   		<div id='account-bar-next-level'></div>
+						   		<div id="xpToNext"></div>
+							</div>
+						  </div>
+						</div>
+					</div>
+				
+			</div>
+		
+
 		<div id="mobileSignin">
 			<input type="text" id="usernameMobile" name="usernameMobile" autocomplete="off" placeholder="Username">
 			<div id="signinMobile" class="button">
@@ -36,6 +88,19 @@
 				<div id="usernameTitle">
 					Guest
 				</div>
+				<div id="catchupXPHider">
+					<div id="catchupXP">
+						<div class="center">
+							<div class="textInside">
+								GetXP
+							</div>
+							<div class="social-btns">
+								<div class="btn goldBtn" id="">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div id="mainContent">
 
 					<div id="recentAndPlayers">
@@ -62,10 +127,31 @@
 							</div>
 							<div id="allChanges">
 								<div class="updateNumber">
-									1.2
+									2.0
+								</div>
+								<div>
+									Added XP to creators when someone takes their quiz
+								</div>
+								<div>
+									Changed the buttons
+								</div>
+								<div>
+									Changed text inputs
 								</div>
 								<div>
 									Added comments on quizes
+								</div>
+								<div>
+									Changed colors
+								</div>
+								<div>
+									Adjusted shadows
+								</div>
+								<div>
+									Hidden Confetti
+								</div>
+								<div>
+									Updated profile tab
 								</div>
 								<div class="updateNumber">
 									1.1
@@ -138,17 +224,16 @@
 									Soon
 								</div>
 								<div>
-									Comments on quizes
+									While you were gone contain comments on your quizzes
 								</div>
-								
+								<div>
+									Upload profile pictures
+								</div>
 								<div>
 									whos that pokemon
 								</div>
 								<div>
 									wipe leaderboard on unrealease
-								</div>
-								<div>
-									XP to creator on quiz taken
 								</div>
 								<div class="updateNumber">
 									Later
@@ -182,13 +267,25 @@
 							<div id="signinWords">
 								Sign In
 							</div>
-							<input type="text" id="username" name="username" autocomplete="off" placeholder="Username">
+								<label class="field a-field a-field_a2 page__field loginWidth">
+							      <input autocomplete="off" class="field__input a-field__input whiteText" placeholder="user_name" name="username">
+							      <span class="a-field__label-wrap">
+							        <span class="a-field__label">Username</span>
+							      </span>
+							    </label>
 							<div id="signinError">
 								
 							</div>
-							<div id="signin" class="button">
-								Sign In
-							</div>		
+
+							<div class="center">
+								<div class="textInside">
+									Sign In
+								</div>
+								<div class="social-btns">
+									<div class="btn results whiteBorder" id="signin">
+									</div>
+								</div>
+							</div>	
 						</div>
 					</div>
 				</div>
@@ -196,18 +293,41 @@
 					<div id="signinWords">
 						Create An Account
 					</div>
-					
-					<input type="text" id="makeUsername" name="makeUsername" autocomplete="off" placeholder="New Username">
-					<input type="text" id="makeNick" name="makeNick" autocomplete="off" placeholder="New Nick">
+						<label class="field a-field a-field_a2 page__field loginWidth">
+					      <input autocomplete="off" class="field__input a-field__input whiteText" placeholder="user_name" name="makeUsername">
+					      <span class="a-field__label-wrap">
+					        <span class="a-field__label">Username</span>
+					      </span>
+					    </label>
+					    <label class="field a-field a-field_a2 page__field loginWidth topSpace">
+					      <input autocomplete="off" class="field__input a-field__input whiteText" placeholder="Wicked Nickname" name="makeNick">
+					      <span class="a-field__label-wrap">
+					        <span class="a-field__label">Nick</span>
+					      </span>
+					    </label>
+
+
+					<!-- <input type="text" id="makeUsername" name="makeUsername" autocomplete="off" placeholder="New Username">
+					<input type="text" id="makeNick" name="makeNick" autocomplete="off" placeholder="New Nick"> -->
 					<div id="createSuccess">
 						
 					</div>
-					<div id="makeAccount" class="button">
+					<div class="center">
+						<div class="textInside">
+							Sign In
+						</div>
+						<div class="social-btns">
+							<div class="btn results whiteBorder" id="makeAccount">
+							</div>
+						</div>
+					</div>	
+
+					<!-- <div id="makeAccount" class="button">
 						Make Account
-					</div>
+					</div> -->
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

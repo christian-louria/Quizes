@@ -11,6 +11,7 @@ $accent: #C7CFCF;
 @import 'index';
 @import 'textinput';
 @import 'coolButtons';
+@import 'xpModal';
 
 body{
 	color: teal;
@@ -41,22 +42,13 @@ body{
 
 }
 
-.center{
-	position: relative;
-	top: 0px;
-	text-align: center;
+.topSpace{
 	margin-top: 10px;
-	margin-bottom: 10px;
 }
 
-
-.centerButton{
-	position: relative;
-	top: 0px;
+.centerText{
 	text-align: center;
-	margin-top: -3px;
 }
-
 
 
 #confetti{
@@ -67,6 +59,7 @@ body{
 	bottom: 100%;
 	left: 0;
 	right: 0;
+	z-index: 300
 	// opacity: 0;
 }
 
@@ -102,13 +95,21 @@ body{
 
 
 #questionAmmount{
+	margin: 10px;
 	text-align: center;
 	color: grey;
 }
 
 #quizCreator{
+	display: inline-block;
+	margin-top: 10px;
 	color: grey;
 	text-align: center;
+	cursor: pointer;
+}
+
+#quizCreator:hover{
+	text-decoration: underline;
 }
 
 .editPic:hover{
@@ -117,8 +118,8 @@ body{
 
 .editPic{
 	text-align: center;
-	margin-left: 5px;
-	margin-top: 5px;
+	margin-left: 20px;
+	height: 20px;
 	transition: all .2s ease-in-out;
 }
 
@@ -274,21 +275,6 @@ body{
 }
 
 
-#addQuestion{
-	margin-left: auto;
-	margin-right: auto;
-	background-color: teal;
-	color: white;
-	border-radius: 100px;
-	width: 200px;
-	padding: 20px;
-	text-align: center;
-	margin-top: 20px;
-	z-index: 100;
-	cursor: pointer;
-	margin-bottom: 50px;
-}
-
 
 #questionsContainer{
 	display: grid;
@@ -303,25 +289,6 @@ body{
 
 #questionWrap{
 	text-align: center;
-}
-
-
-#endQuiz{
-	margin-right: auto;
-	margin-left: auto;
-	width: 200px;
-	background-color: teal;
-	color: white;
-	padding: 10px;
-	border-radius: 100px;
-	cursor: pointer;
-	text-align: center;
-	margin-top: 20px;
-}
-
-#answers{
-	display: grid;
-	grid-template-columns: 50% 50%
 }
 
 
@@ -355,24 +322,14 @@ body{
 	cursor: pointer;
 }
 
-.correct{
-	background-color: green;
-	color: white;
-}
-
-.wrong{
-	background-color: red;
-	color: white;
-}
-
 
 #quizName{
 
 }
 
 .recentQuizesBox{
-	border-bottom: black 1px solid;
-	border-top: black 1px solid;
+	border-bottom: grey 1px solid;
+	border-top: grey 1px solid;
 	margin-bottom: -1px;
 	padding: 5px;
 	cursor: pointer;
@@ -381,13 +338,17 @@ body{
 
 .recentQuizesBox:hover{
 	background-color: #B2B2B2;
-	box-shadow: inset 0px 0px 12px 0px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 0px 6px 0px rgba(0,0,0,0.75);
 }
 
 
 .quizNameBox{
 	font-size: 1.5em;
 
+}
+
+.quizCreatorBox{
+	display: flex;
 }
 
 .quizCreatorBoxText{
@@ -406,25 +367,17 @@ body{
 }
 
 #addQuiz{
-	background: teal;
-	color: white;
-	width: 200px;
-	height: 40px;
-	border-radius: 100px;
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 20px;
-	cursor: pointer;
+	// background: teal;
+	// color: white;
+	// width: 200px;
+	// height: 40px;
+	// border-radius: 100px;
+	// margin-right: auto;
+	// margin-left: auto;
+	// margin-top: 20px;
+	// cursor: pointer;
 }
 
-
-
-#username{
-	width: 200px;
-	height: 25px;
-	font-size: .9em;
-	border-radius: 5px;
-}
 
 
 #usernameMobile{
@@ -435,15 +388,15 @@ body{
 }
 
 #signin{
-	padding: 5px;
-	background: teal;
-	color: white;
-	border: 1px black solid;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 10px;
-	width: 190px;
-	border-radius: 100px;
+	// padding: 5px;
+	// background: teal;
+	// color: white;
+	// border: 1px black solid;
+	// margin-left: auto;
+	// margin-right: auto;
+	// margin-top: 10px;
+	// width: 190px;
+	// border-radius: 100px;
 }
 
 #signinMobile{
@@ -490,7 +443,7 @@ body{
 }
 
 .tabs{
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid grey;
 	padding: 10px;
 	text-align: center;
 	font-weight: bolder;
@@ -500,7 +453,7 @@ body{
 }
 
 .tabs:hover{
-	box-shadow: inset 0px 0px 12px 0px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 0px 6px 0px rgba(0,0,0,0.75);
 	background-color: #B2B2B2;
 	padding: 15px;
 }
@@ -535,7 +488,7 @@ body{
 
 #logoPic{
 	text-align: center;
-	border-bottom: 1px black solid;
+	border-bottom: 1px grey solid;
 }
 
 
@@ -572,6 +525,7 @@ body{
 
 
 #topPlayersContainer{
+
 	background-color: $accent;
 	border-radius: 20px;
 	height: 510px;
@@ -579,7 +533,7 @@ body{
 	margin-bottom: 20px;
 	margin-left: 6%;
 	margin-right: 6%;
-	overflow: hidden;
+	overflow: scroll;
 	border: 2px solid black;
 	box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
 }

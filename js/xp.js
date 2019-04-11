@@ -51,7 +51,6 @@ function levelPercentage(xpTotal){
 }
 
 function recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed){
-	console.log(incLevel);
 	if (spill == -1) {
 		completed();
 		return;
@@ -97,3 +96,113 @@ function increaseXP(xpAmmount, xpIncrease, completed){
 	var incLevel = levelCalculator(usersXP) + 1;
 	recusiveXP(spill, xpPerc, xpIncrease, xpAmmount, incLevel, completed);
 }
+
+
+$(document).on("click", "#blur", function(){
+	
+	
+	$(".xpModalContainer").animate({top : "-610px"}, {duration : 500, complete : function(){
+		$(".xpModalContainer").animate({opacity : "1"}, {duration : 1})
+		$(".xpModalContainer").hide()
+	}})
+	
+	$("#blur").animate({opacity : "0"}, {duration : 200, complete : function(){
+		$("#blur").hide()
+	}})
+
+
+	// un-lock scroll position
+	var html = jQuery('html');
+	var scrollPosition = html.data('scroll-position');
+	html.css('overflow', html.data('previous-overflow'));
+	window.scrollTo(scrollPosition[0], scrollPosition[1])
+})
+
+
+$(document).on("click", "#catchupXP", function(){
+
+
+	$("#catchupXPHider").animate({height : "0px"}, {duration: 1000})
+	$("#catchupXP").animate({top : "-70px"}, {duration: 1000, complete : function(){
+		$("#catchupXP").hide();
+	}})
+
+	
+
+	$.post("../api/getCreatorXp.php", {
+		nick : nick,
+	}, function(creatorXp){
+		creatorXp = JSON.parse(creatorXp);
+		
+		// lock scroll position, but retain settings for later
+		var scrollPosition = [
+		  self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+		  self.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop
+		];
+		var html = jQuery('html'); // it would make more sense to apply this to body, but IE7 won't have that
+		html.data('scroll-position', scrollPosition);
+		html.data('previous-overflow', html.css('overflow'));
+		html.css('overflow', 'hidden');
+		window.scrollTo(scrollPosition[0], scrollPosition[1]);
+
+		$(".xpModalContainer").show()
+		$(".xpModalContainer").animate({opacity : "1"}, {duration : 1})
+		$(".xpModalContainer").animate({top : "100px"}, {duration : 500})
+		$("#blur").show()
+		$("#blur").animate({opacity : "1"}, {duration : 200})
+		
+
+
+			var quickP = levelPercentage(usersXP);
+
+			$("#xp-bar-fill").css("box-shadow",/*"0px 0px 15px #06f,*/ "-5px 0px 10px #fff inset");
+			$("#xp-bar-fill").animate({width : ""+quickP+"%"}, {duration : 2000});
+
+			$("#xpUp").text("+ "+500);
+			$("#account-bar-level").text("Level: " + (levelCalculator(usersXP)));
+			$("#account-bar-next-level").text(levelCalculator(usersXP) + 1);
+
+			dropDown(creatorXp)
+
+	})
+})
+
+function dropDown(creatorXp){
+	$.get("../inc/creatorBox.html", function(creatorBox){
+		dropDownRecursion(creatorXp, 0, creatorBox)
+	})
+}
+
+
+function dropDownRecursion(creatorXp, index, creatorBox){
+	if (index >= creatorXp.length) {
+		$(".creatorTotalNumber").animate({top : "100px"}, {duration : 1000, complete : function(){
+			increaseXP(usersXP, 500, function(){
+				usersXP += 500;
+				
+					$("#xpToNext").text("To next: " + (levelTotalTo(levelCalculator(usersXP)) - usersXP));
+					$("#xpToNext").animate({top : "0px", opacity : "1"}, {duration : 1000});
+				
+			})	
+		}})
+		return;
+	}
+	creatorBoxHTML = $.parseHTML(creatorBox);
+	//console.log(creatorXp[index]['quizid'])
+	
+	
+	$(creatorBoxHTML).find(".creatorNick").text(creatorXp[index]['taker']);
+	$(creatorBoxHTML).find(".creatorXP").text(creatorXp[index]['xp']);
+	$(creatorBoxHTML).find(".creatorQuiz").text(creatorXp[index]['quizName']);
+	$(".creatorQuizList").append(creatorBoxHTML);
+
+	$(".creatorTotalNumber").text((parseInt($(".creatorTotalNumber").text()) + creatorXp[index]['xp']))
+	$(creatorBoxHTML).animate({opacity : "1", top : "0px"}, {duration : 1000, complete : function(){
+		dropDownRecursion(creatorXp, index + 1, creatorBox)
+	}})
+}
+
+
+
+
+
