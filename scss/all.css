@@ -59,8 +59,8 @@
   cursor: pointer;
   margin-right: 7px;
   outline: none;
-  margin-top: -20px;
-  margin-left: 50%; }
+  margin-top: 10px;
+  margin-left: calc(50% - 15px); }
 
 .radioBox:checked::before {
   position: absolute;
@@ -167,40 +167,40 @@
   margin-bottom: 5px;
   border-bottom: 1px solid black; }
 
-#secondPlaceLeft {
+.secondPlaceLeft {
   text-align: center;
   font-size: 1.5em;
   color: silver; }
 
-#firstPlace {
+.firstPlace {
   text-align: center;
   font-size: 1.8em;
   color: gold; }
 
-#firstPlaceRight {
+.firstPlaceRight {
   text-align: center;
   font-size: 1.8em;
   color: gold; }
 
-#secondPlace {
+.secondPlace {
   font-size: 1.5em;
   color: silver; }
 
-#secondPlaceRight {
+.secondPlaceRight {
   text-align: center;
   font-size: 1.5em;
   color: silver; }
 
-#thirdPlaceLeft {
+.thirdPlaceLeft {
   text-align: center;
   font-size: 1.2em;
   color: #A56E2A; }
 
-#thirdPlace {
+.thirdPlace {
   font-size: 1.2em;
   color: #A56E2A; }
 
-#thirdPlaceRight {
+.thirdPlaceRight {
   text-align: center;
   font-size: 1.2em;
   color: #A56E2A; }
@@ -328,6 +328,11 @@
   color: white;
   margin-top: 15px;
   margin-bottom: 15px; }
+
+.hideChangeButton {
+  display: none;
+  position: relative !important;
+  top: -100px; }
 
 .moveRight {
   margin-left: 5px; }
@@ -653,6 +658,17 @@
   display: grid;
   grid-template-columns: 1fr 100px; }
 
+#leaderNick:hover {
+  text-decoration: underline;
+  cursor: pointer; }
+
+#someonesResults {
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-size: 2em;
+  margin-top: 10px; }
+
 .rightExpand {
   transition: all .2s ease-in-out; }
 
@@ -812,6 +828,19 @@
   width: 80%;
   margin-left: 10%;
   font-size: 1.5em !important; }
+
+.lessTop {
+  margin-top: -20px !important; }
+
+.smallerFont {
+  font-size: .7em !important; }
+
+.fixHint::after {
+  margin-bottom: 8px !important; }
+
+.hintWidth {
+  width: 50%;
+  margin-left: 25%; }
 
 .commentWidth {
   width: 100%; }
@@ -1291,6 +1320,78 @@ LEVEL 4. SETTINGS
   font-weight: bolder;
   position: relative;
   height: 100px; }
+
+.selectorNick {
+  font-size: 4em;
+  padding-top: 35px;
+  margin-left: 20px;
+  font-weight: bold;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white; }
+
+#selectorButtonPos {
+  position: relative;
+  bottom: -500px;
+  z-index: 102;
+  left: 220px;
+  display: none; }
+
+.selectorNickPic {
+  display: grid;
+  grid-template-columns: 70% 1fr;
+  height: 150px;
+  border-bottom: 2px solid black;
+  position: -webkit-sticky;
+  /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: #262626;
+  z-index: 101; }
+
+.profilePicModal {
+  position: absolute;
+  align-self: center;
+  border-radius: 5px;
+  z-index: 100; }
+
+.profilePicModalContainer {
+  height: 500px;
+  width: 600px;
+  background-color: #262626;
+  border: 1px solid black;
+  position: absolute;
+  overflow: scroll;
+  border-radius: 5px; }
+
+.picSelectorHider {
+  left: calc(50% - 300px);
+  position: absolute;
+  top: -400px;
+  display: none;
+  opacity: 0; }
+
+.picSelectorGrid {
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%; }
+
+.picSelectorSize {
+  height: 120px; }
+
+.picBorder:hover {
+  transform: scale(1.1);
+  cursor: pointer; }
+
+.picBorder {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 1px solid black;
+  border-radius: 60px;
+  overflow: hidden;
+  height: 120px;
+  width: 120px;
+  transition: all .2s ease-in-out; }
 
 body {
   color: teal;

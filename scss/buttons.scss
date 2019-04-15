@@ -97,8 +97,8 @@
 	cursor: pointer;     
 	margin-right: 7px;
 	outline: none;
-	margin-top: -20px;
-	margin-left: 50%;
+	margin-top: 10px;
+	margin-left: calc(50% - 15px);
 }
 .radioBox:checked::before
 {

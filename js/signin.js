@@ -1,3 +1,48 @@
+$(document).on("click", ".picSelectorSize", function(){
+	$("#selectorButtonPos").show();
+	$("#selectorPic").attr("src", $(this).attr("src"));
+
+})
+
+$(document).on("click", "#updatePic", function(){
+	let picUrl = $("#selectorPic").attr("src");
+	$.post("../api/updatePicUrl.php", {
+		nick : nick,
+		url : picUrl,
+	})
+
+	$(".picSelectorHider").animate({top : "-610px"}, {duration : 500, complete : function(){
+		$(".picSelectorHider").animate({opacity : "1"}, {duration : 1})
+		$(".picSelectorHider").hide()
+	}})
+	
+	$("#blur").animate({opacity : "0"}, {duration : 200, complete : function(){
+		$("#blur").hide()
+	}})
+
+
+	// un-lock scroll position
+	var html = jQuery('html');
+	var scrollPosition = html.data('scroll-position');
+	html.css('overflow', html.data('previous-overflow'));
+	window.scrollTo(scrollPosition[0], scrollPosition[1])
+})
+
+
+function getPicModal(){
+	$.get("../inc/profilePicSelector.html", function(profilePicSelector){
+		let html = $.parseHTML(profilePicSelector);
+
+		$(".picSelectorHider").html(html)
+		$(".picSelectorHider").show()
+		$(".picSelectorHider").animate({opacity : "1"}, {duration : 1})
+		$(".picSelectorHider").animate({top : "100px"}, {duration : 500})
+		$("#blur").show()
+		$("#blur").animate({opacity : "1"}, {duration : 200})
+		$(".selectorNick").html(nick)
+	})
+}
+
 function login(username){
 	$.post("api/checkLogin.php", {
 		username : username,
@@ -7,6 +52,22 @@ function login(username){
 		nick = userInfo[0]["nick"];
 		username = userInfo[0]["username"];
 		usersXP = userInfo[0]["xp"]
+		if (userInfo[0]['profilePic'] == null || userInfo[0]['profilePic'] == '') {
+				// lock scroll position, but retain settings for later
+			var scrollPosition = [
+			  self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+			  self.pageYOffset || document.documentElement.scrollTop  || document.body.scrollTop
+			];
+			var html = jQuery('html'); // it would make more sense to apply this to body, but IE7 won't have that
+			html.data('scroll-position', scrollPosition);
+			html.data('previous-overflow', html.css('overflow'));
+			html.css('overflow', 'hidden');
+			window.scrollTo(scrollPosition[0], scrollPosition[1]);
+
+			getPicModal()
+			
+
+		}
 		$("#usernameTitle").text(nick);
 		$.get("../inc/signOutBox.html", function(signOutBox){
 			var signOutBox = $.parseHTML(signOutBox);

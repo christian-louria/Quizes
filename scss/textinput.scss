@@ -12,6 +12,23 @@
   font-size: 1.5em !important;
 }
 
+.lessTop{
+  margin-top: -20px !important;
+}
+
+.smallerFont{
+  font-size: .7em !important;
+}
+
+.fixHint::after{
+  margin-bottom: 8px !important;
+}
+
+
+.hintWidth{
+  width: 50%;
+  margin-left: 25%;
+}
 
 .commentWidth{
   width: 100%;

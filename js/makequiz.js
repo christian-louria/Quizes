@@ -51,13 +51,16 @@ $(document).on("keyup", '#createQuizName', function(e) {
 $(document).on("click", "#addQuestion", function(){
 	var $form = $( this ).parent().parent().parent().parent().children();
 	question = $form.find( "input[name='question']" ).val(),
-	console.log(question)
 	q1 = $form.find( "input[name='q1']" ).val();
 	q2 = $form.find( "input[name='q2']" ).val();
 	q3 = $form.find( "input[name='q3']" ).val();
 	q4 = $form.find( "input[name='q4']" ).val();
+	q1hint = $form.find( "input[name='q1hint']" ).val();
+	q2hint = $form.find( "input[name='q2hint']" ).val();
+	q3hint = $form.find( "input[name='q3hint']" ).val();
+	q4hint = $form.find( "input[name='q4hint']" ).val();
+
 	answer = $form.find( 'input[name=q]:checked').attr("id");
-	console.log(q1)
 	quizNum = $form.find( "div[class='quizNum']" ).attr("id");
 
 	if (question == null || q1 == null || q2 == null 
@@ -75,6 +78,10 @@ else{
 		q4: q4,
 		answer: answer,
 		quizNum: quizNum,
+		q1hint: q1hint,
+		q2hint: q2hint,
+		q3hint: q3hint,
+		q4hint: q4hint,
 	})
 	url = window.location.href
 	var quizid = url.split('=')[1]
@@ -116,16 +123,26 @@ $(document).on('click', '.deleteQuestion', function(){
 	quiz_page(parseInt(quizid));
 })
 
+$(document).on("click", "#tobbleHints", function(){
+	$(".hintWidth").show()
+})
+
+
 $(document).on("click", ".updateQuestion", function(){
-	console.log("here")
 	questkey = $(".updateQuestion").attr("id")
 	var $form = $( this ).parent().parent().parent().parent().children();
-	question = $form.find( "input[name='question']" ).val(),
-	q1 = $form.find( "input[name='q1']" ).val(),
-	q2 = $form.find( "input[name='q2']" ).val(),
-	q3 = $form.find( "input[name='q3']" ).val(),
-	q4 = $form.find( "input[name='q4']" ).val(),
-	answer = $form.find( 'input[name=q]:checked').attr("id")
+	let question = $form.find( "input[name='question']" ).val();
+	let q1 = $form.find( "input[name='q1']" ).val();
+	let q2 = $form.find( "input[name='q2']" ).val();
+	let q3 = $form.find( "input[name='q3']" ).val();
+	let q4 = $form.find( "input[name='q4']" ).val();
+
+	let q1hint = $form.find( "input[name='q1hint']" ).val();
+	let q2hint = $form.find( "input[name='q2hint']" ).val();
+	let q3hint = $form.find( "input[name='q3hint']" ).val();
+	let q4hint = $form.find( "input[name='q4hint']" ).val();
+
+	let answer = $form.find( 'input[name=q]:checked').attr("id")
 
 	if (question == null || q1 == null || q2 == null 
 		|| q3 == null || q4 == null || answer == null){
@@ -141,6 +158,10 @@ else{
 		q4: q4,
 		answer: answer,
 		questkey: questkey,
+		q1hint: q1hint,
+		q2hint: q2hint,
+		q3hint: q3hint,
+		q4hint: q4hint,
 	}, function(hi){
 
 		var quizid = $(".quizId").attr("id")

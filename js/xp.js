@@ -105,6 +105,11 @@ $(document).on("click", "#blur", function(){
 		$(".xpModalContainer").animate({opacity : "1"}, {duration : 1})
 		$(".xpModalContainer").hide()
 	}})
+
+	$(".picSelectorHider").animate({top : "-610px"}, {duration : 500, complete : function(){
+		$(".picSelectorHider").animate({opacity : "1"}, {duration : 1})
+		$(".picSelectorHider").hide()
+	}})
 	
 	$("#blur").animate({opacity : "0"}, {duration : 200, complete : function(){
 		$("#blur").hide()

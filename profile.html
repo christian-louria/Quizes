@@ -71,13 +71,24 @@
 				<div id="profilePicBorder">
 					<div id="picContainer">
 						<div id="profilePic">
-							<form id="changeProfilePicForm" action="api/updateProfilePic.php" method="post" enctype="multipart/form-data">
+
+							
+							<div class="center hideChangeButton">
+								<div class="textInside">
+									Change Pic
+								</div>
+								<div class="social-btns">
+									<div class="btn goldBtn" id="selectorModalButton">
+									</div>
+								</div>
+							</div>
+							<!-- <form id="changeProfilePicForm" action="api/updateProfilePic.php" method="post" enctype="multipart/form-data">
 							    <input type="file" name="fileToUpload" id="fileToUpload">
 							    <label id="uploadPicButton" for="fileToUpload">Change Pic</label>
 							    <br>
 							    <input id="submitPic" type="submit" value="Upload Image" name="submit">
 							    <input type="hidden" name="nick" id="hiddenNick">
-							</form>
+							</form> -->
 						</div>
 					</div>
 				</div>

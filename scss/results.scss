@@ -1,3 +1,17 @@
+#leaderNick:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+
+#someonesResults{
+	color: white;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    margin-top: 10px;
+}
+
 .rightExpand{
 	transition: all .2s ease-in-out;
 }

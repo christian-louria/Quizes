@@ -1,3 +1,9 @@
+$(document).on("click", "#selectorModalButton", function(){
+	getPicModal()
+})
+
+
+
 $(document).on("submit", "#changeProfilePicForm", function(e) {
 		e.preventDefault();
 
@@ -17,12 +23,16 @@ $(document).on("submit", "#changeProfilePicForm", function(e) {
 				loadProfile()
 			}, 1000);
 	});
+
+
 $(document).on("mouseenter", "#picContainer", function(){
-		$("#changeProfilePicForm").css('visibility', 'visible');
+		$(".hideChangeButton").show();
 	})
 
+
+
 	$(document).on("mouseleave", "#picContainer", function(){
-		$("#changeProfilePicForm").css('visibility', 'hidden');
+		$(".hideChangeButton").hide();
 	})
 
 	$(document).on("click", "#editBioButton", function(){

@@ -11,6 +11,7 @@
 
 	if (url.includes("editquiz")) {
 		$("#mainContent").load("quiz.html", function(){
+			$(".hintWidth").hide()
 			var quizid = url.split('=')[1]
 			$(".quizNum").attr("id", quizid)
 
@@ -52,6 +53,7 @@
 	/////////////////////////////////////////
 	else if (url.includes("editquestion")) {
 		$("#currentEditQuestion").load("editQuestion.html", function(){
+			$(".hintWidth").hide()
 			var questionid = url.split('=')[1];
 			$(".currentEditQuestionBox").removeClass("currentEditQuestionBox")
 			$("#"+questionid).addClass("currentEditQuestionBox")
@@ -64,10 +66,14 @@
 				$("#"+question[0]["answer"]).attr('checked', true);
 				$(".quizId").attr("id", question[0]["quizNum"])
 				$("#question").val(question[0]["question"])
-				$("#q1").val(question[0]["q1"])
-				$("#q2").val(question[0]["q2"])
-				$("#q3").val(question[0]["q3"])
-				$("#q4").val(question[0]["q4"])
+				$("[name=q1]").val(question[0]["q1"])
+				$("[name=q2]").val(question[0]["q2"])
+				$("[name=q3]").val(question[0]["q3"])
+				$("[name=q4]").val(question[0]["q4"])
+				$("[name=q1hint]").val(question[0]["q1help"])
+				$("[name=q2hint]").val(question[0]["q2help"])
+				$("[name=q3hint]").val(question[0]["q3help"])
+				$("[name=q4hint]").val(question[0]["q4help"])
 				$(".deleteQuestion").attr("id", question[0]["questKey"])
 				$(".updateQuestion").attr("id", question[0]["questKey"])
 			})
@@ -118,26 +124,28 @@
 								$("#leaderboardList").append("No Results...")
 							}
 							for (var i = 0; i < leaderboard.length; i++) {
-								leaderHTML = $.parseHTML(leaderboardBox)
-								$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"])
-								$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"])
+								leaderHTML = $.parseHTML(leaderboardBox);
+								$(leaderHTML).find("#leaderNick").attr('onClick', 'load_prev_results_for("'+(leaderboard[i]["nick"]+'");'));
+								$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"]);
+								$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"]);
 								$(leaderHTML).find("#leaderPlace").text(i+1)
 								if (i == 0) {
-									$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace")
-									$(leaderHTML).find("#leaderNick").attr("id", "firstPlace")
-									$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight")
+									$(leaderHTML).find("#leaderPlace").attr("class", "firstPlace");
+									$(leaderHTML).find("#leaderNick").attr("class", "firstPlace");
+									$(leaderHTML).find("#leaderboardScore").attr("class", "firstPlaceRight");
 								}
 								if (i == 1) {
-									$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft")
-									$(leaderHTML).find("#leaderNick").attr("id", "secondPlace")
-									$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight")
+									$(leaderHTML).find("#leaderPlace").attr("class", "secondPlaceLeft");
+									$(leaderHTML).find("#leaderNick").attr("class", "secondPlace");
+									$(leaderHTML).find("#leaderboardScore").attr("class", "secondPlaceRight");
 								}
 								if (i == 2) {
-									$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft")
-									$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace")
-									$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight")
+									$(leaderHTML).find("#leaderPlace").attr("class", "thirdPlaceLeft");
+									$(leaderHTML).find("#leaderNick").attr("class", "thirdPlace");
+									$(leaderHTML).find("#leaderboardScore").attr("class", "thirdPlaceRight");
 								}
-								$("#leaderboardList").append(leaderHTML)
+								$("#leaderboardList").append(leaderHTML);
+
 							}
 						})
 						

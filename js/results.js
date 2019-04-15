@@ -1,49 +1,6 @@
-
-	$(document).on("click", "#showLeaderboardButton", function(){
-	$("#xpAndResultsContainer").load("results.html")
-		$("#showLeaderboardButton").hide();
-		$.post("../api/getLeaderboard.php", {
-			quizid : quizStuff.quizInfo[0]["qKey"]
-		}, 
-		function(leaderboard){
-			leaderboard = JSON.parse(leaderboard)
-			$.get("../inc/leaderboardBox.html", function(leaderboardBox){
-
-				for (var i = 0; i < leaderboard.length; i++) {
-					leaderHTML = $.parseHTML(leaderboardBox);
-					$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"]);
-					$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"]);
-					$(leaderHTML).find("#leaderPlace").text(i+1)
-					if (i == 0) {
-						$(leaderHTML).find("#leaderPlace").attr("id", "firstPlace");
-						$(leaderHTML).find("#leaderNick").attr("id", "firstPlace");
-						$(leaderHTML).find("#leaderboardScore").attr("id", "firstPlaceRight");
-					}
-					if (i == 1) {
-						$(leaderHTML).find("#leaderPlace").attr("id", "secondPlaceLeft");
-						$(leaderHTML).find("#leaderNick").attr("id", "secondPlace");
-						$(leaderHTML).find("#leaderboardScore").attr("id", "secondPlaceRight");
-					}
-					if (i == 2) {
-						$(leaderHTML).find("#leaderPlace").attr("id", "thirdPlaceLeft");
-						$(leaderHTML).find("#leaderNick").attr("id", "thirdPlace");
-						$(leaderHTML).find("#leaderboardScore").attr("id", "thirdPlaceRight");
-					}
-					$("#leaderboardList").append(leaderHTML);
-					quizStuff.score = 0;
-					quizStuff.right = 0;
-					quizStuff.wrong = 0;
-				}
-			})
-		})
-	})
-
-
-
-function load_prev_results(){
-	$("#mainContent").load("prevResults.html", function(){
-		$.post("../api/getFirstResults.php", {
-			nick : nick,
+function doResults(resultsUser){
+	$.post("../api/getFirstResults.php", {
+			nick : resultsUser,
 			quizid : quizStuff.quizId,
 		}, function(firstResults){
 			firstResults = JSON.parse(firstResults);
@@ -113,6 +70,65 @@ function load_prev_results(){
 
 
 		})
+}
+
+
+
+	$(document).on("click", "#showLeaderboardButton", function(){
+	$("#xpAndResultsContainer").load("results.html")
+		$("#showLeaderboardButton").hide();
+		$.post("../api/getLeaderboard.php", {
+			quizid : quizStuff.quizInfo[0]["qKey"]
+		}, 
+		function(leaderboard){
+			leaderboard = JSON.parse(leaderboard)
+			$.get("../inc/leaderboardBox.html", function(leaderboardBox){
+
+				for (var i = 0; i < leaderboard.length; i++) {
+					leaderHTML = $.parseHTML(leaderboardBox);
+					$(leaderHTML).find("#leaderNick").attr('onClick', 'load_prev_results_for("'+(leaderboard[i]["nick"]+'");'));
+					$(leaderHTML).find("#leaderNick").text(leaderboard[i]["nick"]);
+					$(leaderHTML).find("#leaderboardScore").text(leaderboard[i]["score"]);
+					$(leaderHTML).find("#leaderPlace").text(i+1)
+					if (i == 0) {
+						$(leaderHTML).find("#leaderPlace").attr("class", "firstPlace");
+						$(leaderHTML).find("#leaderNick").attr("class", "firstPlace");
+						$(leaderHTML).find("#leaderboardScore").attr("class", "firstPlaceRight");
+					}
+					if (i == 1) {
+						$(leaderHTML).find("#leaderPlace").attr("class", "secondPlaceLeft");
+						$(leaderHTML).find("#leaderNick").attr("class", "secondPlace");
+						$(leaderHTML).find("#leaderboardScore").attr("class", "secondPlaceRight");
+					}
+					if (i == 2) {
+						$(leaderHTML).find("#leaderPlace").attr("class", "thirdPlaceLeft");
+						$(leaderHTML).find("#leaderNick").attr("class", "thirdPlace");
+						$(leaderHTML).find("#leaderboardScore").attr("class", "thirdPlaceRight");
+					}
+
+					
+
+					$("#leaderboardList").append(leaderHTML);
+					quizStuff.score = 0;
+					quizStuff.right = 0;
+					quizStuff.wrong = 0;
+				}
+			})
+		})
+	})
+
+
+
+function load_prev_results(){
+	$("#mainContent").load("prevResults.html", function(){
+		doResults(nick);
+	})
+}
+
+function load_prev_results_for(userResults){
+	$("#mainContent").load("prevResults.html", function(){
+		$("#someonesResults").text(userResults + '\'s Results')
+		doResults(userResults);
 	})
 }
 

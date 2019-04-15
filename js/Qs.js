@@ -72,8 +72,10 @@ $(document).ready(function(){
 				var html = $.parseHTML(playerBox);
 				$(html).find(".playerName").text(players[i]['nick']);
 				$(html).attr('onClick', 'users_profile("'+players[i]["nick"]+'");');
-				//$(html).find(".playerPic").prepend("<img class='playerPicPhoto' src="+players[i]["profilePic"]+" />");
-
+				if (!(players[i]["profilePic"] == null || players[i]["profilePic"] == "")) {
+					$(html).find(".playerPic").prepend("<img class='playerPicPhoto' src="+players[i]["profilePic"]+" />");
+				}
+				
 				$("#recentPlayers").append(html);
 			}
 			$.post("../api/getxpUpdates.php", {
@@ -90,7 +92,5 @@ $(document).ready(function(){
 			})
 		})
 	})
-
-	
 
 });
