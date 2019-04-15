@@ -19,6 +19,7 @@ $(document).on("click", "#updatePic", function(){
 	$("#blur").animate({opacity : "0"}, {duration : 200, complete : function(){
 		$("#blur").hide()
 	}})
+	loadProfile()
 
 
 	// un-lock scroll position
@@ -26,6 +27,7 @@ $(document).on("click", "#updatePic", function(){
 	var scrollPosition = html.data('scroll-position');
 	html.css('overflow', html.data('previous-overflow'));
 	window.scrollTo(scrollPosition[0], scrollPosition[1])
+
 })
 
 
