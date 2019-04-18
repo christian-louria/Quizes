@@ -20,11 +20,27 @@ function check_answer(e){
 }
 
 function display_next(answer){
-	console.log(answer)
 	if (!(guessed)) {
 
 		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]+"button").addClass("right")
 		$("#"+quizStuff.quizQuestions[questionCounter]["answer"]+"button").addClass("forceHover")
+
+
+		if (quizStuff.quizQuestions[questionCounter]["q1help"] != null) {
+			$("#post1").text(quizStuff.quizQuestions[questionCounter]["q1help"])
+		}
+		if (quizStuff.quizQuestions[questionCounter]["q2help"] != null) {
+			$("#post2").text(quizStuff.quizQuestions[questionCounter]["q2help"])
+		}
+		if (quizStuff.quizQuestions[questionCounter]["q3help"] != null) {
+			$("#post3").text(quizStuff.quizQuestions[questionCounter]["q3help"])
+		}
+		if (quizStuff.quizQuestions[questionCounter]["q4help"] != null) {
+			$("#post4").text(quizStuff.quizQuestions[questionCounter]["q4help"])
+		}
+
+		$(".allignPost").animate({opacity : "1", top : "0"}, {duration : 500})
+		
 
 		if (answer == quizStuff.quizQuestions[questionCounter]["answer"]) {
 			quizStuff.score += 100;
@@ -69,9 +85,17 @@ function display_next(answer){
 }
 
 function next_question(){
+	$("#post1").text(" ")
+	$("#post2").text(" ")
+	$("#post3").text(" ")
+	$("#post4").text(" ")
+	$(".allignPost").css({opacity : "0", top : "10px"})
+
+
 	// $("#drop")[0].pause();
 	// $("#susp")[0].play();
 	// $("#drop")[0].currentTime = 0;
+
 	$(".nextQuestion").hide()
 	//$(".upNextAction").removeAttr("id", "nextQuestion")
 	$(".upNextAction").removeAttr('onClick', 'next_question();');

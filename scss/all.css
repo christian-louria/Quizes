@@ -230,10 +230,24 @@
 .nextQuestion {
   display: none; }
 
+.allignPost {
+  height: 80px;
+  top: 10px;
+  opacity: 0; }
+
 #answers {
   margin-top: 40px;
   display: grid;
   grid-template-columns: 50% 50%; }
+
+.postAnswers {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  position: relative;
+  height: 0px;
+  top: 104px;
+  color: white; }
 
 #score {
   text-align: center;
